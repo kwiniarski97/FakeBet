@@ -10,10 +10,10 @@ namespace FakeBet.Models
     {
         [Key]
         public long TickOfUpdate { get; set; }
-        private IEnumerable<User> TopYear { get; set; }
-        private IEnumerable<User> TopMonth { get; set; }
-        private IEnumerable<User> TopWeek { get; set; }
-        private IEnumerable<User> TopDay { get; set; }
+        private List<User> TopYear { get; set; }
+        private List<User> TopMonth { get; set; }
+        private List<User> TopWeek { get; set; }
+        private List<User> TopDay { get; set; }
 
     }
 }
