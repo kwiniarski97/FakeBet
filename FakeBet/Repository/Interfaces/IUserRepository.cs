@@ -9,14 +9,14 @@ namespace FakeBet.Repository.Interfaces
     {
         IQueryable<User> Users { get; }
 
-        Task<User> GetUserAsync(Guid userId);
+        Task<User> GetUserAsync(string nickName);
 
         Task RegisterUserAsync(User user);
 
-        Task DeactivateUserAsync(Guid userId);
+        Task DeactivateUserAsync(string nickName);
 
-        Task ActivateUserAsync(Guid userId);
+        Task ActivateUserAsync(string nickName);
 
-        Task BanUserAsync(Guid userId);
+        Task BanUserAsync(string nickName);
     }
 }

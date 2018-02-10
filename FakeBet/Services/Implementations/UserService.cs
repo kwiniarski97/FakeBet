@@ -22,24 +22,24 @@
            await this.repository.RegisterUserAsync(user);
         }
 
-        public Task<User> GetUserAsync(Guid userId)
+        public async Task<User> GetUserAsync(string nickName)
         {
-            throw new NotImplementedException();
+            return await this.repository.GetUserAsync(nickName);
         }
 
-        public Task ActivateUserAsync(Guid userId)
+        public async Task ActivateUserAsync(string nickName)
         {
-            throw new NotImplementedException();
+            await this.repository.ActivateUserAsync(nickName);
         }
 
-        public Task DeactivateUserAsync(Guid userId)
+        public async Task DeactivateUserAsync(string nickName)
         {
-            throw new NotImplementedException();
+            await this.repository.DeactivateUserAsync(nickName);
         }
 
-        public Task BanUserAsync(Guid userId)
+        public async Task BanUserAsync(string nickName)
         {
-            throw new NotImplementedException();
+            await this.repository.BanUserAsync(nickName);
         }
     }
 }

@@ -14,6 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FakeBet
 {
+    using FakeBet.Services.Implementations;
+    using FakeBet.Services.Interfaces;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -29,6 +32,7 @@ namespace FakeBet
             services.AddMvc();
             // repos 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(

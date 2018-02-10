@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FakeBet.Models
+﻿namespace FakeBet.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public enum UserStatus
     {
         Active,
+
         NotActivated,
+
         Deactivated,
+
         Banned
     }
 
     public class User
     {
-        public Guid UserId { get; set; }
-
+        [Key]
         public string NickName { get; set; }
 
         public string Email { get; set; }
 
-        //todo ONLY FOR NOW
+        // todo ONLY FOR NOW
         public string Password { get; set; }
 
         public string Salt { get; set; }

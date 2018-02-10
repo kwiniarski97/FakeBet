@@ -9,12 +9,12 @@
     {
         Task RegisterUserAsync(User user);
 
-        Task<User> GetUserAsync(Guid userId);
+        Task<User> GetUserAsync(string nickName);
 
-        Task ActivateUserAsync(Guid userId);
+        Task ActivateUserAsync(string nickName);
 
-        Task DeactivateUserAsync(Guid userId);
+        Task DeactivateUserAsync(string nickName);
 
-        Task BanUserAsync(Guid userId);
+        Task BanUserAsync(string nickName);
     }
 }

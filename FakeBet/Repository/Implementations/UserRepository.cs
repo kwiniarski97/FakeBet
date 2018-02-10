@@ -21,9 +21,9 @@
 
         public IQueryable<User> Users => this.context.Users;
 
-        public async Task<User> GetUserAsync(Guid userId)
+        public async Task<User> GetUserAsync(string nickName)
         {
-            return await this.Users.SingleOrDefaultAsync(u => u.UserId == userId);
+            return await this.Users.SingleOrDefaultAsync(u => u.NickName == nickName);
         }
 
         public async Task RegisterUserAsync(User user)
@@ -32,9 +32,9 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task DeactivateUserAsync(Guid userId)
+        public async Task DeactivateUserAsync(string nickName)
         {
-            var user = await this.GetUserAsync(userId);
+            var user = await this.GetUserAsync(nickName);
 
             if (user != null)
             {
@@ -48,9 +48,9 @@
             }
         }
 
-        public async Task ActivateUserAsync(Guid userId)
+        public async Task ActivateUserAsync(string nickName)
         {
-            var user = await this.GetUserAsync(userId);
+            var user = await this.GetUserAsync(nickName);
 
             this.context.Remove(user);
 
@@ -61,9 +61,9 @@
             await this.context.SaveChangesAsync();
         }
 
-        public async Task BanUserAsync(Guid userId)
+        public async Task BanUserAsync(string nickName)
         {
-            var user = await this.GetUserAsync(userId);
+            var user = await this.GetUserAsync(nickName);
 
             this.context.Remove(user);
 
