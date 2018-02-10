@@ -1,18 +1,22 @@
 ﻿using FakeBet.Models;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FakeBet.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        User GetUser(Guid userId);
+        IQueryable<User> Users { get; }
 
-        void RegisterUser(User user);
+        Task<User> GetUserAsync(Guid userId);
 
-        void DeactivateUser(Guid userId);
+        Task RegisterUserAsync(User user);
 
-        void ActivateUser(Guid userId);
+        Task DeactivateUserAsync(Guid userId);
 
-        void BanUser(Guid userId);
+        Task ActivateUserAsync(Guid userId);
+
+        Task BanUserAsync(Guid userId);
     }
 }

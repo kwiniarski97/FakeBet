@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeBet.Repository;
+using FakeBet.Repository.Implementations;
+using FakeBet.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -25,6 +27,9 @@ namespace FakeBet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            // repos 
+            services.AddTransient<IUserRepository, UserRepository>();
+
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     @"Data Source=(localdb)\MSSQLLocalDB;Database=FakeBet;Trusted_Connection=True;MultipleActiveResultSets=true"));

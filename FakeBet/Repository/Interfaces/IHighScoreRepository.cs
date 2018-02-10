@@ -6,13 +6,18 @@ using FakeBet.Models;
 
 namespace FakeBet.Repository.Interfaces
 {
-    interface IHighScoreRepository
+    public interface IHighScoreRepository
     {
+        IQueryable<HighScore> HighScores { get; }
+
         HighScore GetHighScores();
 
         void SetDailyHighScore(List<User> topDaily);
+
         void SetWeeklyHighScore(List<User> topWeekly);
+
         void SetMonthlyHighScore(List<User> topMonthly);
+
         void SetYearlyHighScore(List<User> topYearly);
     }
 }

@@ -8,6 +8,8 @@ namespace FakeBet.Repository.Interfaces
 {
     public interface IVoteRepository
     {
+        IQueryable<Vote> Votes { get; }
+
         IEnumerable<Vote> GetUserVotes(Guid userId);
     }
 }

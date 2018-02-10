@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using FakeBet.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeBet.Repository
@@ -10,7 +12,9 @@ namespace FakeBet.Repository
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options) { }
+            : base(options)
+        {
+        }
 
         public DbSet<HighScore> HighScore { get; set; }
 
