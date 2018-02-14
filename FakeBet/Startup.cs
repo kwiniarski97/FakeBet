@@ -14,6 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FakeBet
 {
+    using AutoMapper;
+
+    using FakeBet.DTO;
+    using FakeBet.Models;
     using FakeBet.Services.Implementations;
     using FakeBet.Services.Interfaces;
 
@@ -37,6 +41,8 @@ namespace FakeBet
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     @"Data Source=(localdb)\MSSQLLocalDB;Database=FakeBet;Trusted_Connection=True;MultipleActiveResultSets=true"));
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,9 +69,9 @@ namespace FakeBet
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new {controller = "Home", action = "Index"});
+//                routes.MapSpaFallbackRoute(
+//                    name: "spa-fallback",
+//                    defaults: new {controller = "Home", action = "Index"});
             });
         }
     }

@@ -6,6 +6,9 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
+    using FakeBet.DTO;
     using FakeBet.Models;
     using FakeBet.Repository.Interfaces;
     using FakeBet.Services.Implementations;
@@ -23,8 +26,9 @@
         public async Task CanRegisterUser()
         {
             var repoMock = this.GetUserRepoMockWithSampleData();
-            var userService = new UserService(repoMock.Object);
-            var user = new User();
+            var mapperMock = new Mock<IMapper>();
+            var userService = new UserService(repoMock.Object,mapperMock.Object);
+            var user = new UserRegisterDto();
 
             await userService.RegisterUserAsync(user);
 
@@ -37,7 +41,8 @@
         public async Task CanGetUser()
         {
             var repoMock = this.GetUserRepoMockWithSampleData();
-            var userService = new UserService(repoMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            var userService = new UserService(repoMock.Object, mapperMock.Object);
 
             await userService.GetUserAsync("user1");
 
@@ -58,7 +63,7 @@
                                  NickName = "user1",
                                  Password = "password1",
                                  Points = random.Next(0, 10000),
-                                 Salt = "salt",
+                                 Salt = new byte[32],
                                  Status = UserStatus.Active,
                                  VotesHistory = new List<Vote>()
                              },
@@ -69,7 +74,7 @@
                                  NickName = "user2",
                                  Password = "password2",
                                  Points = random.Next(0, 10000),
-                                 Salt = "salt",
+                                 Salt = new byte[32],
                                  Status = UserStatus.Active,
                                  VotesHistory = new List<Vote>()
                              },
@@ -80,7 +85,7 @@
                                  NickName = "user3",
                                  Password = "password3",
                                  Points = random.Next(0, 10000),
-                                 Salt = "salt",
+                                 Salt = new byte[32],
                                  Status = UserStatus.Active,
                                  VotesHistory = new List<Vote>()
                              }

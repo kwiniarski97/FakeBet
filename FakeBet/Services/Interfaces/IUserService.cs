@@ -3,13 +3,14 @@
     using System;
     using System.Threading.Tasks;
 
+    using FakeBet.DTO;
     using FakeBet.Models;
 
     public interface IUserService
     {
-        Task RegisterUserAsync(User user);
+        Task RegisterUserAsync(UserRegisterDto userRegisterDto);
 
-        Task<User> GetUserAsync(string nickName);
+        Task<UserDto> GetUserAsync(string nickName);
 
         Task ActivateUserAsync(string nickName);
 

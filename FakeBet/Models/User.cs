@@ -6,12 +6,24 @@
 
     public enum UserStatus
     {
+        /// <summary>
+        /// User that confirmed his email. Normal state.
+        /// </summary>
         Active,
 
+        /// <summary>
+        /// User that not confirmed his email.
+        /// </summary>
         NotActivated,
 
+        /// <summary>
+        /// User that requested account delete.
+        /// </summary>
         Deactivated,
 
+        /// <summary>
+        /// User that has been banned.
+        /// </summary>
         Banned
     }
 
@@ -20,12 +32,16 @@
         [Key]
         public string NickName { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         // todo ONLY FOR NOW
+        [Required]
         public string Password { get; set; }
 
-        public string Salt { get; set; }
+        [Required]
+        [MaxLength(32)]
+        public byte[] Salt { get; set; }
 
         public DateTime CreateTime { get; set; }
 

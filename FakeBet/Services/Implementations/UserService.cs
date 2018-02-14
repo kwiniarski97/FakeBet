@@ -1,9 +1,13 @@
 ﻿namespace FakeBet.Services.Implementations
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
+    using FakeBet.DTO;
     using FakeBet.Models;
     using FakeBet.Repository.Interfaces;
     using FakeBet.Services.Interfaces;
@@ -12,19 +16,25 @@
     {
         private IUserRepository repository;
 
-        public UserService(IUserRepository repository)
+        private IMapper mapper;
+
+        public UserService(IUserRepository repository, IMapper mapper)
         {
             this.repository = repository;
+            this.mapper = mapper;
         }
 
-        public async Task RegisterUserAsync(User user)
+        public async Task RegisterUserAsync(UserRegisterDto userRegisterDto)
         {
-           await this.repository.RegisterUserAsync(user);
+            var user = this.mapper.Map<UserRegisterDto, User>(userRegisterDto);
+
+            await this.repository.RegisterUserAsync(user);
         }
 
-        public async Task<User> GetUserAsync(string nickName)
+        public async Task<UserDto> GetUserAsync(string nickName)
         {
-            return await this.repository.GetUserAsync(nickName);
+            var user = await this.repository.GetUserAsync(nickName);
+            return this.mapper.Map<User, UserDto>(user);
         }
 
         public async Task ActivateUserAsync(string nickName)
