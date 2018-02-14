@@ -19,7 +19,7 @@
             this.context = context;
         }
 
-        public IQueryable<User> Users => this.context.Users;
+        private IQueryable<User> Users => this.context.Users;
 
         public async Task<User> GetUserAsync(string nickName)
         {

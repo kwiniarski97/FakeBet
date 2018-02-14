@@ -31,10 +31,10 @@
             await this.repository.RegisterUserAsync(user);
         }
 
-        public async Task<UserDto> GetUserAsync(string nickName)
+        public async Task<UserDTO> GetUserAsync(string nickName)
         {
             var user = await this.repository.GetUserAsync(nickName);
-            return this.mapper.Map<User, UserDto>(user);
+            return this.mapper.Map<User, UserDTO>(user);
         }
 
         public async Task ActivateUserAsync(string nickName)

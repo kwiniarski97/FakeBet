@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace FakeBet.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public enum MatchStatus
     {
         NonStarted,
@@ -13,7 +15,9 @@ namespace FakeBet.Models
 
     public class Match
     {
-        public Guid MatchId { get; set; }
+        // teamAName+teamBName+Category+dateTime.Ticks
+        [Key]
+        public string MatchId { get; set; }
 
         public string Category { get; set; }
 

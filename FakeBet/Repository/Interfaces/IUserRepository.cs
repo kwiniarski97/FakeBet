@@ -7,8 +7,6 @@ namespace FakeBet.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        IQueryable<User> Users { get; }
-
         Task<User> GetUserAsync(string nickName);
 
         Task RegisterUserAsync(User user);

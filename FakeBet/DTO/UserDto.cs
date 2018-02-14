@@ -5,7 +5,7 @@
 
     using FakeBet.Models;
 
-    public class UserDto
+    public class UserDTO
     {
         public string NickName { get; set; }
 

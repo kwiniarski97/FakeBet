@@ -1,22 +1,20 @@
-﻿namespace FakeBet.Repository.Interfaces
+﻿namespace FakeBet.Services.Interfaces
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
+    using FakeBet.DTO;
     using FakeBet.Models;
 
-    public interface IMatchRepository
+    public interface IMatchService
     {
-        Task AddNewMatchAsync(Match match);
+        Task AddNewMatchAsync(MatchAddDTO matchAdd);
 
         Task<Match> GetMatchAsync(string matchId);
-
-        Task RemoveMatchAsync(string matchId);
 
         Task<IEnumerable<Match>> GetNotStartedMatchesAsync();
 
         Task ChangeMatchStatusAsync(string matchId, MatchStatus status);
-}
+
+    }
 }

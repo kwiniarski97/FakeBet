@@ -36,7 +36,11 @@ namespace FakeBet
             services.AddMvc();
             // repos 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMatchRepository, MatchRepository>();
+
+            //services
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IMatchService, MatchService>();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(

@@ -10,7 +10,7 @@
     {
         Task RegisterUserAsync(UserRegisterDto userRegisterDto);
 
-        Task<UserDto> GetUserAsync(string nickName);
+        Task<UserDTO> GetUserAsync(string nickName);
 
         Task ActivateUserAsync(string nickName);
 

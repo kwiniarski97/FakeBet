@@ -20,7 +20,7 @@
         }
 
         [HttpGet("[action]/{nickName}")]
-        public async Task<UserDto> GetUser(string nickName)
+        public async Task<UserDTO> GetUser(string nickName)
         {
             return await this.userService.GetUserAsync(nickName);
         }
