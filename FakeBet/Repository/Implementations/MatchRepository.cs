@@ -10,8 +10,6 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Remotion.Linq.Clauses;
-
     public class MatchRepository : IMatchRepository
     {
         private AppDbContext context;

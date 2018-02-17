@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
 namespace FakeBet
 {
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -18,9 +11,7 @@ namespace FakeBet
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseDefaultServiceProvider(options => options.ValidateScopes = false)
-                .UseStartup<Startup>()
-                .Build();
+            WebHost.CreateDefaultBuilder(args).UseDefaultServiceProvider(options => options.ValidateScopes = false)
+                .UseStartup<Startup>().Build();
     }
 }
