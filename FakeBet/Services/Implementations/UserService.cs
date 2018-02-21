@@ -51,5 +51,12 @@
         {
             await this.repository.BanUserAsync(nickName);
         }
+
+        public async Task<List<UserTopDTO>> Get20BestUsersAsync()
+        {
+            var users = await this.repository.Get20BestUsersAsync();
+            var userTopDtos = this.mapper.Map<List<UserTopDTO>>(users);
+            return userTopDtos;
+        }
     }
 }

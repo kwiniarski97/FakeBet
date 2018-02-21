@@ -1,10 +1,10 @@
-﻿using FakeBet.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FakeBet.Repository.Interfaces
+﻿namespace FakeBet.Repository.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using FakeBet.Models;
+
     public interface IUserRepository
     {
         Task<User> GetUserAsync(string nickName);
@@ -16,5 +16,7 @@ namespace FakeBet.Repository.Interfaces
         Task ActivateUserAsync(string nickName);
 
         Task BanUserAsync(string nickName);
+
+        Task<List<User>> Get20BestUsersAsync();
     }
 }

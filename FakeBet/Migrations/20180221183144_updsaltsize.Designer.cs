@@ -12,8 +12,8 @@ using System;
 namespace FakeBet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180210235407_updatedmodels")]
-    partial class updatedmodels
+    [Migration("20180221183144_updsaltsize")]
+    partial class updsaltsize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,19 +22,9 @@ namespace FakeBet.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("FakeBet.Models.HighScore", b =>
-                {
-                    b.Property<long>("TickOfUpdate")
-                        .ValueGeneratedOnAdd();
-
-                    b.HasKey("TickOfUpdate");
-
-                    b.ToTable("HighScore");
-                });
-
             modelBuilder.Entity("FakeBet.Models.Match", b =>
                 {
-                    b.Property<Guid>("MatchId")
+                    b.Property<string>("MatchId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Category");
@@ -65,13 +55,17 @@ namespace FakeBet.Migrations
 
                     b.Property<DateTime>("CreateTime");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<int>("Points");
 
-                    b.Property<string>("Salt");
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<int>("Status");
 
@@ -87,6 +81,8 @@ namespace FakeBet.Migrations
 
                     b.Property<Guid>("MatchId");
 
+                    b.Property<string>("MatchId1");
+
                     b.Property<Guid>("UserId");
 
                     b.Property<string>("UserNickName");
@@ -97,7 +93,7 @@ namespace FakeBet.Migrations
 
                     b.HasKey("VoteId");
 
-                    b.HasIndex("MatchId");
+                    b.HasIndex("MatchId1");
 
                     b.HasIndex("UserNickName");
 
@@ -106,13 +102,12 @@ namespace FakeBet.Migrations
 
             modelBuilder.Entity("FakeBet.Models.Vote", b =>
                 {
-                    b.HasOne("FakeBet.Models.Match")
+                    b.HasOne("FakeBet.Models.Match", "Match")
                         .WithMany("Votes")
-                        .HasForeignKey("MatchId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MatchId1");
 
-                    b.HasOne("FakeBet.Models.User")
-                        .WithMany("VotesHistory")
+                    b.HasOne("FakeBet.Models.User", "User")
+                        .WithMany("Votes")
                         .HasForeignKey("UserNickName");
                 });
 #pragma warning restore 612, 618

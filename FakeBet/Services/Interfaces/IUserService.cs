@@ -1,6 +1,6 @@
 ﻿namespace FakeBet.Services.Interfaces
 {
-    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using FakeBet.DTO;
@@ -17,5 +17,7 @@
         Task DeactivateUserAsync(string nickName);
 
         Task BanUserAsync(string nickName);
+
+        Task<List<UserTopDTO>> Get20BestUsersAsync();
     }
 }

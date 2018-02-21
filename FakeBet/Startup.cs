@@ -40,10 +40,12 @@ namespace FakeBet
             // repos 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
+            services.AddTransient<IVoteRepository, VoteRepository>();
 
             // services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IVoteService, VoteService>();
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(this.Configuration["ConnectionString"]));
 

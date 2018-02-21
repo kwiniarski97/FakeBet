@@ -12,9 +12,10 @@ using System;
 namespace FakeBet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180221181504_upd")]
+    partial class upd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +65,7 @@ namespace FakeBet.Migrations
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(32);
 
                     b.Property<int>("Status");
 

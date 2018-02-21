@@ -18,6 +18,8 @@
             this.CreateUserMaps();
 
             this.CreateMatchMaps();
+
+            this.CreateVoteMaps();
         }
 
         private void CreateUserMaps()
@@ -31,8 +33,10 @@
                         d.Status = UserStatus.NotActivated;
                         d.Points = 5000;
                         d.Salt = EncryptionService.GetSalt();
-                        d.VotesHistory = new List<Vote>();
+                        d.Votes = new List<Vote>();
                     });
+
+            this.CreateMap<User, UserTopDTO>();
         }
 
         private void CreateMatchMaps()
@@ -47,6 +51,11 @@
                         d.PointsRatio = 1;
                         d.Votes = new List<Vote>();
                     });
+        }
+
+        private void CreateVoteMaps()
+        {
+            this.CreateMap<VoteAddDTO, Vote>().AfterMap((s, r) => { r.VoteId = new Guid(); });
         }
 
         private static MatchStatus DetermineMatchStatus(MatchAddDTO matchAdd)

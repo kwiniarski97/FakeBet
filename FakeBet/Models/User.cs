@@ -40,14 +40,14 @@
         public string Password { get; set; }
 
         [Required]
-        [MaxLength(32)]
+        [MaxLength(64)]
         public byte[] Salt { get; set; }
 
         public DateTime CreateTime { get; set; }
 
         public int Points { get; set; }
 
-        public IEnumerable<Vote> VotesHistory { get; set; }
+        public IEnumerable<Vote> Votes { get; set; }
 
         public UserStatus Status { get; set; }
     }

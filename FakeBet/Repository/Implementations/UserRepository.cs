@@ -1,6 +1,7 @@
 ﻿namespace FakeBet.Repository.Implementations
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -8,6 +9,8 @@
     using FakeBet.Repository.Interfaces;
 
     using Microsoft.EntityFrameworkCore;
+
+    using Remotion.Linq.Clauses;
 
     public class UserRepository : IUserRepository
     {
@@ -50,6 +53,13 @@
         public async Task BanUserAsync(string nickName)
         {
             await this.ChangeUserStatus(nickName, UserStatus.Banned);
+        }
+
+        public async Task<List<User>> Get20BestUsersAsync()
+        {
+            var topusers = this.Users.OrderBy(x => x.Points).Take(20);
+            return await topusers.ToListAsync();
+
         }
 
         private async Task ChangeUserStatus(string nickName, UserStatus status)

@@ -4,26 +4,28 @@ using System.Collections.Generic;
 
 namespace FakeBet.Migrations
 {
-    public partial class changedSaltType : Migration
+    public partial class updsaltsize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<byte[]>(
                 name: "Salt",
                 table: "Users",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldNullable: true);
+                maxLength: 64,
+                nullable: false,
+                oldClrType: typeof(byte[]),
+                oldMaxLength: 32);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AlterColumn<byte[]>(
                 name: "Salt",
                 table: "Users",
-                nullable: true,
+                maxLength: 32,
+                nullable: false,
                 oldClrType: typeof(byte[]),
-                oldNullable: true);
+                oldMaxLength: 64);
         }
     }
 }

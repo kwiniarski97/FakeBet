@@ -12,14 +12,27 @@ using System;
 namespace FakeBet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180219181324_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("FakeBet.Models.HighScore", b =>
+                {
+                    b.Property<long>("TickOfUpdate")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.HasKey("TickOfUpdate");
+
+                    b.ToTable("HighScore");
+                });
 
             modelBuilder.Entity("FakeBet.Models.Match", b =>
                 {
@@ -57,6 +70,8 @@ namespace FakeBet.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
+                    b.Property<long?>("HighScoreTickOfUpdate");
+
                     b.Property<string>("Password")
                         .IsRequired();
 
@@ -64,11 +79,13 @@ namespace FakeBet.Migrations
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(32);
 
                     b.Property<int>("Status");
 
                     b.HasKey("NickName");
+
+                    b.HasIndex("HighScoreTickOfUpdate");
 
                     b.ToTable("Users");
                 });
@@ -99,14 +116,21 @@ namespace FakeBet.Migrations
                     b.ToTable("Votes");
                 });
 
+            modelBuilder.Entity("FakeBet.Models.User", b =>
+                {
+                    b.HasOne("FakeBet.Models.HighScore")
+                        .WithMany("Top")
+                        .HasForeignKey("HighScoreTickOfUpdate");
+                });
+
             modelBuilder.Entity("FakeBet.Models.Vote", b =>
                 {
-                    b.HasOne("FakeBet.Models.Match", "Match")
+                    b.HasOne("FakeBet.Models.Match")
                         .WithMany("Votes")
                         .HasForeignKey("MatchId1");
 
-                    b.HasOne("FakeBet.Models.User", "User")
-                        .WithMany("Votes")
+                    b.HasOne("FakeBet.Models.User")
+                        .WithMany("VotesHistory")
                         .HasForeignKey("UserNickName");
                 });
 #pragma warning restore 612, 618

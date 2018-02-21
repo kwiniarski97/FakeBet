@@ -1,5 +1,6 @@
 ﻿namespace FakeBet.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using FakeBet.DTO;
@@ -19,7 +20,7 @@
 
         [HttpGet("{nickName}")]
         public async Task<UserDTO> Get(string nickName)
-        { 
+        {
             return await this.userService.GetUserAsync(nickName);
         }
 
@@ -45,6 +46,12 @@
         public async Task Ban(string nickName)
         {
             await this.userService.BanUserAsync(nickName);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<List<UserTopDTO>> Top20()
+        {
+            return await this.userService.Get20BestUsersAsync();
         }
     }
 }
