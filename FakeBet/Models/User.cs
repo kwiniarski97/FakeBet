@@ -1,9 +1,11 @@
-﻿namespace FakeBet.Models
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace FakeBet.Models
+{
     public enum UserStatus
     {
         /// <summary>
@@ -29,26 +31,21 @@
 
     public class User
     {
-        [Key]
-        public string NickName { get; set; }
+        [Key] public string NickName { get; set; }
+
+        [Required] public string Email { get; set; }
+
+        [Required, MaxLength(64)] public byte[] PasswordHash { get; set; }
+
+        [Required, MaxLength(128)] public byte[] Salt { get; set; }
 
         [Required]
-        public string Email { get; set; }
+        public DateTime CreateTime { get; set; } = DateTime.Now;
 
-        // todo ONLY FOR NOW
-        [Required]
-        public string Password { get; set; }
-
-        [Required]
-        [MaxLength(64)]
-        public byte[] Salt { get; set; }
-
-        public DateTime CreateTime { get; set; }
-
-        public int Points { get; set; }
+        [Required] public int Points { get; set; } = 5000;
 
         public IEnumerable<Vote> Votes { get; set; }
 
-        public UserStatus Status { get; set; }
+        public UserStatus Status { get; set; } = UserStatus.NotActivated;
     }
 }

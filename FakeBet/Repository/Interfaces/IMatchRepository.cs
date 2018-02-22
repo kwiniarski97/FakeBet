@@ -1,12 +1,9 @@
-﻿namespace FakeBet.Repository.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FakeBet.Models;
+
+namespace FakeBet.Repository.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using FakeBet.Models;
-
     public interface IMatchRepository
     {
         Task AddNewMatchAsync(Match match);

@@ -1,10 +1,9 @@
-﻿namespace FakeBet.DTO
+﻿using System;
+using System.Collections.Generic;
+using FakeBet.Models;
+
+namespace FakeBet.DTO
 {
-    using System;
-    using System.Collections.Generic;
-
-    using FakeBet.Models;
-
     public class UserDTO
     {
         public string NickName { get; set; }
@@ -15,8 +14,10 @@
 
         public int Points { get; set; }
 
-        public IEnumerable<Vote> VotesHistory { get; set; }
+        public IEnumerable<Vote> Votes { get; set; }
 
         public UserStatus Status { get; set; }
+        
+        public string Token { get; set; }
     }
 }

@@ -1,17 +1,12 @@
-﻿namespace FakeBet.Repository.Implementations
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FakeBet.Models;
+using FakeBet.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace FakeBet.Repository.Implementations
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using FakeBet.Models;
-    using FakeBet.Repository.Interfaces;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Remotion.Linq.Clauses;
-
     public class UserRepository : IUserRepository
     {
         // EF 
@@ -22,56 +17,31 @@
             this.context = context;
         }
 
-        private IQueryable<User> Users => this.context.Users;
+        private IQueryable<User> Users => context.Users;
 
         public async Task<User> GetUserAsync(string nickName)
         {
-            return await this.Users.SingleOrDefaultAsync(u => u.NickName == nickName);
+            return await Users.SingleOrDefaultAsync(u => u.NickName == nickName);
         }
 
         public async Task RegisterUserAsync(User user)
         {
-            if (await this.GetUserAsync(user.NickName) != null)
-            {
-                throw new Exception("User with this nickname already exist");
-            }
-
-            await this.context.AddAsync(user);
-            await this.context.SaveChangesAsync();
+            await context.AddAsync(user);
+            await context.SaveChangesAsync();
         }
 
-        public async Task DeactivateUserAsync(string nickName)
+        public async Task ChangeUserStatusAsync(string nickName, UserStatus status)
         {
-            await this.ChangeUserStatus(nickName, UserStatus.Deactivated);
-        }
+            context.Users.Single(u => u.NickName == nickName).Status = status;
 
-        public async Task ActivateUserAsync(string nickName)
-        {
-            await this.ChangeUserStatus(nickName, UserStatus.Active);
-        }
-
-        public async Task BanUserAsync(string nickName)
-        {
-            await this.ChangeUserStatus(nickName, UserStatus.Banned);
+            await context.SaveChangesAsync();
         }
 
         public async Task<List<User>> Get20BestUsersAsync()
         {
-            var topusers = this.Users.OrderBy(x => x.Points).Take(20);
-            return await topusers.ToListAsync();
-
-        }
-
-        private async Task ChangeUserStatus(string nickName, UserStatus status)
-        {
-            if (await this.GetUserAsync(nickName) == null)
-            {
-                throw new Exception("User not found");
-            }
-
-            this.context.Users.Single(u => u.NickName == nickName).Status = status;
-
-            await this.context.SaveChangesAsync();
+            //todo moze byc ze trzeba bedzie zrobic async
+            var usersSorted = await Users.OrderBy(x => x.Points).Take(20).ToListAsync();
+            return usersSorted;
         }
     }
 }

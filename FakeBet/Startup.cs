@@ -1,28 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+using System.Text;
+using AutoMapper;
+using FakeBet.Helpers;
 using FakeBet.Repository;
 using FakeBet.Repository.Implementations;
 using FakeBet.Repository.Interfaces;
-
+using FakeBet.Services.Implementations;
+using FakeBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FakeBet
 {
-    using AutoMapper;
-
-    using FakeBet.DTO;
-    using FakeBet.Models;
-    using FakeBet.Services.Implementations;
-    using FakeBet.Services.Interfaces;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -47,9 +41,35 @@ namespace FakeBet
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IVoteService, VoteService>();
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(this.Configuration["ConnectionString"]));
+            //dbcontext ef
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
 
+            
             services.AddAutoMapper();
+            //appsetting secret
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettingsSecret>(appSettingsSection);
+            
+            //jwt
+            var appSettings = appSettingsSection.Get<AppSettingsSecret>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +96,15 @@ namespace FakeBet
                         // name: "spa-fallback",
                         // defaults: new {controller = "Home", action = "Index"});
                     });
+            
+            //cors
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+            
+            app.UseAuthentication();
         }
     }
 }

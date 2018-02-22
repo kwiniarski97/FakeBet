@@ -1,9 +1,8 @@
-﻿namespace FakeBet.DTO
+﻿using System;
+using FakeBet.Models;
+
+namespace FakeBet.DTO
 {
-    using System;
-
-    using FakeBet.Models;
-
     public class MatchAddDTO
     {
         public string Category { get; set; }

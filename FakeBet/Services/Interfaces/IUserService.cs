@@ -1,22 +1,19 @@
-﻿namespace FakeBet.Services.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FakeBet.DTO;
+using FakeBet.Models;
+
+namespace FakeBet.Services.Interfaces
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using FakeBet.DTO;
-    using FakeBet.Models;
-
     public interface IUserService
     {
-        Task RegisterUserAsync(UserRegisterDto userRegisterDto);
+        Task RegisterUserAsync(UserAuthDto userAuthDto);
+
+        Task<UserDTO> LoginUserAsync(string login, string password);
 
         Task<UserDTO> GetUserAsync(string nickName);
 
-        Task ActivateUserAsync(string nickName);
-
-        Task DeactivateUserAsync(string nickName);
-
-        Task BanUserAsync(string nickName);
+        Task ChangeUserStatusAsync(string nickName, UserStatus status);
 
         Task<List<UserTopDTO>> Get20BestUsersAsync();
     }

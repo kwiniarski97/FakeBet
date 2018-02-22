@@ -1,13 +1,10 @@
 ﻿
 
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace FakeBet.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
     public class Vote
     {
         [Key]

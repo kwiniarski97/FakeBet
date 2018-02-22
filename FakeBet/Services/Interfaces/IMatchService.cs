@@ -1,11 +1,10 @@
-﻿namespace FakeBet.Services.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FakeBet.DTO;
+using FakeBet.Models;
+
+namespace FakeBet.Services.Interfaces
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using FakeBet.DTO;
-    using FakeBet.Models;
-
     public interface IMatchService
     {
         Task AddNewMatchAsync(MatchAddDTO matchAdd);

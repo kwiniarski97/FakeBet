@@ -12,8 +12,8 @@ using System;
 namespace FakeBet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180219185053_foreignkeys")]
-    partial class foreignkeys
+    [Migration("20180222231359_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,18 +21,6 @@ namespace FakeBet.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("FakeBet.Models.HighScore", b =>
-                {
-                    b.Property<long>("TickOfUpdate")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("LastUpdate");
-
-                    b.HasKey("TickOfUpdate");
-
-                    b.ToTable("HighScore");
-                });
 
             modelBuilder.Entity("FakeBet.Models.Match", b =>
                 {
@@ -65,27 +53,25 @@ namespace FakeBet.Migrations
                     b.Property<string>("NickName")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateTime");
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<long?>("HighScoreTickOfUpdate");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<int>("Points");
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasMaxLength(32);
+                        .HasMaxLength(128);
 
                     b.Property<int>("Status");
 
                     b.HasKey("NickName");
-
-                    b.HasIndex("HighScoreTickOfUpdate");
 
                     b.ToTable("Users");
                 });
@@ -114,13 +100,6 @@ namespace FakeBet.Migrations
                     b.HasIndex("UserNickName");
 
                     b.ToTable("Votes");
-                });
-
-            modelBuilder.Entity("FakeBet.Models.User", b =>
-                {
-                    b.HasOne("FakeBet.Models.HighScore")
-                        .WithMany("Top")
-                        .HasForeignKey("HighScoreTickOfUpdate");
                 });
 
             modelBuilder.Entity("FakeBet.Models.Vote", b =>

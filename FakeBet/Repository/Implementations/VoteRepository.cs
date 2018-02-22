@@ -1,9 +1,9 @@
-﻿namespace FakeBet.Repository.Implementations
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using FakeBet.Models;
+using FakeBet.Repository.Interfaces;
 
-    using FakeBet.Models;
-    using FakeBet.Repository.Interfaces;
+namespace FakeBet.Repository.Implementations
+{
     public class VoteRepository : IVoteRepository
     {
         private AppDbContext context;
@@ -15,7 +15,7 @@
 
         public async Task AddVoteAsync(Vote vote)
         {
-            await this.context.Votes.AddAsync(vote);
+            await context.Votes.AddAsync(vote);
         }
     }
 }

@@ -52,19 +52,21 @@ namespace FakeBet.Migrations
                     b.Property<string>("NickName")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreateTime");
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<string>("Password")
-                        .IsRequired();
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<int>("Points");
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(128);
 
                     b.Property<int>("Status");
 

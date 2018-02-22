@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FakeBet.Models
 {
-    using System.ComponentModel.DataAnnotations;
-
     public enum MatchStatus
     {
         NonStarted,

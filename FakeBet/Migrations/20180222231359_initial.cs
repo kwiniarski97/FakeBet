@@ -1,27 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace FakeBet.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "HighScore",
-                columns: table => new
-                {
-                    TickOfUpdate = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LastUpdate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HighScore", x => x.TickOfUpdate);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Matches",
                 columns: table => new
@@ -48,21 +34,14 @@ namespace FakeBet.Migrations
                     NickName = table.Column<string>(nullable: false),
                     CreateTime = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    HighScoreTickOfUpdate = table.Column<long>(nullable: true),
-                    Password = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<byte[]>(maxLength: 64, nullable: false),
                     Points = table.Column<int>(nullable: false),
-                    Salt = table.Column<byte[]>(maxLength: 32, nullable: false),
+                    Salt = table.Column<byte[]>(maxLength: 128, nullable: false),
                     Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.NickName);
-                    table.ForeignKey(
-                        name: "FK_Users_HighScore_HighScoreTickOfUpdate",
-                        column: x => x.HighScoreTickOfUpdate,
-                        principalTable: "HighScore",
-                        principalColumn: "TickOfUpdate",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,11 +74,6 @@ namespace FakeBet.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_HighScoreTickOfUpdate",
-                table: "Users",
-                column: "HighScoreTickOfUpdate");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Votes_MatchId1",
                 table: "Votes",
                 column: "MatchId1");
@@ -120,9 +94,6 @@ namespace FakeBet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "HighScore");
         }
     }
 }
