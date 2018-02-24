@@ -22,9 +22,20 @@
                         <span class='glyphicon glyphicon-user'></span> My Profile
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
+                <li  [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/login']">
-                        <span class='glyphicon glyphicon-log-in'></span> Login
+                        <span class='glyphicon glyphicon-log-in'></span> Log in
+
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/logout']">
+                        <span class='glyphicon glyphicon-log-in'></span> Log out
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/register']">
+                        <span class='glyphicon glyphicon-plus'></span> Register
                     </a>
                 </li>
             </ul>

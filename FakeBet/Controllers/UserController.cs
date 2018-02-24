@@ -8,12 +8,14 @@ using FakeBet.DTO;
 using FakeBet.Helpers;
 using FakeBet.Models;
 using FakeBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FakeBet.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -39,6 +41,7 @@ namespace FakeBet.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] UserAuthDto user)
         {
@@ -49,14 +52,15 @@ namespace FakeBet.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.StackTrace);
+                return BadRequest(ex.Message);
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login(UserAuthDto userDto)
+        public async Task<IActionResult> Login([FromBody]UserAuthDto userDto)
         {
-            var user = await _userService.LoginUserAsync(userDto.NickName ?? userDto.Email, userDto.Password);
+            var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
 
             if (user == null)
             {
@@ -80,7 +84,7 @@ namespace FakeBet.Controllers
             user.Token = tokenHandler.WriteToken(token);
             return Ok(user);
         }
-
+        
         [HttpPut("[action]/{nickName}")]
         public async Task<IActionResult> ChangeStatus(string nickName, [FromBody] UserStatus status)
         {
@@ -95,8 +99,8 @@ namespace FakeBet.Controllers
 
             return Ok();
         }
-
-
+        
+        [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<List<UserTopDTO>> Top20()
         {

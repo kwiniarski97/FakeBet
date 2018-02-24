@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
     selector: 'nav-menu',
@@ -6,4 +6,25 @@ import { Component } from '@angular/core';
     styleUrls: ['./navmenu.component.css']
 })
 export class NavMenuComponent {
+    IsUserLogged: boolean = false;
+
+    constructor() {
+        let localStor = this.getLocalStorage();
+        if (localStor) {
+            if (localStor.getItem('currentUser')) {
+                this.IsUserLogged = true;
+            }
+            else {
+                this.IsUserLogged = false;
+            }
+        }
+    }
+
+    ngOnInit() {
+
+    }
+
+    getLocalStorage() {
+        return (typeof window !== "undefined") ? window.localStorage : null;
+    }
 }

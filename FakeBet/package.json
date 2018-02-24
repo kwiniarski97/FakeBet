@@ -27,7 +27,7 @@
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^2.0.1",
     "awesome-typescript-loader": "3.2.1",
-    "bootstrap": "3.3.7",
+    "bootstrap": "4.0.0",
     "chai": "4.0.2",
     "css": "2.2.1",
     "css-loader": "0.28.4",
@@ -60,5 +60,8 @@
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12"
   },
-  "dependencies": {}
+  "dependencies": {
+    "popper": "^1.0.1",
+    "popper.js": "^1.12.9"
+  }
 }
