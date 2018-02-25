@@ -1,22 +1,19 @@
-﻿
-
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace FakeBet.Models
 {
     public class Vote
     {
-        [Key]
-        public Guid VoteId { get; set; }
+        [Key] public Guid VoteId { get; set; }
 
         // FK 
-        public Guid MatchId { get; set; }
+        public string MatchId { get; set; }
 
         public Match Match { get; set; }
 
         // FK
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public User User { get; set; }
 

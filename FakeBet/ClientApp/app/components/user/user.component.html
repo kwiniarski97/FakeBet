@@ -1,8 +1,13 @@
-<div class="container-fluid">
+<div class="row container-fluid card-group">
     <div><img class="user-avatar" [src]="avatarPath"></div>
     <div><h1>{{user.nickName}}</h1>
         <h2><span class='glyphicon glyphicon-bitcoin' aria-setsize="10px"></span> {{user.points}}</h2></div>
-
+</div>
+<div class="row col-md-12">
+    <h1 *ngIf="user.votes.length>0">Votes</h1>
+    <div *ngFor="let vote of user.votes">
+        <!--todo zrobic tutaj implementacje graficzna vote-->
+    </div>
 </div>
     
 

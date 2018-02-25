@@ -7,7 +7,7 @@ namespace FakeBet.Services.Interfaces
 {
     public interface IMatchService
     {
-        Task AddNewMatchAsync(MatchAddDTO matchAdd);
+        Task AddNewMatchAsync(MatchDTO match);
 
         Task<Match> GetMatchAsync(string matchId);
 

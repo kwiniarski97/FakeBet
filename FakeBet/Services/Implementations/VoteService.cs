@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.DTO;
 using FakeBet.Models;
@@ -19,9 +20,22 @@ namespace FakeBet.Services.Implementations
             this.mapper = mapper;
         }
 
-        public async Task AddVoteAsync(VoteAddDTO voteDto)
+        public async Task<VoteDTO> GetVoteByIdAsync(Guid id)
         {
+            var vote = await repository.GetVoteByIdAsync(id);
+            var voteDTO = mapper.Map<VoteDTO>(vote);
+            return voteDTO;
+        }
+
+        public async Task AddVoteAsync(VoteDTO voteDto)
+        {
+            var voteFromRepo = await GetVoteByIdAsync(voteDto.MatchId);
+            if (voteFromRepo != null)
+            {
+                throw new Exception("Vote already found");
+            }
             var vote = mapper.Map<Vote>(voteDto);
+            vote.VoteId = new Guid();
             await repository.AddVoteAsync(vote);
         }
     }

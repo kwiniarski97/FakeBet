@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FakeBet.DTO;
 using FakeBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeBet.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class VoteController : Controller
     {
@@ -15,10 +18,25 @@ namespace FakeBet.Controllers
             this.service = service;
         }
 
-        [HttpPost("[action]")]
-        public async Task Add([FromBody] VoteAddDTO vote)
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            await service.AddVoteAsync(vote);
+            var vote = await service.GetVoteByIdAsync(id);
+            return Ok(vote);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Add([FromBody] VoteDTO vote)
+        {
+            try
+            {
+                await service.AddVoteAsync(vote);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

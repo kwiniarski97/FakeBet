@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using FakeBet.DTO;
 using FakeBet.Models;
 using FakeBet.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeBet.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
@@ -17,28 +19,41 @@ namespace FakeBet.Controllers
             this.service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet("{matchId}")]
-        public async Task<Match> Get(string matchId)
+        public async Task<IActionResult> Get(string matchId)
         {
-            return await service.GetMatchAsync(matchId);
+            var match = await service.GetMatchAsync(matchId);
+            return Ok(match);
         }
 
         [HttpPost("[action]")]
-        public async Task Add([FromBody] MatchAddDTO match)
+        public async Task<IActionResult> Add([FromBody] MatchDTO match)
         {
-            await service.AddNewMatchAsync(match);
+            try
+            {
+                await service.AddNewMatchAsync(match);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
-        public async Task<IEnumerable<Match>> GetNotStartedMatches()
+        public async Task<IActionResult> GetNotStartedMatches()
         {
-            return await service.GetNotStartedMatchesAsync();
+            var nonStartedMatches = await service.GetNotStartedMatchesAsync();
+            return Ok(nonStartedMatches);
         }
 
         [HttpPut("[action]/{matchId}")]
-        public async Task ChangeMatchStatus(string matchId, [FromBody] MatchStatus status)
+        public async Task<IActionResult> ChangeMatchStatus(string matchId, [FromBody] MatchStatus status)
         {
             await service.ChangeMatchStatusAsync(matchId, status);
+            return Ok();
         }
     }
 }

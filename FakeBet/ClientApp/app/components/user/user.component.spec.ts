@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
+import {} from 'jasmine';
 import {UserComponent} from './user.component';
 
 describe('UserComponent', () => {

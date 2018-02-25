@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.DTO;
+using FakeBet.Extensions;
 using FakeBet.Models;
 using FakeBet.Repository.Interfaces;
 using FakeBet.Services.Interfaces;
@@ -20,15 +23,28 @@ namespace FakeBet.Services.Implementations
             this.mapper = mapper;
         }
 
-        public async Task AddNewMatchAsync(MatchAddDTO matchAddDTO)
+        public async Task AddNewMatchAsync(MatchDTO matchDTO)
         {
-            var match = mapper.Map<MatchAddDTO, Match>(matchAddDTO);
+            if (matchDTO.TeamAName == null || matchDTO.TeamBName == null || matchDTO.Category == null ||
+                matchDTO.MatchTime == default(DateTime))
+            {
+                throw new Exception("All fields must be filled.");
+            }
+
+            var match = mapper.Map<MatchDTO, Match>(matchDTO);
+            match.GenerateDefaultValues();
             await repository.AddNewMatchAsync(match);
         }
 
         public async Task<Match> GetMatchAsync(string matchId)
         {
-            return await repository.GetMatchAsync(matchId);
+            var match = await repository.GetMatchAsync(matchId);
+            if (match == null)
+            {
+                throw new Exception($"Match with given id {matchId} not found");
+            }
+
+            return match;
         }
 
         public async Task<IEnumerable<Match>> GetNotStartedMatchesAsync()
@@ -38,7 +54,9 @@ namespace FakeBet.Services.Implementations
 
         public async Task ChangeMatchStatusAsync(string matchId, MatchStatus status)
         {
+            await GetMatchAsync(matchId); //if null throws exception
             await repository.ChangeMatchStatusAsync(matchId, status);
         }
-    }
+
+        }
 }

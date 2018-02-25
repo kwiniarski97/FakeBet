@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -102,9 +101,10 @@ namespace FakeBet.Controllers
         
         [AllowAnonymous]
         [HttpGet("[action]")]
-        public async Task<List<UserTopDTO>> Top20()
+        public async Task<IActionResult> Top20()
         {
-            return await _userService.Get20BestUsersAsync();
+            var top = await _userService.Get20BestUsersAsync();
+            return Ok(top);
         }
     }
 }

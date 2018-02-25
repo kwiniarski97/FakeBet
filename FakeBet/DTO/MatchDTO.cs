@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using FakeBet.Models;
 
-namespace FakeBet.Models
+namespace FakeBet.DTO
 {
-    public enum MatchStatus
+    public class MatchDTO
     {
-        NonStarted,
-        OnGoing,
-        Ended
-    }
-
-
-    public class Match
-    {
-        // teamAName+teamBName+Category+dateTime.Ticks
-        [Key]
         public string MatchId { get; set; }
 
         public string Category { get; set; }
@@ -33,7 +22,5 @@ namespace FakeBet.Models
         public int TeamBPoints { get; set; }
 
         public float PointsRatio { get; set; }
-        
-        public IEnumerable<Vote> Votes { get; set; }
     }
 }
