@@ -43,14 +43,14 @@ namespace FakeBet.Controllers
 
         [AllowAnonymous]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetNotStartedMatches()
+        public async Task<IActionResult> GetNotStarted()
         {
             var nonStartedMatches = await service.GetNotStartedMatchesAsync();
             return Ok(nonStartedMatches);
         }
 
         [HttpPut("[action]/{matchId}")]
-        public async Task<IActionResult> ChangeMatchStatus(string matchId, [FromBody] MatchStatus status)
+        public async Task<IActionResult> ChangeStatus(string matchId, [FromBody] MatchStatus status)
         {
             await service.ChangeMatchStatusAsync(matchId, status);
             return Ok();

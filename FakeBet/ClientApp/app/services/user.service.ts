@@ -2,13 +2,15 @@ import {Injectable} from '@angular/core';
 import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {AppConfig} from "../app-config";
 import {UserRegister, UserStatus} from "../models/user";
+import {Service} from "./service";
 
 @Injectable()
-export class UserService {
-    
-    private serviceurl = this.config.apiUrl+'/user';
-    
+export class UserService extends Service {
+
+    private serviceurl = this.config.apiUrl + '/user';
+
     constructor(private http: Http, private config: AppConfig) {
+        super();
     }
 
     getByNickname(nickName: string) {
@@ -20,7 +22,7 @@ export class UserService {
     }
 
     register(user: UserRegister) {
-        return this.http.post(this.serviceurl+'/register', user);
+        return this.http.post(this.serviceurl + '/register', user);
     }
 
     changeStatus(nickName: string, status: UserStatus) {
@@ -36,16 +38,5 @@ export class UserService {
     }
 
 
-    private static getJwtHeaders() {
-        let storageItem = localStorage.getItem('currentUser');
-        if (!storageItem) {
-            return;
-        }
-        let currentUser = JSON.parse(storageItem);
-        if (currentUser && currentUser.token) {
-            let headers = new Headers({'Authorization': 'Bearer ' + currentUser.token});
-            return new RequestOptions({headers: headers});
-        }
-    }
 }
 
