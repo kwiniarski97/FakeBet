@@ -11,7 +11,7 @@ namespace FakeBet.DTO
 
         public DateTime MatchTime { get; set; }
 
-        public MatchStatus? Status { get; set; }
+        public MatchStatus Status { get; set; }
         
         public string TeamAName { get; set; }
 

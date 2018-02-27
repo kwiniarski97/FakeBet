@@ -33,6 +33,11 @@ namespace FakeBet.Services.Implementations
 
             var match = mapper.Map<MatchDTO, Match>(matchDTO);
             match.GenerateDefaultValues();
+            if (await repository.GetMatchAsync(match.MatchId) != null)
+            {
+                throw new Exception("Match already exists");
+            }
+
             await repository.AddNewMatchAsync(match);
         }
 
@@ -57,6 +62,5 @@ namespace FakeBet.Services.Implementations
             await GetMatchAsync(matchId); //if null throws exception
             await repository.ChangeMatchStatusAsync(matchId, status);
         }
-
-        }
+    }
 }
