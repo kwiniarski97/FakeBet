@@ -1,0 +1,15 @@
+.match-box{
+  padding: 10px;
+  background-color: white;
+  border-left: 6px solid #25b049;
+  border-right: 6px solid #c52424;
+}
+
+.team-name{
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.team-points{
+  font-weight: 400;
+}

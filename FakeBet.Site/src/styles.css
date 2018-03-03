@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+  background-color: hsl(210, 9%, 96%);
+}
+.box-shadow{
+  box-shadow: 0 4px 6px hsla(0,0%,0%, 0.2);
+}
