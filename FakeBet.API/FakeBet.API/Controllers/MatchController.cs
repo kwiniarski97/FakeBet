@@ -26,6 +26,7 @@ namespace FakeBet.API.Controllers
             var match = await service.GetMatchAsync(matchId);
             return Ok(match);
         }
+        
         [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromBody] MatchDTO match)

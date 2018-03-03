@@ -9,6 +9,8 @@ using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +42,8 @@ namespace FakeBet.API
             services.AddTransient<IVoteService, VoteService>();
 
             //dbcontext ef
-            services.AddDbContext<AppDbContext>(options => options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
 
 
             services.AddAutoMapper();
@@ -48,7 +51,7 @@ namespace FakeBet.API
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettingsSecret>(appSettingsSection);
 
-            //jwt
+           //jwt
             var appSettings = appSettingsSection.Get<AppSettingsSecret>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -68,6 +71,7 @@ namespace FakeBet.API
                         ValidateAudience = false
                     };
                 });
+            
         }
 
 
@@ -79,18 +83,24 @@ namespace FakeBet.API
                 app.UseDeveloperExceptionPage();
             }
 
+            //cors
+            app.UseCors(x =>
+            {
+                x.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+
+            app.UseAuthentication();
+            
             app.UseStaticFiles();
 
             app.UseMvc();
-
-            //cors
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
-
-            app.UseAuthentication();
+            
+            
+            
+           
         }
     }
 }
