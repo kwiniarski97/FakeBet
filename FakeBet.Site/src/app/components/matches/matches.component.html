@@ -1,17 +1,24 @@
-<div *ngFor="let match of matches" class="container match-box m-3 box-shadow">
-  <div class="row">
-    <div class="col text-left ml-2">
-      <p class="team-name">{{match.teamAName}}</p>
-      <p>{{match.teamAPoints}}</p>
-    </div>
-    <div class="col text-center">
-      <p class="m-0"><small>Ratio:</small></p>
-      <p class="font-weight-bold m-0">{{match.pointsRatio}}</p>
-      <p class="m-0"><small>{{match.matchTime}}</small></p>
-    </div>
-    <div class="col text-right mr-2">
-      <p class="team-name">{{match.teamBName}}</p>
-      <p class="team-points">{{match.teamBPoints}}</p>
+<div class="container">
+  <img src="assets/images/loading.svg" *ngIf="loading" class="text-center mx-auto d-block">
+  <div *ngFor="let match of matches" class="match-box m-3 box-shadow">
+    <div class="row">
+      <div class="col text-left ml-2">
+        <p class="team-name">{{match.teamAName}}</p>
+        <p>{{match.teamAPoints}}</p>
+      </div>
+      <div class="col text-center">
+        <p class="m-0">
+          <small>Ratio:</small>
+        </p>
+        <p class="font-weight-bold m-0">{{match.pointsRatio}}</p>
+        <p class="m-0">
+          <small>{{match.matchTime}}</small>
+        </p>
+      </div>
+      <div class="col text-right mr-2">
+        <p class="team-name">{{match.teamBName}}</p>
+        <p class="team-points">{{match.teamBPoints}}</p>
+      </div>
     </div>
   </div>
 </div>

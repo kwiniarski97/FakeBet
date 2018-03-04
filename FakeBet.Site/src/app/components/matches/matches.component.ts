@@ -11,6 +11,8 @@ export class MatchesComponent implements OnInit {
 
   matches: Match[];
 
+  loading = true;
+
   constructor(private service: MatchService) {
 
   }
@@ -18,10 +20,7 @@ export class MatchesComponent implements OnInit {
   ngOnInit() {
     this.service.getNotStarted().subscribe(data => {
       this.matches = data;
-      for (let i = 0; i < data.length; i++) {
-        console.log(this.matches[i].matchTime);
-      }
-
+      this.loading = false;
     });
   }
 

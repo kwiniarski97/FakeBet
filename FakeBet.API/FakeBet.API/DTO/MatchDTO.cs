@@ -16,7 +16,7 @@ namespace FakeBet.API.DTO
         public string TeamAName { get; set; }
 
         public int TeamAPoints { get; set; }
-
+ 
         public string TeamBName { get; set; }
 
         public int TeamBPoints { get; set; }
