@@ -1,0 +1,40 @@
+<div class="container">
+  <img src="assets/images/loading.svg" *ngIf="loading" class="text-center mx-auto d-block">
+  <div *ngFor="let match of matches" class="m-3">
+    <ngb-accordion *ngIf="!loading" class="box-shadow">
+      <ngb-panel>
+        <ng-template ngbPanelTitle>
+          <div class="row">
+            <div class="col text-right">
+              <!-- todo flags <span class="flag-icon " [ngClass]=teamAFlagClass></span>-->
+              <h2 class="d-inline-block">{{match.teamAName}}</h2>
+            </div>
+            <div class="col-1 text-center">
+              <h2 class="font-weight-light"> vs.</h2>
+            </div>
+            <div class="col text-left">
+              <h2 class="d-inline-block">{{match.teamBName}}</h2>
+              <!--todo flags <span class="flag-icon" [ngClass]=teamBFlagClass></span>-->
+            </div>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="row mt-2">
+            <div class="col">
+              <h2 class="font-weight-light text-right">{{match.teamAPoints}}</h2>
+            </div>
+            <div class="col-2">
+              <h4 class="font-weight-light text-center">points</h4>
+            </div>
+            <div class="col">
+              <h2 class="font-weight-light text-left">{{match.teamBPoints}}</h2>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-center font-weight-light">{{this.getParsedDate(match.matchTime)}}</h4>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+</div>
