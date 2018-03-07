@@ -19,6 +19,7 @@ import {RouterModule} from '@angular/router';
 import {AuthGuard} from './guards/auth.guard';
 import {AppConfig} from './app-config';
 import {HttpModule} from '@angular/http';
+import {MatchComponent} from './components/match/match.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {HttpModule} from '@angular/http';
     MatchesComponent,
     NavbarComponent,
     SignupComponent,
-    UserComponent
+    UserComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,7 @@ import {HttpModule} from '@angular/http';
       {path: 'signin', component: SignInComponent},
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
+      {path: 'match/:id', component: MatchComponent},
       {path: '**', redirectTo: 'home'}])
   ],
   providers: [

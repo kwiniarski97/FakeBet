@@ -15,7 +15,6 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const storageString = localStorage.getItem('currentUser');
-    console.log('user votes: ' + this.user.votes);
     if (storageString == null) {
       return;
     }

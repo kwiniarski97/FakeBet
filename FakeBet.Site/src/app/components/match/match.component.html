@@ -1,0 +1,28 @@
+<div class="container">
+  <img src="assets/images/loading.svg" *ngIf="loading" class="text-center mx-auto d-block">
+  <div *ngIf="!loading" class="container box-shadow match-box">
+    <div class="row">
+      <div class="col text-right"><h2>{{match.teamAName}}</h2></div>
+      <div class="col-1 text-center"><h2 class="font-weight-light"> vs.</h2></div>
+      <div class="col text-left"><h2>{{match.teamBName}}</h2></div>
+    </div>
+    <hr>
+    <div class="row mt-2">
+      <div class="col">
+        <h2 class="font-weight-light text-right">{{match.teamAPoints}}</h2>
+      </div>
+      <div class="col-1"><h4 class="font-weight-light text-center">points</h4>
+      </div>
+      <div class="col">
+        <h2 class="font-weight-light text-left">{{match.teamBPoints}}</h2>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-center font-weight-light">{{time}}</h4>
+    </div>
+    <div class="row" *ngIf="match.votes>0">
+      <div></div>
+
+    </div>
+  </div>
+</div>

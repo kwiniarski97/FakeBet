@@ -23,8 +23,16 @@ namespace FakeBet.API.Controllers
         [HttpGet("{matchId}")]
         public async Task<IActionResult> Get(string matchId)
         {
-            var match = await service.GetMatchAsync(matchId);
-            return Ok(match);
+            try
+            {
+                var match = await service.GetMatchAsync(matchId);
+                return Ok(match);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         
         [AllowAnonymous]

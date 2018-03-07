@@ -5,6 +5,11 @@
   border-right: 6px solid #c52424;
 }
 
+.match-box:hover{
+  cursor: pointer;
+  box-shadow: 0 5px 5px hsla(0,0%,0%, 0.5);
+}
+
 .team-name{
   font-weight: 700;
   font-size: 1.5rem;

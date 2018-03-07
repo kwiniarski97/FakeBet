@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatchService} from '../../services/match.service';
 import {Match} from '../../models/match';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-matches',
@@ -13,7 +14,7 @@ export class MatchesComponent implements OnInit {
 
   loading = true;
 
-  constructor(private service: MatchService) {
+  constructor(private service: MatchService, private router: Router) {
 
   }
 
@@ -23,5 +24,4 @@ export class MatchesComponent implements OnInit {
       this.loading = false;
     });
   }
-
 }

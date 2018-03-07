@@ -1,6 +1,6 @@
 <div class="container">
   <img src="assets/images/loading.svg" *ngIf="loading" class="text-center mx-auto d-block">
-  <div *ngFor="let match of matches" class="match-box m-3 box-shadow">
+  <div *ngFor="let match of matches" class="match-box m-3 box-shadow" [routerLink]="['/match', match.matchId]">
     <div class="row">
       <div class="col text-left ml-2">
         <p class="team-name">{{match.teamAName}}</p>

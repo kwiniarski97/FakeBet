@@ -39,5 +39,4 @@ export class MatchService extends Service {
     }
     this.http.put(this.url + `/changestatus/${matchId}`, match, jwt);
   }
-
 }
