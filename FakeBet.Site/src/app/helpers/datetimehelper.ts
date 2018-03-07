@@ -1,5 +1,5 @@
 export class DateTimeHelper {
-  public static ParseDate(dateStr: Date): string {
+  public ParseDate(dateStr: Date): string {
     const date = new Date(dateStr);
     let sb = '';
     const separator = ':';
@@ -9,6 +9,4 @@ export class DateTimeHelper {
     sb += ` ${date.toLocaleDateString()}`;
     return sb;
   }
-
-
 }

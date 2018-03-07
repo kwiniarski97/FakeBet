@@ -19,7 +19,8 @@ import {RouterModule} from '@angular/router';
 import {AuthGuard} from './guards/auth.guard';
 import {AppConfig} from './app-config';
 import {HttpModule} from '@angular/http';
-import {MatchComponent} from './components/match/match.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { DateTimeHelper } from './helpers/datetimehelper';
 
 
 @NgModule({
@@ -32,12 +33,12 @@ import {MatchComponent} from './components/match/match.component';
     NavbarComponent,
     SignupComponent,
     UserComponent,
-    MatchComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot([
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       {path: 'home', component: MatchesComponent},
@@ -45,7 +46,6 @@ import {MatchComponent} from './components/match/match.component';
       {path: 'signin', component: SignInComponent},
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
-      {path: 'match/:id', component: MatchComponent},
       {path: '**', redirectTo: 'home'}])
   ],
   providers: [
@@ -54,7 +54,8 @@ import {MatchComponent} from './components/match/match.component';
     AlertService,
     AuthenticationService,
     MatchService,
-    UserService
+    UserService,
+    DateTimeHelper
   ],
   bootstrap: [AppComponent]
 })

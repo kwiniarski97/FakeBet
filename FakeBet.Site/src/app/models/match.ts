@@ -8,6 +8,7 @@ export class Match {
   teamBName: string;
   teamBPoints: number;
   pointsRatio: number;
+  votes: any[]; // todo change to some vote interface or model
 }
 
 enum MatchStatus {

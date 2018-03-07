@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {MatchService} from '../../services/match.service';
-import {Match} from '../../models/match';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MatchService } from '../../services/match.service';
+import { Match } from '../../models/match';
+import { Router } from '@angular/router';
+import { DateTimeHelper } from '../../helpers/datetimehelper';
 
 @Component({
   selector: 'app-matches',
@@ -14,14 +15,20 @@ export class MatchesComponent implements OnInit {
 
   loading = true;
 
-  constructor(private service: MatchService, private router: Router) {
+  time: string;
+
+  constructor(private service: MatchService, private router: Router, private dateHelper: DateTimeHelper) {
 
   }
 
   ngOnInit() {
-    this.service.getNotStarted().subscribe(data => {
-      this.matches = data;
+    this.service.getNotStarted().subscribe(response => {
+      this.matches = response;
       this.loading = false;
     });
+  }
+
+  private getParsedDate(date: Date): string {
+    return this.dateHelper.ParseDate(date);
   }
 }
