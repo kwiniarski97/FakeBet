@@ -43,5 +43,14 @@ namespace FakeBet.API.Repository.Implementations
             var usersSorted = await Users.OrderBy(x => x.Points).Take(20).ToListAsync();
             return usersSorted;
         }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            //todo 
+            var original = await this.context.Users.SingleAsync(u => u.NickName == user.NickName);
+            AutoMapper.Mapper.Map(user, original);
+            this.context.Users.Update(original);
+            await this.context.SaveChangesAsync();
+        }
     }
 }

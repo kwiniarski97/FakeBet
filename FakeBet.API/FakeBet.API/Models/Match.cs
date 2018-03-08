@@ -27,10 +27,16 @@ namespace FakeBet.API.Models
         public string TeamAName { get; set; }
 
         public int TeamAPoints { get; set; }
+        
+        [MaxLength(2)]
+        public string TeamANationalityCode { get; set; }
 
         public string TeamBName { get; set; }
 
         public int TeamBPoints { get; set; }
+        
+        [MaxLength(2)]
+        public string TeamBNationalityCode { get; set; }
 
         public float PointsRatio { get; set; }
 

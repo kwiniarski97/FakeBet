@@ -13,5 +13,7 @@ namespace FakeBet.API.Repository.Interfaces
         Task ChangeUserStatusAsync(string nickName, UserStatus status);
 
         Task<List<User>> Get20BestUsersAsync();
+
+        Task UpdateUserAsync(User user);
     }
 }

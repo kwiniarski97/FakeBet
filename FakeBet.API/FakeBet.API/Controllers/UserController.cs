@@ -60,12 +60,16 @@ namespace FakeBet.API.Controllers
         public async Task<IActionResult> Login([FromBody]UserAuthDto userDto)
         {
             var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
-
+            
             if (user == null)
             {
                 return Unauthorized();
             }
 
+            if (user.Status != UserStatus.Active)
+            {
+                return BadRequest($"Your account is {user.Status.ToString()}");
+            }      
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);

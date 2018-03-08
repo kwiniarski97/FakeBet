@@ -60,11 +60,33 @@ namespace FakeBet.API.Services.Implementations
 
             if (!Encryption.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
             {
+                await IncreaseFailedLoginCounterAsync(nickname);
                 return null;
             }
 
+            await this.ResetFailedLoginCounterAsync(nickname);
             var userMapped = mapper.Map<UserDTO>(user);
             return userMapped;
+        }
+
+        private async Task IncreaseFailedLoginCounterAsync(string nickname)
+        {
+            var user = await this.repository.GetUserAsync(nickname);
+            user.FailedLoginsAttemps++;
+            if (user.FailedLoginsAttemps >= 10)
+            {
+                user.Status = UserStatus.NotActivated;
+                //todo wyslij tutaj maila kiedys
+            }
+
+            await this.repository.UpdateUserAsync(user);
+        }
+
+        private async Task ResetFailedLoginCounterAsync(string nickname)
+        {
+            var user = await this.repository.GetUserAsync(nickname);
+            user.FailedLoginsAttemps = 0;
+            await this.repository.UpdateUserAsync(user);
         }
 
         public async Task<UserDTO> GetUserAsync(string nickName)

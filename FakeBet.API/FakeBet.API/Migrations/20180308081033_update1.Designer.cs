@@ -12,9 +12,10 @@ using System;
 namespace FakeBet.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180308081033_update1")]
+    partial class update1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,8 +36,7 @@ namespace FakeBet.API.Migrations
 
                     b.Property<string>("TeamAName");
 
-                    b.Property<string>("TeamANationalityCode")
-                        .HasMaxLength(2);
+                    b.Property<string>("TeamANationalityCode");
 
                     b.Property<int>("TeamAPoints");
 

@@ -42,6 +42,8 @@ namespace FakeBet.API.Models
 
         [Required] public int Points { get; set; } = 5000;
 
+        public int FailedLoginsAttemps { get; set; } = 0;
+        
         public IEnumerable<Vote> Votes { get; set; }
 
         public UserStatus Status { get; set; } = UserStatus.NotActivated;
