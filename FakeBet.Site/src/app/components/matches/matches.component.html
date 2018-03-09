@@ -6,7 +6,7 @@
         <ng-template ngbPanelTitle>
           <div class="row">
             <div class="col text-right">
-              <!-- todo flags <span class="flag-icon " [ngClass]=teamAFlagClass></span>-->
+               <span class="flag-icon " ngClass=flag-icon-{{match.teamANationalityCode}}></span>
               <h2 class="d-inline-block">{{match.teamAName}}</h2>
             </div>
             <div class="col-1 text-center">
@@ -14,7 +14,7 @@
             </div>
             <div class="col text-left">
               <h2 class="d-inline-block">{{match.teamBName}}</h2>
-              <!--todo flags <span class="flag-icon" [ngClass]=teamBFlagClass></span>-->
+              <span class="flag-icon" ngClass=flag-icon-{{match.teamBNationalityCode}}></span>
             </div>
           </div>
         </ng-template>
