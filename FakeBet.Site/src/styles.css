@@ -24,3 +24,9 @@ body{
   cursor: pointer;
   box-shadow: 0 5px 5px hsla(0,0%,0%, 0.5);
 }
+
+.box{
+  background: hsl(0, 0%, 100%);
+  padding: 20px;
+  border-radius: 5px;
+}

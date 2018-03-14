@@ -1,0 +1,35 @@
+<div class="container h-100 vertical-center">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="col-md-7 box box-shadow">
+      <h2 class="text-center font-weight-light">Change e-mail</h2>
+      <hr/>
+      <form name="form" (ngSumbmit)="f.form.valid && resetPassword()" #f="ngForm" novalidate>
+        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !newemail1.valid}">
+          <input id="newemail1" class="form-control input-shadow" type="email" placeholder="New e-mail" name="newemail1"
+                 [(ngModel)]="model.newemail1" [ngClass]="{'is-invalid': f.submitted && !newemail1.valid}"
+                 #newemail1="ngModel" required>
+          <div *ngIf="f.submitted && !newemail1.valid" class="text-danger">E-Mail is required</div>
+        </div>
+        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !newemail2.valid}">
+          <input id="newemail2" class="form-control input-shadow" type="email" placeholder="Confirm new e-mail"
+                 name="newemail2"
+                 [(ngModel)]="model.newemail2" [ngClass]="{'is-invalid': f.submitted && !newemail2.valid}"
+                 #newemail2="ngModel" required>
+          <div *ngIf="f.submitted && !newemail2.valid" class="text-danger">E-Mail is required</div>
+        </div>
+        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !password.valid}">
+          <input id="password" class="form-control input-shadow" type="password" placeholder="Password" name="password"
+                 [(ngModel)]="model.password" [ngClass]="{'is-invalid': f.submitted && !password.valid}"
+                 #password="ngModel"
+                 required>
+          <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required</div>
+        </div>
+        <div class="form-group m-2 container">
+          <button [disabled]="processing" class="btn btn-primary">Change e-mail</button>
+          <img *ngIf="processing"
+               src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+          <a [routerLink]="['/user']" class="btn btn-link">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>

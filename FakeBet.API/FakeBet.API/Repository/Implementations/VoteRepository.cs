@@ -16,14 +16,14 @@ namespace FakeBet.API.Repository.Implementations
         }
 
 
-        public async Task<Vote> GetVoteByIdAsync(Guid id)
+        public async Task<Bet> GetVoteByIdAsync(Guid id)
         {
-            return await this.context.Votes.SingleOrDefaultAsync(v => v.VoteId == id);
+            return await this.context.Bets.SingleOrDefaultAsync(v => v.BetId == id);
         }
 
-        public async Task AddVoteAsync(Vote vote)
+        public async Task AddVoteAsync(Bet bet)
         {
-            await context.Votes.AddAsync(vote);
+            await context.Bets.AddAsync(bet);
         }
     }
 }

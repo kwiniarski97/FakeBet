@@ -20,22 +20,22 @@ namespace FakeBet.API.Services.Implementations
             this.mapper = mapper;
         }
 
-        public async Task<VoteDTO> GetVoteByIdAsync(Guid id)
+        public async Task<BetDTO> GetVoteByIdAsync(Guid id)
         {
             var vote = await repository.GetVoteByIdAsync(id);
-            var voteDTO = mapper.Map<VoteDTO>(vote);
+            var voteDTO = mapper.Map<BetDTO>(vote);
             return voteDTO;
         }
 
-        public async Task AddVoteAsync(VoteDTO voteDto)
+        public async Task AddVoteAsync(BetDTO betDTO)
         {
-            var voteFromRepo = await GetVoteByIdAsync(voteDto.MatchId);
+            var voteFromRepo = await GetVoteByIdAsync(betDTO.BetId);
             if (voteFromRepo != null)
             {
-                throw new Exception("Vote already found");
+                throw new Exception("Bets already found");
             }
-            var vote = mapper.Map<Vote>(voteDto);
-            vote.VoteId = new Guid();
+            var vote = mapper.Map<Bet>(betDTO);
+            vote.BetId = new Guid();
             await repository.AddVoteAsync(vote);
         }
     }

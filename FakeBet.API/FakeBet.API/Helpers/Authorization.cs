@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FakeBet.API.Helpers
 {
-    public static class Encryption
+    public static class Authorization
     {
         public static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {

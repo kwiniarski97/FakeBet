@@ -6,7 +6,7 @@ namespace FakeBet.API.Repository.Interfaces
 {
     public interface IVoteRepository
     {
-        Task<Vote> GetVoteByIdAsync(Guid id);
-        Task AddVoteAsync(Vote vote);
+        Task<Bet> GetVoteByIdAsync(Guid id);
+        Task AddVoteAsync(Bet bet);
     }
 }

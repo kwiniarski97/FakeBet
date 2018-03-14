@@ -21,16 +21,16 @@ namespace FakeBet.API.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var vote = await service.GetVoteByIdAsync(id);
-            return Ok(vote);
+            var bet = await service.GetVoteByIdAsync(id);
+            return Ok(bet);
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromBody] VoteDTO vote)
+        public async Task<IActionResult> Add([FromBody] BetDTO bet)
         {
             try
             {
-                await service.AddVoteAsync(vote);
+                await service.AddVoteAsync(bet);
                 return Ok();
             }
             catch (Exception ex)

@@ -1,12 +1,12 @@
-export class UserRegister {
-  nickname: string;
-  email: string;
-  password: string;
-}
+import {Bet} from './bet';
+import {UserStatus} from './userstatus';
 
-export enum UserStatus {
-  Active,
-  NotActivated,
-  Deactivated,
-  Banned
+export class User {
+  nickName: string;
+  email: string;
+  createTime: Date;
+  points: number;
+  bets: Bet[];
+  token: string;
+  status: UserStatus;
 }

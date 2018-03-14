@@ -74,9 +74,9 @@ namespace FakeBet.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FakeBet.API.Models.Vote", b =>
+            modelBuilder.Entity("FakeBet.API.Models.Bets", b =>
                 {
-                    b.Property<Guid>("VoteId")
+                    b.Property<Guid>("BetId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("MatchId");
@@ -85,25 +85,25 @@ namespace FakeBet.API.Migrations
 
                     b.Property<int>("UserPick");
 
-                    b.Property<int>("UserPoints");
+                    b.Property<int>("BetOnTeamA");
 
-                    b.HasKey("VoteId");
+                    b.HasKey("BetId");
 
                     b.HasIndex("MatchId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes");
+                    b.ToTable("Bets");
                 });
 
-            modelBuilder.Entity("FakeBet.API.Models.Vote", b =>
+            modelBuilder.Entity("FakeBet.API.Models.Bets", b =>
                 {
                     b.HasOne("FakeBet.API.Models.Match", "Match")
-                        .WithMany("Votes")
+                        .WithMany("Bets")
                         .HasForeignKey("MatchId");
 
                     b.HasOne("FakeBet.API.Models.User", "User")
-                        .WithMany("Votes")
+                        .WithMany("Bets")
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

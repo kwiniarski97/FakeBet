@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatchService } from '../../services/match.service';
-import { Match } from '../../models/match';
-import { Router } from '@angular/router';
-import { DateTimeHelper } from '../../helpers/datetimehelper';
+import {Component, OnInit} from '@angular/core';
+import {MatchService} from '../../services/match.service';
+import {Match} from '../../models/match';
+import {Router} from '@angular/router';
+import {DateTimeHelper} from '../../helpers/datetimehelper';
 
 @Component({
   selector: 'app-matches',
@@ -30,5 +30,10 @@ export class MatchesComponent implements OnInit {
 
   private getParsedDate(date: Date): string {
     return this.dateHelper.ParseDate(date);
+  }
+
+  private placeBet(matchId: string, pointsOnA: any, pointsOnB: any): void {
+    // todo check if values are valid and check if user is logged if not then make some alert
+    console.log(matchId + ' ' + pointsOnA.value + ' ' + pointsOnB.value);
   }
 }

@@ -12,7 +12,7 @@ namespace FakeBet.API.Helpers
 
             CreateMatchMaps();
 
-            CreateVoteMaps();
+            CreateBetMaps();
         }
 
         private void CreateUserMaps()
@@ -30,10 +30,10 @@ namespace FakeBet.API.Helpers
             CreateMap<Match, MatchDTO>();
         }
 
-        private void CreateVoteMaps()
+        private void CreateBetMaps()
         {
-            CreateMap<VoteDTO, Vote>();
-            CreateMap<Vote, VoteDTO>();
+            CreateMap<BetDTO, Bet>();
+            CreateMap<Bet, BetDTO>();
         }
     }
 }

@@ -12,14 +12,36 @@ using System;
 namespace FakeBet.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180308231423_update2")]
-    partial class update2
+    [Migration("20180311231730_betupdate")]
+    partial class betupdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+
+            modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
+                {
+                    b.Property<Guid>("BetId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BetOnTeamA");
+
+                    b.Property<int>("BetOnTeamB");
+
+                    b.Property<string>("MatchId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("BetId");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bets");
+                });
 
             modelBuilder.Entity("FakeBet.API.Models.Match", b =>
                 {
@@ -82,36 +104,14 @@ namespace FakeBet.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FakeBet.API.Models.Bets", b =>
-                {
-                    b.Property<Guid>("BetId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("MatchId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("UserPick");
-
-                    b.Property<int>("BetOnTeamA");
-
-                    b.HasKey("BetId");
-
-                    b.HasIndex("MatchId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bets");
-                });
-
-            modelBuilder.Entity("FakeBet.API.Models.Bets", b =>
+            modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
                 {
                     b.HasOne("FakeBet.API.Models.Match", "Match")
-                        .WithMany("Bets")
+                        .WithMany("Votes")
                         .HasForeignKey("MatchId");
 
                     b.HasOne("FakeBet.API.Models.User", "User")
-                        .WithMany("Bets")
+                        .WithMany("Votes")
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618

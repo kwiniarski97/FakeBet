@@ -6,7 +6,7 @@ namespace FakeBet.API.Services.Interfaces
 {
     public interface IVoteService
     {
-        Task<VoteDTO> GetVoteByIdAsync(Guid id);
-        Task AddVoteAsync(VoteDTO voteDto);
+        Task<BetDTO> GetVoteByIdAsync(Guid id);
+        Task AddVoteAsync(BetDTO betDTO);
     }
 }

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FakeBet.API.Models
 {
-    public class Vote
+    public class Bet
     {
-        [Key] public Guid VoteId { get; set; }
+        [Key] public Guid BetId { get; set; }
 
         // FK 
         public string MatchId { get; set; }
@@ -17,9 +17,8 @@ namespace FakeBet.API.Models
 
         public User User { get; set; }
 
-        //todo zastanow sie jak to zrobic
-        public int UserPick { get; set; }
+        public int BetOnTeamA { get; set; }
 
-        public int UserPoints { get; set; }
+        public int BetOnTeamB { get; set; }
     }
 }

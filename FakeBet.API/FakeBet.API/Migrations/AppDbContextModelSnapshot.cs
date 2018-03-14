@@ -20,6 +20,28 @@ namespace FakeBet.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
+            modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
+                {
+                    b.Property<Guid>("BetId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BetOnTeamA");
+
+                    b.Property<int>("BetOnTeamB");
+
+                    b.Property<string>("MatchId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("BetId");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bets");
+                });
+
             modelBuilder.Entity("FakeBet.API.Models.Match", b =>
                 {
                     b.Property<string>("MatchId")
@@ -81,29 +103,7 @@ namespace FakeBet.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FakeBet.API.Models.Vote", b =>
-                {
-                    b.Property<Guid>("VoteId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("MatchId");
-
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("UserPick");
-
-                    b.Property<int>("UserPoints");
-
-                    b.HasKey("VoteId");
-
-                    b.HasIndex("MatchId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Votes");
-                });
-
-            modelBuilder.Entity("FakeBet.API.Models.Vote", b =>
+            modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
                 {
                     b.HasOne("FakeBet.API.Models.Match", "Match")
                         .WithMany("Votes")

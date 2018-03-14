@@ -57,10 +57,10 @@ namespace FakeBet.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody]UserAuthDto userDto)
+        public async Task<IActionResult> Login([FromBody] UserAuthDto userDto)
         {
             var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
-            
+
             if (user == null)
             {
                 return Unauthorized();
@@ -69,7 +69,7 @@ namespace FakeBet.API.Controllers
             if (user.Status != UserStatus.Active)
             {
                 return BadRequest($"Your account is {user.Status.ToString()}");
-            }      
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -87,7 +87,7 @@ namespace FakeBet.API.Controllers
             user.Token = tokenHandler.WriteToken(token);
             return Ok(user);
         }
-        
+
         [HttpPut("[action]/{nickName}")]
         public async Task<IActionResult> ChangeStatus(string nickName, [FromBody] UserStatus status)
         {
@@ -102,13 +102,20 @@ namespace FakeBet.API.Controllers
 
             return Ok();
         }
-        
+
         [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<IActionResult> Top20()
         {
             var top = await _userService.Get20BestUsersAsync();
             return Ok(top);
+        }
+
+        [HttpPost("[action]")]
+        public async Task UpdateEmail([FromBody] UserDTO model)
+        {
+            // todo !!important zastanow sie jak przeslac dane z formularza czy jako cale UserDTo czy jako osobna encja
+            await this._userService.UpdateEmailAsync(model);
         }
     }
 }

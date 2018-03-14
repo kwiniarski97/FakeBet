@@ -12,7 +12,7 @@ namespace FakeBet.API.Repository
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Vote> Votes { get; set; }
+        public DbSet<Bet> Bets { get; set; }
 
         public DbSet<Match> Matches { get; set; }
     }

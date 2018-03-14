@@ -45,7 +45,7 @@ namespace FakeBet.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Votes",
+                name: "Bets",
                 columns: table => new
                 {
                     VoteId = table.Column<Guid>(nullable: false),
@@ -73,19 +73,19 @@ namespace FakeBet.API.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_MatchId",
-                table: "Votes",
+                table: "Bets",
                 column: "MatchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_UserId",
-                table: "Votes",
+                table: "Bets",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Votes");
+                name: "Bets");
 
             migrationBuilder.DropTable(
                 name: "Matches");

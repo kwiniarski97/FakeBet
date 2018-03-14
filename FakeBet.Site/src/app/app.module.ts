@@ -20,7 +20,11 @@ import {AuthGuard} from './guards/auth.guard';
 import {AppConfig} from './app-config';
 import {HttpModule} from '@angular/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { DateTimeHelper } from './helpers/datetimehelper';
+import {DateTimeHelper} from './helpers/datetimehelper';
+import {LocalStorageService} from './services/localstorage.service';
+import {ChangePasswordComponent} from './components/changepassword/changepassword.component';
+import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
+import {DeleteaccountComponent} from './components/deleteaccount/deleteaccount.component';
 
 
 @NgModule({
@@ -33,6 +37,9 @@ import { DateTimeHelper } from './helpers/datetimehelper';
     NavbarComponent,
     SignupComponent,
     UserComponent,
+    ChangePasswordComponent,
+    ChangeEmailComponent,
+    DeleteaccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +50,8 @@ import { DateTimeHelper } from './helpers/datetimehelper';
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       {path: 'home', component: MatchesComponent},
       {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
+      {path: 'user/change-email', component: ChangeEmailComponent},
+      {path: 'user/change-password', component: ChangePasswordComponent},
       {path: 'signin', component: SignInComponent},
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
@@ -55,7 +64,8 @@ import { DateTimeHelper } from './helpers/datetimehelper';
     AuthenticationService,
     MatchService,
     UserService,
-    DateTimeHelper
+    DateTimeHelper,
+    LocalStorageService
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.API.DTO;
+using FakeBet.API.Extensions;
 using FakeBet.API.Helpers;
 using FakeBet.API.Models;
 using FakeBet.API.Repository.Interfaces;
@@ -34,8 +35,7 @@ namespace FakeBet.API.Services.Implementations
                 throw new Exception("Username is already taken");
             }
 
-            byte[] passwordHash, passwordSalt;
-            Encryption.CreatePasswordHash(userAuthDto.Password, out passwordHash, out passwordSalt);
+            Authorization.CreatePasswordHash(userAuthDto.Password, out var passwordHash, out var passwordSalt);
 
             var user = mapper.Map<UserAuthDto, User>(userAuthDto);
             user.PasswordHash = passwordHash;
@@ -58,7 +58,7 @@ namespace FakeBet.API.Services.Implementations
                 return null;
             }
 
-            if (!Encryption.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
+            if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
             {
                 await IncreaseFailedLoginCounterAsync(nickname);
                 return null;
@@ -110,6 +110,22 @@ namespace FakeBet.API.Services.Implementations
             var users = await repository.Get20BestUsersAsync();
             var userTopDtos = mapper.Map<List<UserTopDTO>>(users);
             return userTopDtos;
+        }
+
+        public async Task UpdateEmailAsync(UserDTO userDto)
+        {
+            var user = mapper.Map<UserDTO, User>(userDto);
+            if (await OnlyEmailChanged(user))
+            {
+                //todo
+            }
+        }
+
+        private async Task<bool> OnlyEmailChanged(User user)
+        {
+            var userOriginal = await this.repository.GetUserAsync(user.NickName);
+            userOriginal.ArePropertiesSame(user, new[] {"Email"});
+            return true;
         }
     }
 }

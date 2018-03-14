@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http, RequestOptions, Response} from '@angular/http';
 import {AppConfig} from '../app-config';
-import {UserRegister, UserStatus} from '../models/user';
+import {UserAuth} from '../models/userauth';
 import {Service} from './service';
 import 'rxjs/operator/map';
+import {UserStatus} from '../models/userstatus';
 
 @Injectable()
 export class UserService extends Service {
@@ -22,7 +23,7 @@ export class UserService extends Service {
     return this.http.get(this.serviceurl + '/get/' + nickName, jwt).map((response: Response) => response.json());
   }
 
-  register(user: UserRegister) {
+  register(user: UserAuth) {
     return this.http.post(this.serviceurl + '/register', user);
   }
 
