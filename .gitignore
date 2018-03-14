@@ -286,3 +286,8 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# ASP.NET Core appsettings
+appsettings.json
+appsettings.production.json
+appsettings.development.json
