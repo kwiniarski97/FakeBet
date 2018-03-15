@@ -9,7 +9,7 @@ namespace FakeBet.APi.Tests
     public class GenericExtensionsTest
     {
         [Fact]
-        public void CanCompareSamePropeties()
+        public void Can_Compare_Same_Propeties()
         {
             var a = new HelperClass("val", "obj", "string", true, 21, 37);
             var b = new HelperClass("val", "obj", "string", true, 21, 37);
@@ -17,7 +17,7 @@ namespace FakeBet.APi.Tests
         }
 
         [Fact]
-        public void CanCompareObjectWithDifferentValue()
+        public void Can_Compare_Object_With_Different_Value()
         {
             var a = new HelperClass("val", "obj", "string", true, 21, 37);
             var b = new HelperClass("notval", "notobj", "notstring", false, 31, 27);
@@ -25,7 +25,7 @@ namespace FakeBet.APi.Tests
         }
 
         [Fact]
-        public void WillThrowExceptionWhenOneObjectIsNull()
+        public void Will_Throw_Exception_When_One_Object_Is_Null()
         {
             var a = new HelperClass("val", "obj", "string", true, 21, 37);
             object b = null;
@@ -33,7 +33,7 @@ namespace FakeBet.APi.Tests
         }
 
         [Fact]
-        public void DerivedTypesShouldReturnFalse()
+        public void Derived_Types_Should_Return_False()
         {
             var a = new HelperClass("val", "obj", "string", true, 21, 37);
             var b = new HelperClass2("a");
@@ -41,7 +41,7 @@ namespace FakeBet.APi.Tests
         }
 
         [Fact]
-        public void CanSkipProperty()
+        public void Can_Skip_Property()
         {
             var a = new HelperClass("difference", "obj", "string", true, 21, 37);
             var b = new HelperClass("different", "obj", "string", true, 21, 37);

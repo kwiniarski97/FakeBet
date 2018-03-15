@@ -11,7 +11,7 @@ namespace FakeBet.API.Tests
     public class StringExtensionsTest
     {
         [Fact]
-        public void ShouldRemoveSpaces()
+        public void Should_Remove_Spaces()
         {
             var a = "test test";
             a = a.RemoveAllSpaces();
@@ -19,21 +19,21 @@ namespace FakeBet.API.Tests
         }
 
         [Fact]
-        public void ShouldReturnNullWhenStringIsNull()
+        public void Should_Return_Null_When_String_Is_Null()
         {
             string a = null;
             Assert.Null(a.RemoveAllSpaces());
         }
 
         [Fact]
-        public void ShouldReturnStringWithoutChangesWhenNoSpaces()
+        public void Should_Return_String_Without_Changes_When_No_Spaces()
         {
             var a = "test";
             Assert.Equal("test", a.RemoveAllSpaces());
         }
 
         [Fact]
-        public void ShouldReturnEmptyStringWhenEmptyStringGiven()
+        public void Should_Return_Empty_String_When_Empty_String_Given()
         {
             var a = "";
             Assert.Equal("",a.RemoveAllSpaces());
