@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.API.DTO;
@@ -8,6 +11,8 @@ using FakeBet.API.Helpers;
 using FakeBet.API.Models;
 using FakeBet.API.Repository.Interfaces;
 using FakeBet.API.Services.Interfaces;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FakeBet.API.Services.Implementations
 {
@@ -17,10 +22,13 @@ namespace FakeBet.API.Services.Implementations
 
         private IMapper mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        private readonly AppSettingsSecret _appSettings;
+
+        public UserService(IUserRepository repository, IMapper mapper, IOptions<AppSettingsSecret> appSettings)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this._appSettings = appSettings.Value;
         }
 
         public async Task RegisterUserAsync(UserAuthDto userAuthDto)
@@ -60,34 +68,21 @@ namespace FakeBet.API.Services.Implementations
 
             if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
             {
-                await IncreaseFailedLoginCounterAsync(nickname);
+                user.IncreaseFailedLoginCounter();
+                await this.repository.UpdateUserAsync(user);
+                //todo send mail here someday
                 return null;
             }
 
-            await this.ResetFailedLoginCounterAsync(nickname);
+            user.ResetFailedLoginCounterAsync();
+
             var userMapped = mapper.Map<UserDTO>(user);
+
+            userMapped.Token = GenerateUserToken(user.NickName);
+
             return userMapped;
         }
 
-        private async Task IncreaseFailedLoginCounterAsync(string nickname)
-        {
-            var user = await this.repository.GetUserAsync(nickname);
-            user.FailedLoginsAttemps++;
-            if (user.FailedLoginsAttemps >= 10)
-            {
-                user.Status = UserStatus.NotActivated;
-                //todo wyslij tutaj maila kiedys
-            }
-
-            await this.repository.UpdateUserAsync(user);
-        }
-
-        private async Task ResetFailedLoginCounterAsync(string nickname)
-        {
-            var user = await this.repository.GetUserAsync(nickname);
-            user.FailedLoginsAttemps = 0;
-            await this.repository.UpdateUserAsync(user);
-        }
 
         public async Task<UserDTO> GetUserAsync(string nickName)
         {
@@ -117,15 +112,33 @@ namespace FakeBet.API.Services.Implementations
             var user = mapper.Map<UserDTO, User>(userDto);
             if (await OnlyEmailChanged(user))
             {
-                //todo
+                await this.repository.UpdateUserAsync(user);
             }
+        }
+
+        private string GenerateUserToken(string nickname)
+        {
+            //todo add identity 
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, nickname)
+                }),
+                Expires = DateTime.Now.AddDays(3),
+                SigningCredentials =
+                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
         private async Task<bool> OnlyEmailChanged(User user)
         {
             var userOriginal = await this.repository.GetUserAsync(user.NickName);
-            userOriginal.ArePropertiesSame(user, new[] {"Email"});
-            return true;
+            return userOriginal.ArePropertiesSame(user, new[] {"Email"});
         }
     }
 }

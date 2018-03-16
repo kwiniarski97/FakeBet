@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace FakeBet.API.Models
 {
@@ -37,15 +38,28 @@ namespace FakeBet.API.Models
 
         [Required, MaxLength(128)] public byte[] Salt { get; set; }
 
-        [Required]
-        public DateTime CreateTime { get; set; } = DateTime.Now;
+        [Required] public DateTime CreateTime { get; set; } = DateTime.Now;
 
         [Required] public int Points { get; set; } = 5000;
 
         public int FailedLoginsAttemps { get; set; } = 0;
-        
+
         public IEnumerable<Bet> Votes { get; set; }
 
         public UserStatus Status { get; set; } = UserStatus.NotActivated;
+
+        public void IncreaseFailedLoginCounter()
+        {
+            FailedLoginsAttemps++;
+            if (FailedLoginsAttemps >= 10)
+            {
+                Status = UserStatus.NotActivated;
+            }
+        }
+
+        public void ResetFailedLoginCounterAsync()
+        {
+            FailedLoginsAttemps = 0;
+        }
     }
 }

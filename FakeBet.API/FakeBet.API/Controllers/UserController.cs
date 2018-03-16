@@ -20,12 +20,9 @@ namespace FakeBet.API.Controllers
     {
         private IUserService _userService;
 
-        private readonly AppSettingsSecret _appSettings;
-
-        public UserController(IUserService userService, IOptions<AppSettingsSecret> appSettings)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _appSettings = appSettings.Value;
         }
 
         [HttpGet("{nickName}")]
@@ -63,7 +60,7 @@ namespace FakeBet.API.Controllers
 
             if (user == null)
             {
-                return Unauthorized();
+                return BadRequest($"User with {userDto.NickName} nickname was not found");
             }
 
             if (user.Status != UserStatus.Active)
@@ -71,20 +68,8 @@ namespace FakeBet.API.Controllers
                 return BadRequest($"Your account is {user.Status.ToString()}");
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.NickName)
-                }),
-                Expires = DateTime.Now.AddDays(3),
-                SigningCredentials =
-                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+            //todo przenies to do serwisu
+            
             return Ok(user);
         }
 
@@ -114,7 +99,6 @@ namespace FakeBet.API.Controllers
         [HttpPost("[action]")]
         public async Task UpdateEmail([FromBody] UserDTO model)
         {
-            // todo !!important zastanow sie jak przeslac dane z formularza czy jako cale UserDTo czy jako osobna encja
             await this._userService.UpdateEmailAsync(model);
         }
     }

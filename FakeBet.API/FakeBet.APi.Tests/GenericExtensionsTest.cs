@@ -46,7 +46,9 @@ namespace FakeBet.APi.Tests
             var a = new HelperClass("difference", "obj", "string", true, 21, 37);
             var b = new HelperClass("different", "obj", "string", true, 21, 37);
 
-            Assert.True(a.ArePropertiesSame(b, new[] { "dynamic" }));
+            var @boolean = a.ArePropertiesSame(b, new[] { "Dynamic" });
+
+            Assert.True(@boolean);
         }
 
         private class HelperClass

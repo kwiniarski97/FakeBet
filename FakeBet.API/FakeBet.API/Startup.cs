@@ -45,6 +45,7 @@ namespace FakeBet.API
 
 
             services.AddAutoMapper();
+            
             //appsetting secret
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettingsSecret>(appSettingsSection);
