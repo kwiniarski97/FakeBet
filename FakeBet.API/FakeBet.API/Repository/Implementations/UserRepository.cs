@@ -52,5 +52,11 @@ namespace FakeBet.API.Repository.Implementations
             this.context.Users.Update(original);
             await this.context.SaveChangesAsync();
         }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var user = await this.context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return user;
+        }
     }
 }

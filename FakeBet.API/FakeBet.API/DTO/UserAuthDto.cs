@@ -1,6 +1,6 @@
 ﻿namespace FakeBet.API.DTO
 {
-    public class UserAuthDto
+    public class UserAuthDTO
     {
         public string NickName { get; set; }
 

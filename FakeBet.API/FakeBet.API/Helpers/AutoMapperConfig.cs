@@ -19,7 +19,7 @@ namespace FakeBet.API.Helpers
         {
             CreateMap<User, UserDTO>();
 
-            CreateMap<UserAuthDto, User>();
+            CreateMap<UserAuthDTO, User>();
 
             CreateMap<User, UserTopDTO>();
         }

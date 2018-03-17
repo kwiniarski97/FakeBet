@@ -39,7 +39,7 @@ namespace FakeBet.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Register([FromBody] UserAuthDto user)
+        public async Task<IActionResult> Register([FromBody] UserAuthDTO user)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace FakeBet.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody] UserAuthDto userDto)
+        public async Task<IActionResult> Login([FromBody] UserAuthDTO userDto)
         {
             var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
 

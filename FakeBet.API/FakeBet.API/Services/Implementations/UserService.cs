@@ -31,9 +31,10 @@ namespace FakeBet.API.Services.Implementations
             this._appSettings = appSettings.Value;
         }
 
-        public async Task RegisterUserAsync(UserAuthDto userAuthDto)
+        public async Task RegisterUserAsync(UserAuthDTO userAuthDto)
         {
-            if (string.IsNullOrEmpty(userAuthDto.Password) || userAuthDto.Password.Length < 8)
+            if (string.IsNullOrEmpty(userAuthDto.Password) || userAuthDto.Password.Length < 8 ||
+                string.IsNullOrWhiteSpace(userAuthDto.Email) || string.IsNullOrWhiteSpace(userAuthDto.NickName))
             {
                 throw new Exception("Password is invalid");
             }
@@ -43,15 +44,28 @@ namespace FakeBet.API.Services.Implementations
                 throw new Exception("Username is already taken");
             }
 
+            if (!(await IsEmailUnique(userAuthDto.Email)))
+            {
+                throw new Exception("Email is already taken");
+            }
+
+
             Authorization.CreatePasswordHash(userAuthDto.Password, out var passwordHash, out var passwordSalt);
 
-            var user = mapper.Map<UserAuthDto, User>(userAuthDto);
+            var user = mapper.Map<UserAuthDTO, User>(userAuthDto);
             user.PasswordHash = passwordHash;
             user.Salt = passwordSalt;
 
             await repository.RegisterUserAsync(user);
         }
 
+        private async Task<bool> IsEmailUnique(string email)
+        {
+            var user = await this.repository.GetUserByEmailAsync(email);
+            return user == null;
+        }
+        
+        
         public async Task<UserDTO> LoginUserAsync(string nickname, string password)
         {
             if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))

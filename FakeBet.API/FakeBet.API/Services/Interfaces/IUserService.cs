@@ -7,7 +7,7 @@ namespace FakeBet.API.Services.Interfaces
 {
     public interface IUserService
     {
-        Task RegisterUserAsync(UserAuthDto userAuthDto);
+        Task RegisterUserAsync(UserAuthDTO userAuthDto);
 
         Task<UserDTO> LoginUserAsync(string login, string password);
 
