@@ -22,6 +22,8 @@ namespace FakeBet.API.Helpers
             CreateMap<UserAuthDTO, User>();
 
             CreateMap<User, UserTopDTO>();
+
+            CreateMap<UserDTO, User>();
         }
 
         private void CreateMatchMaps()

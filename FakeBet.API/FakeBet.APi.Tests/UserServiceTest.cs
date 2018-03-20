@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.API.Helpers;
@@ -7,6 +9,7 @@ using FakeBet.API.Repository.Interfaces;
 using FakeBet.API.Services.Implementations;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using Moq;
 using Xunit;
 
@@ -146,6 +149,37 @@ namespace FakeBet.APi.Tests
             _userRepoMock.Verify(x => x.RegisterUserAsync(It.IsAny<User>()), Times.Never);
         }
 
+        [Fact]
+        public async Task Can_Change_User_Status()
+        {
+            SetArrangments();
+
+            await this._userService.ChangeUserStatusAsync("nickname", UserStatus.Banned);
+
+            this._userRepoMock.Verify(x => x.ChangeUserStatusAsync("nickname", It.IsAny<UserStatus>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task Will_Change_Status_Throw_Exception_When_User_Doesnt_Exists()
+        {
+            SetArrangments();
+
+            await Assert.ThrowsAsync<Exception>(() =>
+                this._userService.ChangeUserStatusAsync("notexistentusernickname", UserStatus.Banned));
+        }
+
+        [Fact]
+        public async Task Can_Get_Top_20_Users()
+        {
+            SetArrangments();
+
+            var top = await this._userService.Get20BestUsersAsync();
+
+            Assert.Equal(20, top.Count);
+
+            _userRepoMock.Verify(x => x.Get20BestUsersAsync(), Times.Once);
+        }
+
 
         private void SetArrangments()
         {
@@ -158,11 +192,24 @@ namespace FakeBet.APi.Tests
                 Status = UserStatus.Active,
                 Email = "email"
             };
+
+            var topList = MultiplyObject(userToReturn).ToList();
+
             _userRepoMock.Setup(x => x.GetUserAsync("nickname")).ReturnsAsync(userToReturn);
             _userRepoMock.Setup(x => x.GetUserByEmailAsync("email")).ReturnsAsync(userToReturn);
+            _userRepoMock.Setup(x => x.Get20BestUsersAsync())
+                .ReturnsAsync(topList);
 
 
             _userService = new UserService(_userRepoMock.Object, _mapper, _options);
+        }
+
+        private static IEnumerable<User> MultiplyObject(User user)
+        {
+            for (var i = 0; i < 20; i++)
+            {
+                yield return user;
+            }
         }
     }
 }

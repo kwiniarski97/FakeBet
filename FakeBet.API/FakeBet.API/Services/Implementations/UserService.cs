@@ -64,8 +64,8 @@ namespace FakeBet.API.Services.Implementations
             var user = await this.repository.GetUserByEmailAsync(email);
             return user == null;
         }
-        
-        
+
+
         public async Task<UserDTO> LoginUserAsync(string nickname, string password)
         {
             if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
@@ -92,7 +92,7 @@ namespace FakeBet.API.Services.Implementations
 
             var userMapped = mapper.Map<UserDTO>(user);
 
-            userMapped.Token = GenerateUserToken(user.NickName);
+            userMapped.Token = GenerateUserToken(user);
 
             return userMapped;
         }
@@ -127,10 +127,13 @@ namespace FakeBet.API.Services.Implementations
             if (await OnlyEmailChanged(user))
             {
                 await this.repository.UpdateUserAsync(user);
+                return;
             }
+
+            throw new Exception("Changed more than email");
         }
 
-        private string GenerateUserToken(string nickname)
+        private string GenerateUserToken(User user)
         {
             //todo add identity 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -139,9 +142,10 @@ namespace FakeBet.API.Services.Implementations
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, nickname)
+                    new Claim(ClaimTypes.Name, user.NickName),
+                    new Claim(ClaimTypes.Role, user.Role.ToString()), //todo delet this later on
                 }),
-                Expires = DateTime.Now.AddDays(3),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials =
                     new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

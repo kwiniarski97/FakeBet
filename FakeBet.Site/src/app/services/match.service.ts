@@ -28,7 +28,6 @@ export class MatchService extends Service {
   }
 
   getNotStarted() {
-
     return this.http.get(this.url + '/getnotstarted').map((response: Response) => response.json());
   }
 

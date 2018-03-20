@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FakeBet.API.DTO;
 using FakeBet.API.Models;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FakeBet.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
@@ -19,7 +19,6 @@ namespace FakeBet.API.Controllers
             this.service = service;
         }
 
-        [AllowAnonymous]
         [HttpGet("{matchId}")]
         public async Task<IActionResult> Get(string matchId)
         {
@@ -32,10 +31,9 @@ namespace FakeBet.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
         }
-        
-        [AllowAnonymous]
+
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromBody] MatchDTO match)
         {
@@ -50,7 +48,6 @@ namespace FakeBet.API.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetNotStarted()
         {
@@ -58,6 +55,7 @@ namespace FakeBet.API.Controllers
             return Ok(nonStartedMatches);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{matchId}")]
         public async Task<IActionResult> ChangeStatus(string matchId, [FromBody] MatchStatus status)
         {

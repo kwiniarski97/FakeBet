@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FakeBet.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class VoteController : Controller
     {
@@ -18,6 +17,7 @@ namespace FakeBet.API.Controllers
             this.service = service;
         }
 
+        [Authorize]
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -25,6 +25,7 @@ namespace FakeBet.API.Controllers
             return Ok(bet);
         }
 
+        [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromBody] BetDTO bet)
         {

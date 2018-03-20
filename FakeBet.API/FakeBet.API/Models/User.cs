@@ -48,6 +48,8 @@ namespace FakeBet.API.Models
 
         public UserStatus Status { get; set; } = UserStatus.NotActivated;
 
+        public UserRole Role { get; set; } = UserRole.User;
+
         public void IncreaseFailedLoginCounter()
         {
             FailedLoginsAttemps++;
@@ -61,5 +63,12 @@ namespace FakeBet.API.Models
         {
             FailedLoginsAttemps = 0;
         }
+    }
+
+    public enum UserRole
+    {
+        Admin,
+
+        User
     }
 }

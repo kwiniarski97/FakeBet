@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FakeBet.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -25,6 +24,7 @@ namespace FakeBet.API.Controllers
             _userService = userService;
         }
 
+        [Authorize]
         [HttpGet("{nickName}")]
         public async Task<IActionResult> Get(string nickName)
         {
@@ -37,7 +37,6 @@ namespace FakeBet.API.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] UserAuthDTO user)
         {
@@ -52,7 +51,7 @@ namespace FakeBet.API.Controllers
             }
         }
 
-        [AllowAnonymous]
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody] UserAuthDTO userDto)
         {
@@ -69,10 +68,11 @@ namespace FakeBet.API.Controllers
             }
 
             //todo przenies to do serwisu
-            
+
             return Ok(user);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{nickName}")]
         public async Task<IActionResult> ChangeStatus(string nickName, [FromBody] UserStatus status)
         {
@@ -88,7 +88,6 @@ namespace FakeBet.API.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<IActionResult> Top20()
         {
@@ -96,6 +95,7 @@ namespace FakeBet.API.Controllers
             return Ok(top);
         }
 
+        [Authorize]
         [HttpPost("[action]")]
         public async Task UpdateEmail([FromBody] UserDTO model)
         {

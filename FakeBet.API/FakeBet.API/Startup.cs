@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AutoMapper;
 using FakeBet.API.Helpers;
+using FakeBet.API.Models;
 using FakeBet.API.Repository;
 using FakeBet.API.Repository.Implementations;
 using FakeBet.API.Repository.Interfaces;
@@ -45,7 +46,7 @@ namespace FakeBet.API
 
 
             services.AddAutoMapper();
-            
+
             //appsetting secret
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettingsSecret>(appSettingsSection);
@@ -53,10 +54,11 @@ namespace FakeBet.API
             //jwt
             var appSettings = appSettingsSection.Get<AppSettingsSecret>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
+            
+            services.AddAuthentication(options =>
                 {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(x =>
                 {

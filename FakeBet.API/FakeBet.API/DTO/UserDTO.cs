@@ -17,7 +17,9 @@ namespace FakeBet.API.DTO
         public IEnumerable<Bet> Bets { get; set; }
 
         public UserStatus Status { get; set; }
-        
+
         public string Token { get; set; }
+
+        public UserRole Role { get; set; }
     }
 }
