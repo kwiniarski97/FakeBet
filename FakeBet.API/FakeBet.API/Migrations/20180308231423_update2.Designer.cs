@@ -84,7 +84,7 @@ namespace FakeBet.API.Migrations
 
             modelBuilder.Entity("FakeBet.API.Models.Bets", b =>
                 {
-                    b.Property<Guid>("BetId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("MatchId");
@@ -95,7 +95,7 @@ namespace FakeBet.API.Migrations
 
                     b.Property<int>("BetOnTeamA");
 
-                    b.HasKey("BetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("MatchId");
 

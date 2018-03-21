@@ -25,6 +25,7 @@ import {LocalStorageService} from './services/localstorage.service';
 import {ChangePasswordComponent} from './components/changepassword/changepassword.component';
 import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
 import {DeleteaccountComponent} from './components/deleteaccount/deleteaccount.component';
+import {BetService} from './services/bet.service';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import {DeleteaccountComponent} from './components/deleteaccount/deleteaccount.c
     AuthenticationService,
     MatchService,
     UserService,
+    BetService,
     DateTimeHelper,
     LocalStorageService
   ],

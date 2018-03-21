@@ -6,24 +6,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FakeBet.API.Repository.Implementations
 {
-    public class VoteRepository : IVoteRepository
+    public class BetRepository : IBetRepository
     {
         private AppDbContext context;
 
-        public VoteRepository(AppDbContext context)
+        public BetRepository(AppDbContext context)
         {
             this.context = context;
         }
 
 
-        public async Task<Bet> GetVoteByIdAsync(Guid id)
+        public async Task<Bet> GetBetByIdAsync(ulong id)
         {
-            return await this.context.Bets.SingleOrDefaultAsync(v => v.BetId == id);
+            return await this.context.Bets.SingleOrDefaultAsync(v => v.Id == id);
         }
 
-        public async Task AddVoteAsync(Bet bet)
+        public async Task AddBetAsync(Bet bet)
         {
             await context.Bets.AddAsync(bet);
+            await this.context.SaveChangesAsync();
         }
     }
 }

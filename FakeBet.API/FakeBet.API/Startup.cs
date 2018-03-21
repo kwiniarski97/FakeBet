@@ -33,12 +33,12 @@ namespace FakeBet.API
             // repos 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
-            services.AddTransient<IVoteRepository, VoteRepository>();
+            services.AddTransient<IBetRepository, BetRepository>();
 
             // services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMatchService, MatchService>();
-            services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<IBetService, BetService>();
 
             //dbcontext ef
             services.AddDbContext<AppDbContext>(options =>
@@ -54,7 +54,7 @@ namespace FakeBet.API
             //jwt
             var appSettings = appSettingsSection.Get<AppSettingsSecret>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            
+
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

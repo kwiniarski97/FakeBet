@@ -8,30 +8,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace FakeBet.API.Controllers
 {
     [Route("api/[controller]")]
-    public class VoteController : Controller
+    public class BetController : Controller
     {
-        private IVoteService service;
+        private IBetService service;
 
-        public VoteController(IVoteService service)
+        public BetController(IBetService service)
         {
             this.service = service;
         }
 
         [Authorize]
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(ulong id)
         {
-            var bet = await service.GetVoteByIdAsync(id);
+            var bet = await service.GetBetByIdAsync(id);
             return Ok(bet);
         }
 
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromBody] BetDTO bet)
+        public async Task<IActionResult> Add([FromBody] BetDTO bet) 
         {
             try
             {
-                await service.AddVoteAsync(bet);
+                await service.AddBetAsync(bet);
                 return Ok();
             }
             catch (Exception ex)

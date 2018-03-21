@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-changeemail',
@@ -17,8 +18,9 @@ export class ChangeEmailComponent implements OnInit {
   ngOnInit() {
   }
 
-  resetPassword() {
-    console.log(this.model);
+  // todo moze dodaj nowy dto do update emaila
+  changeEmail() {
+    console.log('change email');
   }
 
 }

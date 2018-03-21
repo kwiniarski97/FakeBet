@@ -5,6 +5,7 @@ import {UserAuth} from '../models/userauth';
 import {Service} from './service';
 import 'rxjs/operator/map';
 import {UserStatus} from '../models/userstatus';
+import {User} from '../models/user';
 
 @Injectable()
 export class UserService extends Service {
@@ -16,7 +17,7 @@ export class UserService extends Service {
   }
 
   getByNickname(nickName: string) {
-    let jwt = UserService.getJwtHeaders();
+    const jwt = UserService.getJwtHeaders();
     if (!jwt) {
       return;
     }
@@ -28,7 +29,7 @@ export class UserService extends Service {
   }
 
   changeStatus(nickName: string, status: UserStatus) {
-    let jwt = UserService.getJwtHeaders();
+    const jwt = UserService.getJwtHeaders();
     if (!jwt) {
       return;
     }
@@ -37,6 +38,14 @@ export class UserService extends Service {
 
   top20() {
     this.http.get(this.serviceurl + '/top20').map((response: Response) => response.json());
+  }
+
+  updateEmail(user: User) {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    this.http.post(this.serviceurl + '/updateemail', user, jwt);
   }
 
 

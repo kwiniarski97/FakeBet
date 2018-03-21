@@ -3,7 +3,7 @@
     <div class="col-md-7 box box-shadow">
       <h2 class="text-center font-weight-light">Change e-mail</h2>
       <hr/>
-      <form name="form" (ngSumbmit)="f.form.valid && resetPassword()" #f="ngForm" novalidate>
+      <form name="form" (ngSumbmit)="f.form.valid && changeEmail()" #f="ngForm" novalidate>
         <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !newemail1.valid}">
           <input id="newemail1" class="form-control input-shadow" type="email" placeholder="New e-mail" name="newemail1"
                  [(ngModel)]="model.newemail1" [ngClass]="{'is-invalid': f.submitted && !newemail1.valid}"

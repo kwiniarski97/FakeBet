@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-changepassword',
@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChangePasswordComponent implements OnInit {
 
-  constructor() { }
+  model: any = {};
+
+  processing = false;
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  changePassword() {
+    console.log('change password');
+    // todo
   }
 
 }

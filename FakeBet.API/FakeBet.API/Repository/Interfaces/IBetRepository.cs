@@ -4,9 +4,9 @@ using FakeBet.API.Models;
 
 namespace FakeBet.API.Repository.Interfaces
 {
-    public interface IVoteRepository
+    public interface IBetRepository
     {
-        Task<Bet> GetVoteByIdAsync(Guid id);
-        Task AddVoteAsync(Bet bet);
+        Task<Bet> GetBetByIdAsync(ulong id);
+        Task AddBetAsync(Bet bet);
     }
 }

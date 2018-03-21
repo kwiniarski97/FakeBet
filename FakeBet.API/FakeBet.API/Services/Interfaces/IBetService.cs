@@ -4,9 +4,9 @@ using FakeBet.API.DTO;
 
 namespace FakeBet.API.Services.Interfaces
 {
-    public interface IVoteService
+    public interface IBetService
     {
-        Task<BetDTO> GetVoteByIdAsync(Guid id);
-        Task AddVoteAsync(BetDTO betDTO);
+        Task<BetDTO> GetBetByIdAsync(ulong id);
+        Task AddBetAsync(BetDTO betDTO);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace FakeBet.API.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] UserAuthDTO user)
         {
@@ -97,9 +99,10 @@ namespace FakeBet.API.Controllers
 
         [Authorize]
         [HttpPost("[action]")]
-        public async Task UpdateEmail([FromBody] UserDTO model)
+        public async Task<IActionResult> UpdateEmail([FromBody] UserDTO model)
         {
             await this._userService.UpdateEmailAsync(model);
+            return Ok(); // todo dodaj exceptions itd.
         }
     }
 }

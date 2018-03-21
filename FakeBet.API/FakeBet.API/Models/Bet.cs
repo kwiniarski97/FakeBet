@@ -1,19 +1,20 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FakeBet.API.Models
 {
     public class Bet
     {
-        [Key] public Guid BetId { get; set; }
+        [Key] public ulong Id { get; set; }
 
         // FK 
-        public string MatchId { get; set; }
+        [ForeignKey("Match")] public string MatchId { get; set; }
 
         public Match Match { get; set; }
 
         // FK
-        public string UserId { get; set; }
+        [ForeignKey("User")] public string UserId { get; set; }
 
         public User User { get; set; }
 

@@ -3,7 +3,6 @@ import {Http, Response} from '@angular/http';
 import {AppConfig} from '../app-config';
 import {Service} from './service';
 import {Match} from '../models/match';
-import 'rxjs';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
@@ -24,7 +23,7 @@ export class MatchService extends Service {
     if (!jwt) {
       return;
     }
-    this.http.post(this.url + '/add', match, jwt);
+    this.http.post(this.url + '/addBet', match, jwt);
   }
 
   getNotStarted() {

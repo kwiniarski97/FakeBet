@@ -40,7 +40,7 @@ namespace FakeBet.API.Models
 
         public float PointsRatio { get; set; }
 
-        public IEnumerable<Bet> Votes { get; set; }
+        public ICollection<Bet> Bets { get; set; }
 
         public void GenerateDefaultValues()
         {
@@ -51,7 +51,7 @@ namespace FakeBet.API.Models
             TeamAPoints = 0;
             TeamBPoints = 0;
             PointsRatio = 1;
-            Votes = new List<Bet>();
+            Bets = new List<Bet>();
         }
 
         private static MatchStatus DetermineMatchStatus(DateTime date)

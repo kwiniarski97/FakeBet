@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Service} from './service';
-import {Http} from '@angular/http';
+import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {AppConfig} from '../app-config';
 import {Bet} from '../models/bet';
 
@@ -13,12 +13,12 @@ export class BetService extends Service {
     super();
   }
 
-  add(bet: Bet) {
+  addBet(bet: Bet) {
     const jwt = BetService.getJwtHeaders();
     if (!jwt) {
       return;
     }
-    this.http.post(this.url + '/add', bet, jwt);
+    this.http.post(this.url + '/add', bet, jwt).subscribe();
+    // todo fix musisz zrobic zeby bet byl wysylany w innej formie bardziej application/json
   }
-
 }
