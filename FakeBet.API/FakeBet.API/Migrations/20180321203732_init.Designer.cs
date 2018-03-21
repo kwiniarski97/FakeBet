@@ -12,8 +12,8 @@ using System;
 namespace FakeBet.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180321173546_fkv1")]
-    partial class fkv1
+    [Migration("20180321203732_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace FakeBet.API.Migrations
 
             modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<ulong>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("BetOnTeamA");
@@ -108,11 +108,11 @@ namespace FakeBet.API.Migrations
 
             modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
                 {
-                    b.HasOne("FakeBet.API.Models.Match", "Match")
+                    b.HasOne("FakeBet.API.Models.Match")
                         .WithMany("Bets")
                         .HasForeignKey("MatchId");
 
-                    b.HasOne("FakeBet.API.Models.User", "User")
+                    b.HasOne("FakeBet.API.Models.User")
                         .WithMany("Bets")
                         .HasForeignKey("UserId");
                 });

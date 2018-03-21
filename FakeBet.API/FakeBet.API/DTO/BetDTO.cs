@@ -5,7 +5,7 @@ namespace FakeBet.API.DTO
 {
     public class BetDTO
     {
-        public ulong BetId { get; set; }
+        public ulong Id { get; set; }
 
         public string MatchId { get; set; }
 

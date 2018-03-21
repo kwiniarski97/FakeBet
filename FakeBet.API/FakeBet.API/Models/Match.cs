@@ -40,7 +40,7 @@ namespace FakeBet.API.Models
 
         public float PointsRatio { get; set; }
 
-        public ICollection<Bet> Bets { get; set; }
+        public List<Bet> Bets { get; set; }
 
         public void GenerateDefaultValues()
         {

@@ -107,11 +107,11 @@ namespace FakeBet.API.Migrations
 
             modelBuilder.Entity("FakeBet.API.Models.Bet", b =>
                 {
-                    b.HasOne("FakeBet.API.Models.Match", "Match")
+                    b.HasOne("FakeBet.API.Models.Match")
                         .WithMany("Bets")
                         .HasForeignKey("MatchId");
 
-                    b.HasOne("FakeBet.API.Models.User", "User")
+                    b.HasOne("FakeBet.API.Models.User")
                         .WithMany("Bets")
                         .HasForeignKey("UserId");
                 });

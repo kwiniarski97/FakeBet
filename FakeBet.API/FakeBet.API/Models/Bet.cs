@@ -9,12 +9,12 @@ namespace FakeBet.API.Models
         [Key] public ulong Id { get; set; }
 
         // FK 
-        [ForeignKey("Match")] public string MatchId { get; set; }
+        public string MatchId { get; set; }
 
         public Match Match { get; set; }
 
         // FK
-        [ForeignKey("User")] public string UserId { get; set; }
+        public string UserId { get; set; }
 
         public User User { get; set; }
 

@@ -44,7 +44,7 @@ namespace FakeBet.API.Models
 
         public int FailedLoginsAttemps { get; set; } = 0;
 
-        public ICollection<Bet> Bets { get; set; }
+        public List<Bet> Bets { get; set; }
 
         public UserStatus Status { get; set; } = UserStatus.NotActivated;
 

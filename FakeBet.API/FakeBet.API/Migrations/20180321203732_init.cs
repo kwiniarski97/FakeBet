@@ -18,8 +18,10 @@ namespace FakeBet.API.Migrations
                     PointsRatio = table.Column<float>(nullable: false),
                     Status = table.Column<int>(nullable: true),
                     TeamAName = table.Column<string>(nullable: true),
+                    TeamANationalityCode = table.Column<string>(maxLength: 2, nullable: true),
                     TeamAPoints = table.Column<int>(nullable: false),
                     TeamBName = table.Column<string>(nullable: true),
+                    TeamBNationalityCode = table.Column<string>(maxLength: 2, nullable: true),
                     TeamBPoints = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -34,8 +36,10 @@ namespace FakeBet.API.Migrations
                     NickName = table.Column<string>(nullable: false),
                     CreateTime = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
+                    FailedLoginsAttemps = table.Column<int>(nullable: false),
                     PasswordHash = table.Column<byte[]>(maxLength: 64, nullable: false),
                     Points = table.Column<int>(nullable: false),
+                    Role = table.Column<int>(nullable: false),
                     Salt = table.Column<byte[]>(maxLength: 128, nullable: false),
                     Status = table.Column<int>(nullable: false)
                 },
@@ -48,23 +52,24 @@ namespace FakeBet.API.Migrations
                 name: "Bets",
                 columns: table => new
                 {
-                    VoteId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<ulong>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BetOnTeamA = table.Column<int>(nullable: false),
+                    BetOnTeamB = table.Column<int>(nullable: false),
                     MatchId = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    UserPick = table.Column<int>(nullable: false),
-                    UserPoints = table.Column<int>(nullable: false)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Votes", x => x.VoteId);
+                    table.PrimaryKey("PK_Bets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Votes_Matches_MatchId",
+                        name: "FK_Bets_Matches_MatchId",
                         column: x => x.MatchId,
                         principalTable: "Matches",
                         principalColumn: "MatchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Votes_Users_UserId",
+                        name: "FK_Bets_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "NickName",
@@ -72,12 +77,12 @@ namespace FakeBet.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Votes_MatchId",
+                name: "IX_Bets_MatchId",
                 table: "Bets",
                 column: "MatchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Votes_UserId",
+                name: "IX_Bets_UserId",
                 table: "Bets",
                 column: "UserId");
         }
