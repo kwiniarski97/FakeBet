@@ -18,6 +18,7 @@ namespace FakeBet.API.Controllers
             this.service = service;
         }
 
+        [Authorize("StatusActive")]
         [HttpGet("{matchId}")]
         public async Task<IActionResult> Get(string matchId)
         {

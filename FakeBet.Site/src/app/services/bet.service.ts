@@ -3,6 +3,7 @@ import {Service} from './service';
 import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {AppConfig} from '../app-config';
 import {Bet} from '../models/bet';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class BetService extends Service {
@@ -14,11 +15,10 @@ export class BetService extends Service {
   }
 
   addBet(bet: Bet) {
-    const jwt = BetService.getJwtHeaders();
+   const jwt = BetService.getJwtHeaders();
     if (!jwt) {
       return;
     }
-    this.http.post(this.url + '/add', bet, jwt).subscribe();
-    // todo fix musisz zrobic zeby bet byl wysylany w innej formie bardziej application/json
+    return this.http.post(this.url + '/add', bet, jwt);
   }
 }

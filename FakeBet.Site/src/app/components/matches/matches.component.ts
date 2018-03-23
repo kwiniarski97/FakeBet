@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MatchService} from '../../services/match.service';
 import {Match} from '../../models/match';
-import {Router} from '@angular/router';
 import {DateTimeHelper} from '../../helpers/datetimehelper';
 import {LocalStorageService} from '../../services/localstorage.service';
 import {BetService} from '../../services/bet.service';
 import {Bet} from '../../models/bet';
-import {User} from '../../models/user';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-matches',
@@ -21,8 +20,8 @@ export class MatchesComponent implements OnInit {
 
   time: string;
 
-  constructor(private matchService: MatchService, private router: Router, private dateHelper: DateTimeHelper,
-              private localStorage: LocalStorageService, private betService: BetService) {
+  constructor(private matchService: MatchService, private dateHelper: DateTimeHelper,
+              private localStorage: LocalStorageService, private betService: BetService, private alertService: AlertService) {
 
   }
 
@@ -41,12 +40,16 @@ export class MatchesComponent implements OnInit {
     // todo check if values are valid and check if user is logged if not then make some alert
     const user = JSON.parse(localStorage.getItem('currentUser'));
     if (!user) {
-      throw new Error('musisz sie zalogowac'); // todo zrob tutaj modala z errorem
+      this.alertService.emitError('You must be logged'); // todo zrob tutaj modala z errorem
+    }
+    if ((pointsOnA.value + pointsOnB.value) == 0) {
+      return;
     }
     const bet = new Bet(matchId, user.nickName, pointsOnA.value, pointsOnB.value);
-    // const bet = new Bet(matchId, 'test123', pointsOnA.value, pointsOnB.value);
 
-    // todo uncomment
-    this.betService.addBet(bet);
+    this.betService.addBet(bet).subscribe(data => {
+    }, error => {
+      this.alertService.emitError(error._body);
+    });
   }
 }

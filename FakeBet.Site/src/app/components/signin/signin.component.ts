@@ -17,23 +17,23 @@ export class SignInComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private authentivationService: AuthenticationService,
+              private authenticationService: AuthenticationService,
               private alertService: AlertService) {
   }
 
   ngOnInit() {
-    this.authentivationService.logout();
+    this.authenticationService.logout();
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   login() {
     this.processing = true;
-    this.authentivationService.login(this.model.nickname, this.model.password).subscribe(data => {
+    this.authenticationService.login(this.model.nickname, this.model.password).subscribe(data => {
         this.router.navigate([this.returnUrl]);
       },
       error => {
-        this.alertService.error('Username or password is incorrect');
         this.processing = false;
+        this.alertService.emitError(error._body);
       });
   }
 

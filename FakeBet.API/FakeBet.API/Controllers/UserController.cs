@@ -25,7 +25,7 @@ namespace FakeBet.API.Controllers
             _userService = userService;
         }
 
-        [Authorize]
+        [Authorize("StatusActive")]
         [HttpGet("{nickName}")]
         public async Task<IActionResult> Get(string nickName)
         {
@@ -38,7 +38,6 @@ namespace FakeBet.API.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody] UserAuthDTO user)
         {
@@ -57,21 +56,15 @@ namespace FakeBet.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody] UserAuthDTO userDto)
         {
-            var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
-
-            if (user == null)
+            try
             {
-                return BadRequest($"User with {userDto.NickName} nickname was not found");
+                var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
+                return Ok(user);
             }
-
-            if (user.Status != UserStatus.Active)
+            catch (Exception ex)
             {
-                return BadRequest($"Your account is {user.Status.ToString()}");
+                return BadRequest(ex.Message);
             }
-
-            //todo przenies to do serwisu
-
-            return Ok(user);
         }
 
         [Authorize(Roles = "Admin")]
@@ -97,12 +90,42 @@ namespace FakeBet.API.Controllers
             return Ok(top);
         }
 
-        [Authorize]
-        [HttpPost("[action]")]
-        public async Task<IActionResult> UpdateEmail([FromBody] UserDTO model)
+        [Authorize(Roles = "User")]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateEmail([FromBody] UserAuthDTO model)
         {
             await this._userService.UpdateEmailAsync(model);
             return Ok(); // todo dodaj exceptions itd.
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Delete([FromBody] UserAuthDTO user)
+        {
+            try
+            {
+                await this._userService.DeleteAccountAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdatePassword([FromBody] ChangePasswordDTO model)
+        {
+            try
+            {
+                await this._userService.UpdatePasswordAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

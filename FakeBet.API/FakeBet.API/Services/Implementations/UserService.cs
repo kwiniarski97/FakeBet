@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,14 +72,14 @@ namespace FakeBet.API.Services.Implementations
         {
             if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
             {
-                return null;
+                throw new Exception("Nickname or password cannot be empty");
             }
 
             var user = await repository.GetUserAsync(nickname);
 
             if (user == null)
             {
-                return null;
+                throw new Exception("We cannot find such user.");
             }
 
             if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
@@ -86,6 +88,17 @@ namespace FakeBet.API.Services.Implementations
                 await this.repository.UpdateUserAsync(user);
                 //todo send mail here someday
                 return null;
+            }
+
+            switch (user.Status) //todo refractor
+            {
+                case UserStatus.Deactivated:
+                    throw new Exception("Your account is deleted. Contact administrator to retrieve it back.");
+                case UserStatus.NotActivated:
+                    throw new Exception("Your account is not activated. Check your email for activation link.");
+                case UserStatus.Banned:
+                    throw new Exception(
+                        "Your account is banned. If you think you've been banned by accident contact administrator.");
             }
 
             user.ResetFailedLoginCounterAsync();
@@ -121,16 +134,55 @@ namespace FakeBet.API.Services.Implementations
             return userTopDtos;
         }
 
-        public async Task UpdateEmailAsync(UserDTO userDto)
+        public async Task UpdateEmailAsync(UserAuthDTO userDto)
         {
-            var user = mapper.Map<UserDTO, User>(userDto);
-            if (await OnlyEmailChanged(user))
+            var user = mapper.Map<UserAuthDTO, User>(userDto);
+
+            if (!Authorization.VerifyPasswordHash(userDto.Password, user.PasswordHash, user.Salt))
             {
-                await this.repository.UpdateUserAsync(user);
-                return;
+                throw new Exception("Incorrect password");
             }
 
-            throw new Exception("Changed more than email");
+            if (!await OnlyEmailChanged(user)) throw new Exception("Changed more than email");
+            await this.repository.UpdateUserAsync(user);
+        }
+
+        public async Task DeleteAccountAsync(UserAuthDTO user)
+        {
+            var originalUser = await this.repository.GetUserAsync(user.NickName);
+            if (originalUser == null)
+            {
+                throw new Exception("User doesn't exists");
+            }
+
+            if (!Authorization.VerifyPasswordHash(user.Password, originalUser.PasswordHash, originalUser.Salt))
+            {
+                throw new Exception("Wrong password");
+            }
+
+            originalUser.Status = UserStatus.Deactivated;
+            await this.repository.UpdateUserAsync(originalUser);
+        }
+
+        public async Task UpdatePasswordAsync(ChangePasswordDTO model)
+        {
+            var user = await this.repository.GetUserAsync(model.Nickname);
+            if (user == null)
+            {
+                throw new Exception("You must be logged!");
+            }
+
+            if (!Authorization.VerifyPasswordHash(model.CurrentPassword, user.PasswordHash, user.Salt))
+            {
+                throw new Exception("Wrong current password");
+            }
+
+            Authorization.CreatePasswordHash(model.NewPassword, out var passwordHash, out var passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.Salt = passwordSalt;
+
+            await this.repository.UpdateUserAsync(user);
         }
 
         private string GenerateUserToken(User user)
@@ -143,7 +195,8 @@ namespace FakeBet.API.Services.Implementations
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.NickName),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()), //todo delet this later on
+                    new Claim(ClaimTypes.Role, user.Role.ToString()),
+                    new Claim("Status", user.Status.ToString())
                 }),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials =

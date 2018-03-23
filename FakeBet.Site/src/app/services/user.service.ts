@@ -6,13 +6,15 @@ import {Service} from './service';
 import 'rxjs/operator/map';
 import {UserStatus} from '../models/userstatus';
 import {User} from '../models/user';
+import {ChangePasswordModel} from '../models/change-password-model';
+import {LocalStorageService} from './localstorage.service';
 
 @Injectable()
 export class UserService extends Service {
 
   private serviceurl = this.config.apiUrl + '/user';
 
-  constructor(private http: Http, private config: AppConfig) {
+  constructor(private http: Http, private config: AppConfig, private localStorageService: LocalStorageService) {
     super();
   }
 
@@ -49,5 +51,35 @@ export class UserService extends Service {
   }
 
 
+  deleteAccount(user: UserAuth) {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.put(this.serviceurl + '/deleteaccount', user, jwt); // todo implement
+  }
+
+  changeEmail(user: any) {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.put(this.serviceurl + '/updateemail', user, jwt); // todo implement
+  }
+
+  changePassword(changePassword: ChangePasswordModel) {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+
+    const user = this.localStorageService.retrieve('currentUser');
+    if (!user) {
+      return;
+    }
+    changePassword.nickName = user.nickname;
+
+    return this.http.put(this.serviceurl + '/changepassword', changePassword, jwt);
+  }
 }
 

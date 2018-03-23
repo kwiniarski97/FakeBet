@@ -17,6 +17,10 @@ namespace FakeBet.API.Services.Interfaces
 
         Task<List<UserTopDTO>> Get20BestUsersAsync();
 
-        Task UpdateEmailAsync(UserDTO user);
+        Task UpdateEmailAsync(UserAuthDTO user);
+        
+        Task DeleteAccountAsync(UserAuthDTO user);
+        
+        Task UpdatePasswordAsync(ChangePasswordDTO model);
     }
 }

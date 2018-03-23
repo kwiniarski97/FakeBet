@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertService} from '../../services/alert.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-alert',
@@ -8,15 +9,21 @@ import {AlertService} from '../../services/alert.service';
 })
 export class AlertComponent implements OnInit {
 
-  message: any;
-
-  constructor(private alertService: AlertService) {
+  constructor(private alertService: AlertService, private modalService: NgbModal) {
   }
 
   ngOnInit() {
-    this.alertService.getMessage().subscribe(message => {
-      this.message = message;
-    });
   }
 
+  emitError(title: string, message: string) {
+
+  }
+
+  open(content) {
+    console.log(content);
+    this.modalService.open(content);
+  }
 }
+
+
+

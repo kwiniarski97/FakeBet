@@ -5,7 +5,8 @@
       <hr/>
       <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
         <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !email.valid}">
-          <input id="email" type="email" class="form-control input-shadow" name="email" placeholder="Email" [(ngModel)]="model.email"
+          <input id="email" type="email" class="form-control input-shadow" name="email" placeholder="Email"
+                 [(ngModel)]="model.email"
                  [ngClass]="{'is-invalid': f.submitted && !email.valid}"
                  #email="ngModel"
                  required>
@@ -20,8 +21,9 @@
         </div>
         <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !password.valid}">
           <input id="password" type="password" class="form-control input-shadow" name="password" placeholder="Password"
-                 [(ngModel)]="model.password"
+                 [(ngModel)]="model.password" minlength="8"
                  [ngClass]="{'is-invalid': f.submitted && !password.valid}"
+                 ngbTooltip="Password has to be longer than 8 characters." placement="right"
                  #password="ngModel" required>
           <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required</div>
         </div>

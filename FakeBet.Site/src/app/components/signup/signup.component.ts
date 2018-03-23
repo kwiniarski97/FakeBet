@@ -24,11 +24,11 @@ export class SignupComponent implements OnInit {
   register() {
     this.processing = true;
     this.userService.register(this.model).subscribe(data => {
-      this.alertService.success('Registration successful', true);
+      alert('Success'); // todo show modal
       this.router.navigate(['/home']);
     }, error => {
       this.processing = false;
-      this.alertService.error(error.body);
+      this.alertService.emitError(error._body);
     });
   }
 }

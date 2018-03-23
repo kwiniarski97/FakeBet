@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using FakeBet.API.DTO;
 using FakeBet.API.Services.Interfaces;
@@ -17,7 +18,7 @@ namespace FakeBet.API.Controllers
             this.service = service;
         }
 
-        [Authorize]
+        [Authorize("StatusActive")]
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> Get(ulong id)
         {
@@ -25,9 +26,9 @@ namespace FakeBet.API.Controllers
             return Ok(bet);
         }
 
-        [Authorize]
+        [Authorize("StatusActive")]
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromBody] BetDTO bet) 
+        public async Task<IActionResult> Add([FromBody] BetDTO bet)
         {
             try
             {

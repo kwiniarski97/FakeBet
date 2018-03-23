@@ -34,8 +34,8 @@ export class UserComponent implements OnInit {
 
 
 
-  navigateToChangeDeleteAccount() {
-    // todo
+  navigateToDeleteAccount() {
+    this.router.navigate(['user/delete']);
   }
 
 

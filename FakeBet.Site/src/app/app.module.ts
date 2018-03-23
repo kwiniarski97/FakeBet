@@ -24,7 +24,7 @@ import {DateTimeHelper} from './helpers/datetimehelper';
 import {LocalStorageService} from './services/localstorage.service';
 import {ChangePasswordComponent} from './components/changepassword/changepassword.component';
 import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
-import {DeleteaccountComponent} from './components/deleteaccount/deleteaccount.component';
+import {DeleteAccountComponent} from './components/deleteaccount/deleteaccount.component';
 import {BetService} from './services/bet.service';
 
 
@@ -40,7 +40,7 @@ import {BetService} from './services/bet.service';
     UserComponent,
     ChangePasswordComponent,
     ChangeEmailComponent,
-    DeleteaccountComponent,
+    DeleteAccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +53,7 @@ import {BetService} from './services/bet.service';
       {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
       {path: 'user/change-email', component: ChangeEmailComponent},
       {path: 'user/change-password', component: ChangePasswordComponent},
+      {path: 'user/delete', component: DeleteAccountComponent},
       {path: 'signin', component: SignInComponent},
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},

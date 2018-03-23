@@ -72,6 +72,9 @@ namespace FakeBet.API
                         ValidateAudience = false
                     };
                 });
+
+            services.AddAuthorization(options => options.AddPolicy("StatusActive",
+                policy => policy.RequireClaim("Status", "Active")));
         }
 
 

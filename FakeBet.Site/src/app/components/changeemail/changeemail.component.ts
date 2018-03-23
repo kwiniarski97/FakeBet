@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
+import {User} from '../../models/user';
+import {UserAuth} from '../../models/userauth';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-changeemail',
@@ -12,15 +15,24 @@ export class ChangeEmailComponent implements OnInit {
 
   processing = false;
 
-  constructor() {
+  constructor(private userService: UserService, private alertService: AlertService) {
   }
 
   ngOnInit() {
   }
 
-  // todo moze dodaj nowy dto do update emaila
   changeEmail() {
-    console.log('change email');
+    if (this.model.newemail1 !== this.model.newemail2) {
+      return;
+    }
+    const user = new UserAuth();
+    user.email = this.model.newemail1;
+    user.password = this.model.password;
+
+    this.userService.changeEmail(user).subscribe(response => {
+    }, error => {
+      this.alertService.emitError(error._body);
+    });
   }
 
 }
