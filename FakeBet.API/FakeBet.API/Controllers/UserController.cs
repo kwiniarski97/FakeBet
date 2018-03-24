@@ -100,7 +100,7 @@ namespace FakeBet.API.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPut("[action]")]
-        public async Task<IActionResult> Delete([FromBody] UserAuthDTO user)
+        public async Task<IActionResult> DeleteAccount([FromBody] UserAuthDTO user)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace FakeBet.API.Controllers
 
         [Authorize]
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdatePassword([FromBody] ChangePasswordDTO model)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO model)
         {
             try
             {

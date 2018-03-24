@@ -30,6 +30,7 @@ export class ChangeEmailComponent implements OnInit {
     user.password = this.model.password;
 
     this.userService.changeEmail(user).subscribe(response => {
+      this.alertService.emitOk('Email updated');
     }, error => {
       this.alertService.emitError(error._body);
     });

@@ -14,4 +14,8 @@ export class AlertService {
   emitConfirm(message: string): boolean {
     return confirm(message);
   }
+
+  emitOk(message: string) {
+    alert(message);
+  }
 }

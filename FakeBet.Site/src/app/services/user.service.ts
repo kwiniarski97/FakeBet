@@ -42,29 +42,28 @@ export class UserService extends Service {
     this.http.get(this.serviceurl + '/top20').map((response: Response) => response.json());
   }
 
-  updateEmail(user: User) {
+  deleteAccount(userAuth: UserAuth) {
     const jwt = UserService.getJwtHeaders();
     if (!jwt) {
       return;
     }
-    this.http.post(this.serviceurl + '/updateemail', user, jwt);
+
+    const user = this.getCurrentUser();
+    userAuth.nickname = user.nickName;
+
+    return this.http.put(this.serviceurl + '/deleteaccount', userAuth, jwt); // todo implement
+
   }
 
-
-  deleteAccount(user: UserAuth) {
+  changeEmail(userAuth: UserAuth) {
     const jwt = UserService.getJwtHeaders();
     if (!jwt) {
       return;
     }
-    return this.http.put(this.serviceurl + '/deleteaccount', user, jwt); // todo implement
-  }
+    const user = this.getCurrentUser();
+    userAuth.nickname = user.nickName;
 
-  changeEmail(user: any) {
-    const jwt = UserService.getJwtHeaders();
-    if (!jwt) {
-      return;
-    }
-    return this.http.put(this.serviceurl + '/updateemail', user, jwt); // todo implement
+    return this.http.put(this.serviceurl + '/updateemail', userAuth, jwt); // todo implement
   }
 
   changePassword(changePassword: ChangePasswordModel) {
@@ -73,13 +72,18 @@ export class UserService extends Service {
       return;
     }
 
-    const user = this.localStorageService.retrieve('currentUser');
+    const user = this.getCurrentUser();
+    changePassword.nickName = user.nickName;
+
+    return this.http.put(this.serviceurl + '/changepassword', changePassword, jwt);
+  }
+
+  private getCurrentUser(): User {
+    const user = this.localStorageService.retrieve('currentUser') as User;
     if (!user) {
       return;
     }
-    changePassword.nickName = user.nickname;
-
-    return this.http.put(this.serviceurl + '/changepassword', changePassword, jwt);
+    return user;
   }
 }
 

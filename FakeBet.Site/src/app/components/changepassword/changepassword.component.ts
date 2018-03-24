@@ -26,7 +26,7 @@ export class ChangePasswordComponent implements OnInit {
     changePassword.currentPassword = this.model.currentpassword;
 
     this.userService.changePassword(changePassword).subscribe(data => {
-
+      this.alertService.emitOk('Password changed.');
     }, error => {
       this.alertService.emitError(error._body);
     });

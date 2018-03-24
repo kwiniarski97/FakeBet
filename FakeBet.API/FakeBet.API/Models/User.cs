@@ -15,7 +15,7 @@ namespace FakeBet.API.Models
         /// <summary>
         /// User that not confirmed his email.
         /// </summary>
-        NotActivated,
+        NonActivated,
 
         /// <summary>
         /// User that requested account delete.
@@ -46,7 +46,7 @@ namespace FakeBet.API.Models
 
         public List<Bet> Bets { get; set; }
 
-        public UserStatus Status { get; set; } = UserStatus.NotActivated;
+        public UserStatus Status { get; set; } = UserStatus.NonActivated;
 
         public UserRole Role { get; set; } = UserRole.User;
 
@@ -55,7 +55,7 @@ namespace FakeBet.API.Models
             FailedLoginsAttemps++;
             if (FailedLoginsAttemps >= 10)
             {
-                Status = UserStatus.NotActivated;
+                Status = UserStatus.NonActivated;
             }
         }
 

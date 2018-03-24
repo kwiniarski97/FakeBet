@@ -3,7 +3,7 @@
     <div class="col-md-7 box box-shadow">
       <h2 class="text-center font-weight-light">Delete Account</h2>
       <hr/>
-      <form name="deleteAccountForm" (ngSubmit)="deleteAccountForm.form.valid && deleteAccount(errorModal)"
+      <form name="deleteAccountForm" (ngSubmit)="deleteAccountForm.form.valid && deleteAccount()"
             #deleteAccountForm="ngForm" novalidate>
         <div class="form-group m-4" [ngClass]="{'has-error': deleteAccountForm.submitted && !password.valid}">
           <input id="password" class="form-control input-shadow" type="password" placeholder="Password"

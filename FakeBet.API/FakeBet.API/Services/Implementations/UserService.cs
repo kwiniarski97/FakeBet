@@ -85,27 +85,35 @@ namespace FakeBet.API.Services.Implementations
             if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
             {
                 user.IncreaseFailedLoginCounter();
-                await this.repository.UpdateUserAsync(user);
-                //todo send mail here someday
-                return null;
+
+                if (user.FailedLoginsAttemps>=10)
+                {
+                    user.Status = UserStatus.NonActivated;
+                    //todo send mail here someday
+                    await this.repository.UpdateUserAsync(user);
+                }
+                throw new Exception("Password or login incorrect.");
             }
 
             switch (user.Status) //todo refractor
             {
                 case UserStatus.Deactivated:
-                    throw new Exception("Your account is deleted. Contact administrator to retrieve it back.");
-                case UserStatus.NotActivated:
+                    throw new Exception("Your account is deleted. Contact the administrator to get it back.");
+                case UserStatus.NonActivated:
                     throw new Exception("Your account is not activated. Check your email for activation link.");
                 case UserStatus.Banned:
                     throw new Exception(
                         "Your account is banned. If you think you've been banned by accident contact administrator.");
             }
 
-            user.ResetFailedLoginCounterAsync();
+            if (user.FailedLoginsAttemps > 0)
+            {
+                user.ResetFailedLoginCounterAsync();
+            }
 
             var userMapped = mapper.Map<UserDTO>(user);
 
-            userMapped.Token = GenerateUserToken(user);
+            userMapped.Token = GenerateJwtToken(user);
 
             return userMapped;
         }
@@ -136,46 +144,25 @@ namespace FakeBet.API.Services.Implementations
 
         public async Task UpdateEmailAsync(UserAuthDTO userDto)
         {
-            var user = mapper.Map<UserAuthDTO, User>(userDto);
+            var user = await GetUserIfLogged(userDto.NickName, userDto.Password);
 
-            if (!Authorization.VerifyPasswordHash(userDto.Password, user.PasswordHash, user.Salt))
-            {
-                throw new Exception("Incorrect password");
-            }
+            user.Email = userDto.Email;
 
-            if (!await OnlyEmailChanged(user)) throw new Exception("Changed more than email");
             await this.repository.UpdateUserAsync(user);
         }
 
         public async Task DeleteAccountAsync(UserAuthDTO user)
         {
-            var originalUser = await this.repository.GetUserAsync(user.NickName);
-            if (originalUser == null)
-            {
-                throw new Exception("User doesn't exists");
-            }
-
-            if (!Authorization.VerifyPasswordHash(user.Password, originalUser.PasswordHash, originalUser.Salt))
-            {
-                throw new Exception("Wrong password");
-            }
+            var originalUser = await GetUserIfLogged(user.NickName, user.Password);
 
             originalUser.Status = UserStatus.Deactivated;
+
             await this.repository.UpdateUserAsync(originalUser);
         }
 
         public async Task UpdatePasswordAsync(ChangePasswordDTO model)
         {
-            var user = await this.repository.GetUserAsync(model.Nickname);
-            if (user == null)
-            {
-                throw new Exception("You must be logged!");
-            }
-
-            if (!Authorization.VerifyPasswordHash(model.CurrentPassword, user.PasswordHash, user.Salt))
-            {
-                throw new Exception("Wrong current password");
-            }
+            var user = await GetUserIfLogged(model.Nickname, model.CurrentPassword);
 
             Authorization.CreatePasswordHash(model.NewPassword, out var passwordHash, out var passwordSalt);
 
@@ -185,7 +172,7 @@ namespace FakeBet.API.Services.Implementations
             await this.repository.UpdateUserAsync(user);
         }
 
-        private string GenerateUserToken(User user)
+        private string GenerateJwtToken(User user)
         {
             //todo add identity 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -210,6 +197,22 @@ namespace FakeBet.API.Services.Implementations
         {
             var userOriginal = await this.repository.GetUserAsync(user.NickName);
             return userOriginal.ArePropertiesSame(user, new[] {"Email"});
+        }
+
+        private async Task<User> GetUserIfLogged(string nickName, string password)
+        {
+            var user = await this.repository.GetUserAsync(nickName);
+            if (user == null)
+            {
+                throw new Exception("You must be logged!");
+            }
+
+            if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
+            {
+                throw new Exception("Wrong current password");
+            }
+
+            return user;
         }
     }
 }

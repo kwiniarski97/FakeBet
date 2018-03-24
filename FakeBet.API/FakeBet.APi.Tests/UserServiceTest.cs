@@ -72,7 +72,7 @@ namespace FakeBet.APi.Tests
 
             _userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Exactly(10));
             var userDTO = await _userRepoMock.Object.GetUserAsync("nickname");
-            Assert.Equal(UserStatus.NotActivated, userDTO.Status);
+            Assert.Equal(UserStatus.NonActivated, userDTO.Status);
         }
 
         [Fact]
