@@ -27,7 +27,7 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<Match> GetMatchAsync(string matchId)
         {
-            return await Matches.SingleOrDefaultAsync(m => m.MatchId == matchId);
+            return await Matches.Include(r=>r.Bets).SingleOrDefaultAsync(m => m.MatchId == matchId);
         }
 
         public async Task RemoveMatchAsync(string matchId)

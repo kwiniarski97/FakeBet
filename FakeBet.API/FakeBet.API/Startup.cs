@@ -13,7 +13,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace FakeBet.API
 {
@@ -29,7 +31,14 @@ namespace FakeBet.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(option =>
+            {
+                option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+#if DEBUG
+                option.SerializerSettings.Formatting = Formatting.Indented;
+#endif
+            });
+
             // repos 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
@@ -72,13 +81,12 @@ namespace FakeBet.API
                         ValidateAudience = false
                     };
                 });
-
             services.AddAuthorization(options => options.AddPolicy("StatusActive",
                 policy => policy.RequireClaim("Status", "Active")));
         }
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -86,7 +94,7 @@ namespace FakeBet.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //cors
+//cors
             app.UseCors(x =>
             {
                 x.AllowAnyOrigin()
@@ -94,11 +102,8 @@ namespace FakeBet.API
                     .AllowAnyHeader()
                     .AllowCredentials();
             });
-
             app.UseAuthentication();
-
             app.UseStaticFiles();
-
             app.UseMvc();
         }
     }

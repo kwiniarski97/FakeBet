@@ -21,7 +21,7 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<User> GetUserAsync(string nickName)
         {
-            return await Users.SingleOrDefaultAsync(u => u.NickName == nickName);
+            return await Users.Include(r=>r.Bets).SingleOrDefaultAsync(u => u.NickName == nickName);
         }
 
         public async Task RegisterUserAsync(User user)
