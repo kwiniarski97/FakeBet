@@ -3,7 +3,8 @@
     <div class="col-md-7 box box-shadow">
       <h2 class="text-center font-weight-light">Change e-mail</h2>
       <hr/>
-      <form name="form" (ngSubmit)="changeEmailForm.form.valid && changeEmail()" #changeEmailForm="ngForm" novalidate>
+      <form name="form" (ngSubmit)="changeEmailForm.form.valid && newemail1.value===newemail2.value && changeEmail()"
+            #changeEmailForm="ngForm" novalidate>
         <div class="form-group m-4" [ngClass]="{'has-error': changeEmailForm.submitted && !newemail1.valid}">
           <input id="newemail1" class="form-control input-shadow" type="email" placeholder="New e-mail" name="newemail1"
                  [(ngModel)]="model.newemail1" [ngClass]="{'is-invalid': changeEmailForm.submitted && !newemail1.valid}"
@@ -16,6 +17,7 @@
                  [(ngModel)]="model.newemail2" [ngClass]="{'is-invalid': changeEmailForm.submitted && !newemail2.valid}"
                  #newemail2="ngModel" required>
           <div *ngIf="changeEmailForm.submitted && !newemail2.valid" class="text-danger">E-Mail is required</div>
+          <div *ngIf="(newemail1.value!==newemail2.value) && newemail2.value.length>0" class="text-danger">Field doesn't match original</div>
         </div>
         <div class="form-group m-4" [ngClass]="{'has-error': changeEmailForm.submitted && !password.valid}">
           <input id="password" class="form-control input-shadow" type="password" placeholder="Password" name="password"
@@ -23,6 +25,7 @@
                  #password="ngModel"
                  required>
           <div *ngIf="changeEmailForm.submitted && !password.valid" class="text-danger">Password is required</div>
+
         </div>
         <div class="form-group m-2 container">
           <button [disabled]="processing" class="btn btn-primary">Change e-mail</button>

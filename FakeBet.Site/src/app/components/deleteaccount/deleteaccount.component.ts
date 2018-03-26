@@ -24,18 +24,17 @@ export class DeleteAccountComponent implements OnInit {
   }
 
   deleteAccount() {
-    this.alertService.emitConfirm('Are you sure you want to delete your account? Operation can\'t be reversed.');
+    if (this.alertService.emitConfirm('Are you sure you want to delete your account? Operation can\'t be reversed.')) {
+      const user = new UserAuth();
+      user.password = this.model.password;
 
-    const user = new UserAuth();
-    user.password = this.model.password;
-
-    this.userService.deleteAccount(user).subscribe(response => {
-      this.alertService.emitOk('Goodbye :)');
-      this.router.navigate(['/']);
-      this.localStorageService.delete('currentUser');
-    }, error => {
-      this.alertService.emitError(error._body);
-    });
+      this.userService.deleteAccount(user).subscribe(response => {
+        this.alertService.emitOk('Goodbye :)');
+        this.router.navigate(['/']);
+        this.localStorageService.delete('currentUser');
+      }, error => {
+        this.alertService.emitError(error._body);
+      });
+    }
   }
-
 }

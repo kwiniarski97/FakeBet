@@ -3,17 +3,19 @@
     <div class="col-md-7 box box-shadow">
       <h2 class="text-center font-weight-light">Delete Account</h2>
       <hr/>
-      <form name="deleteAccountForm" (ngSubmit)="deleteAccountForm.form.valid && deleteAccount()"
+      <form name="deleteAccountForm"
+            (ngSubmit)="deleteAccountForm.form.valid && password.value===confirmPassword.value&& deleteAccount()"
             #deleteAccountForm="ngForm" novalidate>
         <div class="form-group m-4" [ngClass]="{'has-error': deleteAccountForm.submitted && !password.valid}">
           <input id="password" class="form-control input-shadow" type="password" placeholder="Password"
                  name="password" [(ngModel)]="model.password"
                  [ngClass]="{'is-invalid': deleteAccountForm.submitted && !password.valid}"
                  #password="ngModel" required>
-          <div *ngIf="deleteAccountForm.submitted && !password.valid" class="text-danger">This field is required
-          </div>
+          <div *ngIf="deleteAccountForm.submitted && !password.valid" class="text-danger">This field is required</div>
         </div>
-        <div class="form-group m-4" [ngClass]="{'has-error': deleteAccountForm.submitted && !confirmPassword.valid}">
+
+        <div class="form-group m-4"
+             [ngClass]="{'has-error': deleteAccountForm.submitted && !confirmPassword.valid}">
           <input id="confirmPassword" class="form-control input-shadow" type="password" placeholder="Confirm password"
                  name="confirmPassword"
                  [(ngModel)]="model.confirmPassword"
@@ -22,6 +24,7 @@
                  required>
           <div *ngIf="deleteAccountForm.submitted && !confirmPassword.valid" class="text-danger">This field is required
           </div>
+          <div *ngIf="password.value!==confirmPassword.value" class="text-danger">Passwords don't match</div>
         </div>
         <div class="form-group m-2 container">
           <button type="submit" [disabled]="processing" class="btn btn-danger">DELETE ACCOUNT</button>

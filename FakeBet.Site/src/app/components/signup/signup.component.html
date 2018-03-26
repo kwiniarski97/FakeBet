@@ -3,29 +3,29 @@
     <div class="col-md-6 box box-shadow">
       <h2 class="text-center">Sign up</h2>
       <hr/>
-      <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
-        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !email.valid}">
+      <form name="form" (ngSubmit)="signupForm.form.valid && register()" #signupForm="ngForm" novalidate>
+        <div class="form-group m-4" [ngClass]="{'has-error': signupForm.submitted && !email.valid}">
           <input id="email" type="email" class="form-control input-shadow" name="email" placeholder="Email"
                  [(ngModel)]="model.email"
-                 [ngClass]="{'is-invalid': f.submitted && !email.valid}"
+                 [ngClass]="{'is-invalid': signupForm.submitted && !email.valid}"
                  #email="ngModel"
                  required>
-          <div *ngIf="f.submitted && !email.valid" class="text-danger">E-Mail is required</div>
+          <div *ngIf="signupForm.submitted && !email.valid" class="text-danger">E-Mail is required</div>
         </div>
-        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !nickname.valid}">
+        <div class="form-group m-4" [ngClass]="{'has-error': signupForm.submitted && !nickname.valid}">
           <input id="nickname" type="text" class="form-control input-shadow" name="nickname" placeholder="Nickname"
                  [(ngModel)]="model.nickname"
-                 [ngClass]="{'is-invalid': f.submitted && !nickname.valid}"
+                 [ngClass]="{'is-invalid': signupForm.submitted && !nickname.valid}"
                  #nickname="ngModel" required>
-          <div *ngIf="f.submitted && !nickname.valid" class="text-danger">Nickname is required</div>
+          <div *ngIf="signupForm.submitted && !nickname.valid" class="text-danger">Nickname is required</div>
         </div>
-        <div class="form-group m-4" [ngClass]="{'has-error': f.submitted && !password.valid}">
+        <div class="form-group m-4" [ngClass]="{'has-error': signupForm.submitted && !password.valid}">
           <input id="password" type="password" class="form-control input-shadow" name="password" placeholder="Password"
                  [(ngModel)]="model.password" minlength="8"
-                 [ngClass]="{'is-invalid': f.submitted && !password.valid}"
+                 [ngClass]="{'is-invalid': signupForm.submitted && !password.valid}"
                  ngbTooltip="Password has to be longer than 8 characters." placement="right"
                  #password="ngModel" required>
-          <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required</div>
+          <div *ngIf="signupForm.submitted && !password.valid" class="text-danger">Password is required</div>
         </div>
         <div class="form-group m-2 container">
           <button [disabled]="processing" class="btn btn-primary">Register</button>
