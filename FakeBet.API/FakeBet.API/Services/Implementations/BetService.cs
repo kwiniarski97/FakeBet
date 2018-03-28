@@ -33,7 +33,6 @@ namespace FakeBet.API.Services.Implementations
         {
             var bet = mapper.Map<Bet>(betDTO);
             bet.DateOfBetting = DateTime.Now;
-            //todo odejmij punkty userowi
             await repository.AddBetAsync(bet);
         }
 

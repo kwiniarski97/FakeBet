@@ -8,7 +8,6 @@ import {LocalStorageService} from '../../services/localstorage.service';
 })
 export class NavbarComponent implements OnInit {
 
-  @Input()
   isLogged: boolean;
 
   constructor(private localStorageService: LocalStorageService) {

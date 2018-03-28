@@ -14,10 +14,14 @@ namespace FakeBet.API.Controllers
 
         private IMatchService _matchService;
 
-        public BetController(IBetService betService, IMatchService matchService)
+        private IUserService _userService;
+
+
+        public BetController(IBetService betService, IMatchService matchService, IUserService userService)
         {
             this._betService = betService;
             this._matchService = matchService;
+            this._userService = userService;
         }
 
         [Authorize("StatusActive")]
@@ -34,8 +38,9 @@ namespace FakeBet.API.Controllers
         {
             try
             {
-                await _betService.AddBetAsync(bet);
                 await _matchService.UpdateMatchWithNewBetAsync(bet);
+                await _userService.UserPlacedBet(bet);
+                await _betService.AddBetAsync(bet);
                 return Ok();
             }
             catch (Exception ex)

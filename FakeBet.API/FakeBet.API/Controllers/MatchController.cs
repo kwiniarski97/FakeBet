@@ -67,7 +67,7 @@ namespace FakeBet.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{matchId}")]
-        public async Task<IActionResult> EndMatch(string matchId, [FromBody] Team winner)
+        public async Task<IActionResult> End(string matchId, [FromBody] Team winner)
         {
             try
             {

@@ -181,6 +181,24 @@
             await this.repository.UpdateUserAsync(user);
         }
 
+        public async Task UserPlacedBet(BetDTO bet)
+        {
+            var user = await this.repository.GetUserAsync(bet.UserId);
+
+            if (user == null)
+            {
+                throw new Exception("No user with given Id");
+            }
+
+            user.Points -= (bet.BetOnTeamA + bet.BetOnTeamB);
+            if (user.Points < 0)
+            {
+                throw new Exception("You don't have enough points!");
+            }
+
+            await this.repository.UpdateUserAsync(user);
+        }
+
         private string GenerateJwtToken(User user)
         {
             // todo add identity 

@@ -48,6 +48,7 @@ export class MatchesComponent implements OnInit {
     const bet = new Bet(matchId, user.nickName, pointsOnA.value, pointsOnB.value);
 
     this.betService.addBet(bet).subscribe(data => {
+      this.alertService.emitOk('Bet placed');
     }, error => {
       this.alertService.emitError(error._body);
     });

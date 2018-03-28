@@ -27,6 +27,7 @@ import {ChangeEmailComponent} from './components/changeemail/changeemail.compone
 import {DeleteAccountComponent} from './components/deleteaccount/deleteaccount.component';
 import {BetService} from './services/bet.service';
 import { LoggedDirective } from './directives/logged.directive';
+import { HighscoreesComponent } from './components/highscorees/highscorees.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { LoggedDirective } from './directives/logged.directive';
     ChangeEmailComponent,
     DeleteAccountComponent,
     LoggedDirective,
+    HighscoreesComponent,
   ],
   imports: [
     BrowserModule,

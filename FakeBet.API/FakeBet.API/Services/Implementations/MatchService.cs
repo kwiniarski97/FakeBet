@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.API.DTO;
@@ -79,6 +80,13 @@ namespace FakeBet.API.Services.Implementations
                 throw new Exception($"Match with given id {bet.MatchId} not found");
             }
 
+            if (match.MatchTime.CompareTo(DateTime.Now) <= 0)
+            {
+                match.Status = MatchStatus.OnGoing;
+                await this.repository.UpdateMatchAsync(match);
+                throw new Exception("Match already started.");
+            }
+
             match.TeamAPoints += bet.BetOnTeamA;
             match.TeamBPoints += bet.BetOnTeamB;
 
@@ -93,9 +101,11 @@ namespace FakeBet.API.Services.Implementations
                 throw new Exception($"Match with given id {matchId} not found");
             }
 
+
             await this._prizeCalculator.CalculateAsync(match, winner);
 
             match.Winner = winner;
+            match.Status = MatchStatus.Ended;
 
             await this.repository.UpdateMatchAsync(match);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FakeBet.API.Models;
 using FakeBet.API.Services.Interfaces;
 
@@ -27,10 +26,10 @@ namespace FakeBet.API.Helpers
 
             foreach (var bet in bets)
             {
-                var wonPoints = (int) Math.Floor((double) ((winner == Team.A
-                                                               ? bet.BetOnTeamA
-                                                               : bet.BetOnTeamB / winnersTeamPoints) * totalPoints));
-                await this._userService.AddUserPointsAsync(bet.UserId, wonPoints);
+                var betPoints = bet.BetOnTeamA > 0 ? bet.BetOnTeamA : bet.BetOnTeamB;
+                var dupa = betPoints / (double) winnersTeamPoints;
+                var wonPoints = dupa * totalPoints;
+                await this._userService.AddUserPointsAsync(bet.UserId, (int) wonPoints);
             }
         }
     }
