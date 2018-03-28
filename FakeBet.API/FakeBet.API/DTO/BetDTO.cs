@@ -1,5 +1,4 @@
 ﻿using System;
-using FakeBet.API.Models;
 
 namespace FakeBet.API.DTO
 {
@@ -14,5 +13,7 @@ namespace FakeBet.API.DTO
         public int BetOnTeamA { get; set; }
 
         public int BetOnTeamB { get; set; }
+
+        public DateTime DateOfBetting { get; set; }
     }
 }

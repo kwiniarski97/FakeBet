@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LocalStorageService} from '../../services/localstorage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  isLogged: boolean;
+
+  constructor(private localStorageService: LocalStorageService) {
+  }
 
   ngOnInit() {
+    this.isLogged = this.localStorageService.isUserLogged();
   }
 
 }

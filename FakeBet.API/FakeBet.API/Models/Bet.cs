@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FakeBet.API.Models
 {
@@ -21,5 +20,7 @@ namespace FakeBet.API.Models
         public int BetOnTeamA { get; set; }
 
         public int BetOnTeamB { get; set; }
+
+        public DateTime DateOfBetting { get; set; }
     }
 }

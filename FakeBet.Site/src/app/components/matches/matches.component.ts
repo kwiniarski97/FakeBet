@@ -37,14 +37,14 @@ export class MatchesComponent implements OnInit {
   }
 
   private placeBet(matchId: string, pointsOnA: any, pointsOnB: any): void {
-    // todo check if values are valid and check if user is logged if not then make some alert
     const user = JSON.parse(localStorage.getItem('currentUser'));
     if (!user) {
-      this.alertService.emitError('You must be logged'); // todo zrob tutaj modala z errorem
+      this.alertService.emitError('You must be logged');
     }
     if ((pointsOnA.value + pointsOnB.value) == 0) {
       return;
     }
+
     const bet = new Bet(matchId, user.nickName, pointsOnA.value, pointsOnB.value);
 
     this.betService.addBet(bet).subscribe(data => {

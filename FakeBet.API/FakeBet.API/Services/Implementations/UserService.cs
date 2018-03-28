@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using FakeBet.API.DTO;
-using FakeBet.API.Extensions;
-using FakeBet.API.Helpers;
-using FakeBet.API.Models;
-using FakeBet.API.Repository.Interfaces;
-using FakeBet.API.Services.Interfaces;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-
-namespace FakeBet.API.Services.Implementations
+﻿namespace FakeBet.API.Services.Implementations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using FakeBet.API.DTO;
+    using FakeBet.API.Helpers;
+    using FakeBet.API.Models;
+    using FakeBet.API.Repository.Interfaces;
+    using FakeBet.API.Services.Interfaces;
+    using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
+
     public class UserService : IUserService
     {
         private IUserRepository repository;
@@ -35,8 +32,9 @@ namespace FakeBet.API.Services.Implementations
 
         public async Task RegisterUserAsync(UserAuthDTO userAuthDto)
         {
-            if (string.IsNullOrEmpty(userAuthDto.Password) || userAuthDto.Password.Length < 8 ||
-                string.IsNullOrWhiteSpace(userAuthDto.Email) || string.IsNullOrWhiteSpace(userAuthDto.NickName))
+            if (string.IsNullOrEmpty(userAuthDto.Password) || userAuthDto.Password.Length < 8
+                                                           || string.IsNullOrWhiteSpace(userAuthDto.Email)
+                                                           || string.IsNullOrWhiteSpace(userAuthDto.NickName))
             {
                 throw new Exception("Password is invalid");
             }
@@ -50,7 +48,6 @@ namespace FakeBet.API.Services.Implementations
             {
                 throw new Exception("Email is already taken");
             }
-
 
             Authorization.CreatePasswordHash(userAuthDto.Password, out var passwordHash, out var passwordSalt);
 
@@ -66,7 +63,6 @@ namespace FakeBet.API.Services.Implementations
             var user = await this.repository.GetUserByEmailAsync(email);
             return user == null;
         }
-
 
         public async Task<UserDTO> LoginUserAsync(string nickname, string password)
         {
@@ -86,17 +82,21 @@ namespace FakeBet.API.Services.Implementations
             {
                 user.IncreaseFailedLoginCounter();
 
-                if (user.FailedLoginsAttemps>=10)
+                if (user.FailedLoginsAttemps >= 10)
                 {
                     user.Status = UserStatus.NonActivated;
-                    //todo send mail here someday
-                    await this.repository.UpdateUserAsync(user);
+
+                    // todo send mail here someday
                 }
+
+                await this.repository.UpdateUserAsync(user);
+
                 throw new Exception("Password or login incorrect.");
             }
 
-            switch (user.Status) //todo refractor
+            switch (user.Status)
             {
+                // todo refractor
                 case UserStatus.Deactivated:
                     throw new Exception("Your account is deleted. Contact the administrator to get it back.");
                 case UserStatus.NonActivated:
@@ -109,6 +109,7 @@ namespace FakeBet.API.Services.Implementations
             if (user.FailedLoginsAttemps > 0)
             {
                 user.ResetFailedLoginCounterAsync();
+                await this.repository.UpdateUserAsync(user);
             }
 
             var userMapped = mapper.Map<UserDTO>(user);
@@ -117,7 +118,6 @@ namespace FakeBet.API.Services.Implementations
 
             return userMapped;
         }
-
 
         public async Task<UserDTO> GetUserAsync(string nickName)
         {
@@ -172,31 +172,42 @@ namespace FakeBet.API.Services.Implementations
             await this.repository.UpdateUserAsync(user);
         }
 
+        public async Task AddUserPointsAsync(string userId, int wonPoints)
+        {
+            var user = await this.repository.GetUserAsync(userId);
+
+            user.Points += wonPoints;
+
+            await this.repository.UpdateUserAsync(user);
+        }
+
         private string GenerateJwtToken(User user)
         {
-            //todo add identity 
+            // todo add identity 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.NickName),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim("Status", user.Status.ToString())
-                }),
+                Subject = new ClaimsIdentity(
+                    new[]
+                    {
+                        new Claim(
+                            ClaimTypes.Name,
+                            user.NickName),
+                        new Claim(
+                            ClaimTypes.Role,
+                            user.Role.ToString()),
+                        new Claim(
+                            "Status",
+                            user.Status.ToString())
+                    }),
                 Expires = DateTime.Now.AddDays(1),
-                SigningCredentials =
-                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        private async Task<bool> OnlyEmailChanged(User user)
-        {
-            var userOriginal = await this.repository.GetUserAsync(user.NickName);
-            return userOriginal.ArePropertiesSame(user, new[] {"Email"});
         }
 
         private async Task<User> GetUserIfLogged(string nickName, string password)

@@ -1,17 +1,10 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using FakeBet.API.DTO;
-using FakeBet.API.Helpers;
 using FakeBet.API.Models;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace FakeBet.API.Controllers
 {

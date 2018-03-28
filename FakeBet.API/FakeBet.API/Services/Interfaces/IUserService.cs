@@ -22,5 +22,6 @@ namespace FakeBet.API.Services.Interfaces
         Task DeleteAccountAsync(UserAuthDTO user);
         
         Task UpdatePasswordAsync(ChangePasswordDTO model);
+        Task AddUserPointsAsync(string betUserId, int wonPoints);
     }
 }

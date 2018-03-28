@@ -19,9 +19,12 @@ namespace FakeBet.API.Repository.Implementations
 
         private IQueryable<User> Users => context.Users;
 
+        private IQueryable<Bet> Bets => context.Bets;
+
         public async Task<User> GetUserAsync(string nickName)
         {
-            return await Users.Include(r=>r.Bets).SingleOrDefaultAsync(u => u.NickName == nickName);
+            // todo take(50) but use separate query to do it for you ;) 
+            return await Users.Include(r => r.Bets).SingleOrDefaultAsync(u => u.NickName == nickName);
         }
 
         public async Task RegisterUserAsync(User user)
@@ -39,7 +42,6 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<List<User>> Get20BestUsersAsync()
         {
-            //todo moze byc ze trzeba bedzie zrobic async
             var usersSorted = await Users.OrderBy(x => x.Points).Take(20).ToListAsync();
             return usersSorted;
         }

@@ -15,5 +15,7 @@ namespace FakeBet.API.Repository.Interfaces
         Task<IEnumerable<Match>> GetNotStartedMatchesAsync();
 
         Task ChangeMatchStatusAsync(string matchId, MatchStatus status);
-}
+        
+        Task UpdateMatchAsync(Match match);
+    }
 }

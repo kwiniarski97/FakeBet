@@ -67,7 +67,13 @@ namespace FakeBet.APi.Tests
 
             for (var i = 0; i < 10; i++)
             {
-                await _userService.LoginUserAsync("nickname", "falsepassword");
+                try
+                {
+                    await _userService.LoginUserAsync("nickname", "falsepassword");
+                }
+                catch (Exception ex)
+                {
+                }
             }
 
             _userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Exactly(10));
@@ -90,25 +96,24 @@ namespace FakeBet.APi.Tests
         }
 
         [Fact]
-        public async Task Login_Should_Return_Null_When_Nickname_Empty()
+        public async Task Login_Should_Throw_Exception_When_Nickname_Empty()
         {
             SetArrangments();
 
-            var user = await this._userService.LoginUserAsync(string.Empty, "password");
+            await Assert.ThrowsAsync<Exception>(() => this._userService.LoginUserAsync(string.Empty, "password"));
 
             this._userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Never);
-            Assert.Null(user);
         }
 
         [Fact]
-        public async Task Should_Return_Null_When_No_User_With_Given_Nickname()
+        public async Task Should_Throw_Exception_When_No_User_With_Given_Nickname()
         {
             this.SetArrangments();
 
-            var user = await this._userService.LoginUserAsync("thisnicknamedoesntexist", "password");
+            await Assert.ThrowsAsync<Exception>(() =>
+                this._userService.LoginUserAsync("thisnicknamedoesntexist", "password"));
 
             this._userRepoMock.Verify(x => x.GetUserAsync("thisnicknamedoesntexist"), Times.Once);
-            Assert.Null(user);
         }
 
         [Fact]

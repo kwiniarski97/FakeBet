@@ -11,11 +11,13 @@ namespace FakeBet.API.Controllers
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
-        private IMatchService service;
+        private IMatchService _matchService;
 
-        public MatchController(IMatchService service)
+        private IBetService _betService;
+
+        public MatchController(IMatchService matchService)
         {
-            this.service = service;
+            this._matchService = matchService;
         }
 
         [Authorize("StatusActive")]
@@ -24,7 +26,7 @@ namespace FakeBet.API.Controllers
         {
             try
             {
-                var match = await service.GetMatchAsync(matchId);
+                var match = await _matchService.GetMatchAsync(matchId);
                 return Ok(match);
             }
             catch (Exception ex)
@@ -39,7 +41,7 @@ namespace FakeBet.API.Controllers
         {
             try
             {
-                await service.AddNewMatchAsync(match);
+                await _matchService.AddNewMatchAsync(match);
                 return Ok();
             }
             catch (Exception ex)
@@ -51,7 +53,7 @@ namespace FakeBet.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetNotStarted()
         {
-            var nonStartedMatches = await service.GetNotStartedMatchesAsync();
+            var nonStartedMatches = await _matchService.GetNotStartedMatchesAsync();
             return Ok(nonStartedMatches);
         }
 
@@ -59,8 +61,23 @@ namespace FakeBet.API.Controllers
         [HttpPut("[action]/{matchId}")]
         public async Task<IActionResult> ChangeStatus(string matchId, [FromBody] MatchStatus status)
         {
-            await service.ChangeMatchStatusAsync(matchId, status);
+            await _matchService.ChangeMatchStatusAsync(matchId, status);
             return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("[action]/{matchId}")]
+        public async Task<IActionResult> EndMatch(string matchId, [FromBody] Team winner)
+        {
+            try
+            {
+                await this._matchService.EndMatchAsync(matchId, winner);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -12,6 +12,12 @@ namespace FakeBet.API.Models
         Ended
     }
 
+    public enum Team
+    {
+        A,
+        B
+    }
+
 
     public class Match
     {
@@ -26,21 +32,21 @@ namespace FakeBet.API.Models
 
         public string TeamAName { get; set; }
 
-        public int TeamAPoints { get; set; }
-        
-        [MaxLength(2)]
-        public string TeamANationalityCode { get; set; }
+        public int TeamAPoints { get; set; } = 0;
+
+        [MaxLength(2)] public string TeamANationalityCode { get; set; }
 
         public string TeamBName { get; set; }
 
-        public int TeamBPoints { get; set; }
+        public int TeamBPoints { get; set; } = 0;
+
+        [MaxLength(2)] public string TeamBNationalityCode { get; set; }
+
+
+        public Team Winner { get; set; }
         
-        [MaxLength(2)]
-        public string TeamBNationalityCode { get; set; }
-
-        public float PointsRatio { get; set; }
-
         public List<Bet> Bets { get; set; }
+
 
         public void GenerateDefaultValues()
         {
@@ -48,9 +54,6 @@ namespace FakeBet.API.Models
                       Category +
                       MatchTime.Ticks;
             Status = DetermineMatchStatus(MatchTime);
-            TeamAPoints = 0;
-            TeamBPoints = 0;
-            PointsRatio = 1;
             Bets = new List<Bet>();
         }
 

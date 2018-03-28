@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using FakeBet.API.DTO;
 using FakeBet.API.Services.Interfaces;
@@ -11,18 +10,21 @@ namespace FakeBet.API.Controllers
     [Route("api/[controller]")]
     public class BetController : Controller
     {
-        private IBetService service;
+        private IBetService _betService;
 
-        public BetController(IBetService service)
+        private IMatchService _matchService;
+
+        public BetController(IBetService betService, IMatchService matchService)
         {
-            this.service = service;
+            this._betService = betService;
+            this._matchService = matchService;
         }
 
         [Authorize("StatusActive")]
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> Get(ulong id)
         {
-            var bet = await service.GetBetByIdAsync(id);
+            var bet = await _betService.GetBetByIdAsync(id);
             return Ok(bet);
         }
 
@@ -32,7 +34,8 @@ namespace FakeBet.API.Controllers
         {
             try
             {
-                await service.AddBetAsync(bet);
+                await _betService.AddBetAsync(bet);
+                await _matchService.UpdateMatchWithNewBetAsync(bet);
                 return Ok();
             }
             catch (Exception ex)

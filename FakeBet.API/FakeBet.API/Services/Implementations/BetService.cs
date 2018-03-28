@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeBet.API.DTO;
@@ -27,10 +28,24 @@ namespace FakeBet.API.Services.Implementations
             return betDTO;
         }
 
+
         public async Task AddBetAsync(BetDTO betDTO)
         {
             var bet = mapper.Map<Bet>(betDTO);
+            bet.DateOfBetting = DateTime.Now;
+            //todo odejmij punkty userowi
             await repository.AddBetAsync(bet);
+        }
+
+        public async Task<IEnumerable<Bet>> GetWinnersBetsByMatchIdAsync(string matchId, Team winner)
+        {
+          return await this.repository.GetWinnersByMatchIdAsync(matchId, winner);
+        }
+
+
+        private async Task<IEnumerable<Bet>> GetBetsByMatchIdAsync(string matchId)
+        {
+            return await this.repository.GetBetsByMatchIdAsync(matchId);
         }
     }
 }

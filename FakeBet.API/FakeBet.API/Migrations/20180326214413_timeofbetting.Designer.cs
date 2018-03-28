@@ -12,9 +12,10 @@ using System;
 namespace FakeBet.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180326214413_timeofbetting")]
+    partial class timeofbetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +33,6 @@ namespace FakeBet.API.Migrations
                     b.Property<DateTime>("DateOfBetting");
 
                     b.Property<string>("MatchId");
-
-                    b.Property<int>("Ratio");
 
                     b.Property<string>("UserId");
 
@@ -55,6 +54,8 @@ namespace FakeBet.API.Migrations
 
                     b.Property<DateTime>("MatchTime");
 
+                    b.Property<float>("PointsRatio");
+
                     b.Property<int?>("Status");
 
                     b.Property<string>("TeamAName");
@@ -70,8 +71,6 @@ namespace FakeBet.API.Migrations
                         .HasMaxLength(2);
 
                     b.Property<int>("TeamBPoints");
-
-                    b.Property<int>("Winner");
 
                     b.HasKey("MatchId");
 

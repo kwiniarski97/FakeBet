@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FakeBet.API.Models;
@@ -27,7 +26,7 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<Match> GetMatchAsync(string matchId)
         {
-            return await Matches.Include(r=>r.Bets).SingleOrDefaultAsync(m => m.MatchId == matchId);
+            return await Matches.SingleOrDefaultAsync(m => m.MatchId == matchId);
         }
 
         public async Task RemoveMatchAsync(string matchId)
@@ -37,24 +36,26 @@ namespace FakeBet.API.Repository.Implementations
             await context.SaveChangesAsync();
         }
 
-        // todo test
         public async Task<IEnumerable<Match>> GetNotStartedMatchesAsync()
         {
             var matches = await (from match in Matches where match.Status == MatchStatus.NonStarted select match)
-                              .ToListAsync();
+                .ToListAsync();
 
             return matches;
         }
 
         public async Task ChangeMatchStatusAsync(string matchId, MatchStatus status)
         {
-            if (await GetMatchAsync(matchId) == null)
-            {
-                throw new Exception("Match doesn't exist");
-            }
-
             context.Matches.Single(m => m.MatchId == matchId).Status = status;
             await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateMatchAsync(Match match)
+        {
+            var original = await GetMatchAsync(match.MatchId);
+            AutoMapper.Mapper.Map(match, original);
+            context.Matches.Update(original);
+            await this.context.SaveChangesAsync();
         }
     }
 }

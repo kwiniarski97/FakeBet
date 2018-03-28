@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using AutoMapper;
 using FakeBet.API.Helpers;
-using FakeBet.API.Models;
 using FakeBet.API.Repository;
 using FakeBet.API.Repository.Implementations;
 using FakeBet.API.Repository.Interfaces;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -55,6 +53,8 @@ namespace FakeBet.API
 
 
             services.AddAutoMapper();
+
+            services.AddTransient<IPrizeCalculator, PrizeCalculatorProportional>();
 
             //appsetting secret
             var appSettingsSection = Configuration.GetSection("AppSettings");

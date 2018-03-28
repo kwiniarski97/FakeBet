@@ -15,5 +15,8 @@ namespace FakeBet.API.Services.Interfaces
 
         Task ChangeMatchStatusAsync(string matchId, MatchStatus status);
 
+        Task UpdateMatchWithNewBetAsync(BetDTO bet);
+        
+        Task EndMatchAsync(string matchId, Team winner);
     }
 }

@@ -26,6 +26,7 @@ import {ChangePasswordComponent} from './components/changepassword/changepasswor
 import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
 import {DeleteAccountComponent} from './components/deleteaccount/deleteaccount.component';
 import {BetService} from './services/bet.service';
+import { LoggedDirective } from './directives/logged.directive';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {BetService} from './services/bet.service';
     ChangePasswordComponent,
     ChangeEmailComponent,
     DeleteAccountComponent,
+    LoggedDirective,
   ],
   imports: [
     BrowserModule,
