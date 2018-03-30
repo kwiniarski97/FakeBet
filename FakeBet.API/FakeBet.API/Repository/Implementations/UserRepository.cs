@@ -42,7 +42,7 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<List<User>> Get20BestUsersAsync()
         {
-            var usersSorted = await Users.OrderBy(x => x.Points).Take(20).ToListAsync();
+            var usersSorted = await Users.OrderByDescending(x => x.Points).Take(20).ToListAsync();
             return usersSorted;
         }
 

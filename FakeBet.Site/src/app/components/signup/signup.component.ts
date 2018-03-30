@@ -24,7 +24,6 @@ export class SignupComponent implements OnInit {
   register() {
     this.processing = true;
     this.userService.register(this.model).subscribe(data => {
-      alert('Success'); // todo show modal
       this.router.navigate(['/home']);
     }, error => {
       this.processing = false;

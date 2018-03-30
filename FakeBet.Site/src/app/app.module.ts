@@ -61,6 +61,7 @@ import { HighscoreesComponent } from './components/highscorees/highscorees.compo
       {path: 'signin', component: SignInComponent},
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
+      {path: 'highscores', component: HighscoreesComponent},
       {path: '**', redirectTo: 'home'}])
   ],
   providers: [

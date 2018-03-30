@@ -78,6 +78,10 @@ export class UserService extends Service {
     return this.http.put(this.serviceurl + '/changepassword', changePassword, jwt);
   }
 
+  getTopUsers() {
+    return this.http.get(this.serviceurl + '/top20');
+  }
+
   private getCurrentUser(): User {
     const user = this.localStorageService.retrieve('currentUser') as User;
     if (!user) {
@@ -85,5 +89,7 @@ export class UserService extends Service {
     }
     return user;
   }
+
+
 }
 
