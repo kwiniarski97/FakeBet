@@ -17,5 +17,7 @@ namespace FakeBet.API.Repository.Interfaces
         Task UpdateUserAsync(User user);
         
         Task<User> GetUserByEmailAsync(string email);
+        
+        Task<IEnumerable<User>> GetAllUsersAsync();
     }
 }

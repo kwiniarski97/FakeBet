@@ -1,0 +1,83 @@
+<div class="container h-100 vertical-center">
+  <div class="row h-100  box box-shadow">
+    <div class="row col-12" id="actions">
+      <button class="btn btn-primary m-3" (click)="getAllUsers()">Get all user</button>
+      <button class="btn btn-primary m-3" (click)="getUserByNickname(nicknameSearch.value)">Get user by nickname</button>
+      <input class="input-shadowm form-control col-2 mt-3 mb-3 mr-3" type="text" placeholder="Nickname" #nicknameSearch>
+    </div>
+    <div class="row col-12">
+      <table class="table m-3 table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="row">Nick Name</th>
+          <th scope="row">Email</th>
+          <th scope="row">Creation Time</th>
+          <th scope="row">Points</th>
+          <th scope="row">Status</th>
+          <th scope="row">Role</th>
+          <th scope="row" class="text-danger">Update</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.nickName}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.createTime}}</td>
+          <td>{{user.points}}</td>
+          <td>{{getUserStatus(user.status)}}</td>
+          <td>{{getUserRole(user.role)}}</td>
+          <td>
+            <button class="btn btn-warning" (click)="openUpdateUserModal(modal ,user)">Update</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #modal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{selectedUser.nickName}} edit</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col m-2">
+        <form name="updateForm" (ngSubmit)="updateForm.form.valid && updateUser()" #updateForm="ngForm" novalidate>
+          <div class="form-group m-2">
+            <label>Email</label>
+            <input id="email" type="email" class="form-control input-shadow" name="email" placeholder="Email"
+                   [(ngModel)]="selectedUser.email" required>
+          </div>
+          <div class="form-group m-2">
+            <label>Points</label>
+            <input id="points" type="number" class="form-control input-shadow" name="points" placeholder="Points"
+                   [(ngModel)]="selectedUser.points" required>
+          </div>
+          <div class="form-group m-2">
+            <label>Status</label>
+            <select [(ngModel)]="selectedUser.status" class="form-control input-shadow" name="status">
+              <option value="0">Active</option>
+              <option value="1">Non Activated</option>
+              <option value="2">Deactivated</option>
+              <option value="3">Banned</option>
+            </select>
+          </div>
+          <div class="form-group m-2">
+            <label>Role</label>
+            <select [(ngModel)]="selectedUser.role" class="form-control input-shadow" name="status">
+              <option value="0">Admin</option>
+              <option value="1">User</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-danger m-2 float-right">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

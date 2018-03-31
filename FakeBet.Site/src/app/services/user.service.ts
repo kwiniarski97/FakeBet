@@ -4,7 +4,7 @@ import {AppConfig} from '../app-config';
 import {UserAuth} from '../models/userauth';
 import {Service} from './service';
 import 'rxjs/operator/map';
-import {UserStatus} from '../models/userstatus';
+import {UserStatus} from '../models/userenums';
 import {User} from '../models/user';
 import {ChangePasswordModel} from '../models/change-password-model';
 import {LocalStorageService} from './localstorage.service';
@@ -82,14 +82,30 @@ export class UserService extends Service {
     return this.http.get(this.serviceurl + '/top20');
   }
 
+  getAllUsers() {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.get(this.serviceurl + '/getall', jwt);
+  }
+
   private getCurrentUser(): User {
-    const user = this.localStorageService.retrieve('currentUser') as User;
+    const user = this.localStorageService.retrieve('currentUser');
     if (!user) {
       return;
     }
-    return user;
+    return user as User;
   }
 
 
+  updateUser(selectedUser: User) {
+    const jwt = UserService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.put(this.serviceurl + '/update', selectedUser, jwt);
+
+  }
 }
 

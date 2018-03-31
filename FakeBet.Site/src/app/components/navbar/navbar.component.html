@@ -13,6 +13,13 @@
         <li><a class="nav-item nav-link" routerLink="/logout" routerLinkActive="active">Logout</a></li>
         <li><a class="nav-item nav-link" routerLink="/signup" routerLinkActive="active">Sign up</a></li>
         <li><a class="nav-item nav-link" routerLink="/highscores" routerLinkActive="active">High scores</a></li>
+        <li ngbDropdown class="d-inline-block">
+          <a class="nav-item nav-link" id="dropdownBasic1" ngbDropdownToggle>Admin</a>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <a class="dropdown-item btn-outline-dark nav-item" routerLink="/admin/matches" routerLinkActive="active">Matches</a>
+            <a class="dropdown-item btn-outline-dark nav-item" routerLink="/admin/users" routerLinkActive="active">Users</a>
+          </div>
+        </li>
         <li class="text-danger"> {{isLogged}}</li>
       </ul>
     </div>

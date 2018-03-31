@@ -4,3 +4,8 @@ export enum UserStatus {
   Deactivated,
   Banned
 }
+
+export enum UserRoles {
+  Admin,
+  User
+}

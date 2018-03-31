@@ -1,5 +1,5 @@
 import {Bet} from './bet';
-import {UserStatus} from './userstatus';
+import {UserRoles, UserStatus} from './userenums';
 
 export class User {
   nickName: string;
@@ -9,4 +9,5 @@ export class User {
   bets: Bet[];
   token: string;
   status: UserStatus;
+  role: UserRoles;
 }

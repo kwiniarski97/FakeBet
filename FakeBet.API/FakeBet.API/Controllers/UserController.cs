@@ -19,7 +19,7 @@ namespace FakeBet.API.Controllers
         }
 
         [Authorize("StatusActive")]
-        [HttpGet("{nickName}")]
+        [HttpGet("[action]/{nickName}")]
         public async Task<IActionResult> Get(string nickName)
         {
             var user = await _userService.GetUserAsync(nickName);
@@ -113,6 +113,29 @@ namespace FakeBet.API.Controllers
             try
             {
                 await this._userService.UpdatePasswordAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await this._userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update([FromBody] UserDTO user)
+        {
+            try
+            {
+                await this._userService.UpdateUserAsync(user);
                 return Ok();
             }
             catch (Exception ex)

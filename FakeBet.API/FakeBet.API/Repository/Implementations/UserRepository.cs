@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FakeBet.API.Models;
 using FakeBet.API.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -48,17 +49,23 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task UpdateUserAsync(User user)
         {
-            //todo 
             var original = await this.context.Users.SingleAsync(u => u.NickName == user.NickName);
-            AutoMapper.Mapper.Map(user, original);
+            AutoMapper.Mapper.Map(original, user);
             this.context.Users.Update(original);
             await this.context.SaveChangesAsync();
         }
+
+       
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
             var user = await this.context.Users.SingleOrDefaultAsync(u => u.Email == email);
             return user;
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return this.context.Users.Select(x => x);
         }
     }
 }

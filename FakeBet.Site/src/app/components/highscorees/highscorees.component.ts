@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
 import {UserTop} from '../../models/usertop';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-highscorees',

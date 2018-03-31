@@ -75,7 +75,7 @@
 
             if (user == null)
             {
-                throw new Exception("We cannot find such user.");
+                throw new Exception("We cannot find such userDTO.");
             }
 
             if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
@@ -187,7 +187,7 @@
 
             if (user == null)
             {
-                throw new Exception("No user with given Id");
+                throw new Exception("No userDTO with given Id");
             }
 
             user.Points -= (bet.BetOnTeamA + bet.BetOnTeamB);
@@ -195,6 +195,34 @@
             {
                 throw new Exception("You don't have enough points!");
             }
+
+            await this.repository.UpdateUserAsync(user);
+        }
+
+        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        {
+            var users = await this.repository.GetAllUsersAsync();
+            var usersDto = this.mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(users);
+            return usersDto;
+        }
+
+        public async Task UpdateUserAsync(UserDTO userDTO)
+        {
+            var user = await this.repository.GetUserAsync(userDTO.NickName);
+            if (user == null)
+            {
+                throw new Exception($"User with {userDTO.NickName} nickname not found");
+            }
+
+            //todo refractor
+
+            user.Email = userDTO.Email;
+
+            user.Points = userDTO.Points;
+
+            user.Status = userDTO.Status;
+
+            user.Role = userDTO.Role;
 
             await this.repository.UpdateUserAsync(user);
         }

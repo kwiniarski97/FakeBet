@@ -14,7 +14,7 @@ import {AlertService} from './services/alert.service';
 import {AuthenticationService} from './services/authentication.service';
 import {MatchService} from './services/match.service';
 import {UserService} from './services/user.service';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AuthGuard} from './guards/auth.guard';
 import {AppConfig} from './app-config';
@@ -26,8 +26,10 @@ import {ChangePasswordComponent} from './components/changepassword/changepasswor
 import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
 import {DeleteAccountComponent} from './components/deleteaccount/deleteaccount.component';
 import {BetService} from './services/bet.service';
-import { LoggedDirective } from './directives/logged.directive';
-import { HighscoreesComponent } from './components/highscorees/highscorees.component';
+import {LoggedDirective} from './directives/logged.directive';
+import {HighscoreesComponent} from './components/highscorees/highscorees.component';
+import {AdminMatchComponent} from './components/admin/admin-match/admin-match.component';
+import {AdminUserComponent} from './components/admin/admin-user/admin-user.component';
 
 
 @NgModule({
@@ -45,10 +47,13 @@ import { HighscoreesComponent } from './components/highscorees/highscorees.compo
     DeleteAccountComponent,
     LoggedDirective,
     HighscoreesComponent,
+    AdminMatchComponent,
+    AdminUserComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
@@ -62,6 +67,8 @@ import { HighscoreesComponent } from './components/highscorees/highscorees.compo
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
       {path: 'highscores', component: HighscoreesComponent},
+      {path: 'admin/matches', component: AdminMatchComponent},
+      {path: 'admin/users', component: AdminUserComponent},
       {path: '**', redirectTo: 'home'}])
   ],
   providers: [
