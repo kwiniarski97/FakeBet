@@ -18,7 +18,7 @@
           <th scope="row" class="text-danger">Update</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="!this.loading">
         <tr *ngFor="let user of users">
           <td>{{user.nickName}}</td>
           <td>{{user.email}}</td>
@@ -29,6 +29,11 @@
           <td>
             <button class="btn btn-warning" (click)="openUpdateUserModal(modal ,user)">Update</button>
           </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="loading">
+        <tr>
+          <td colspan="7"><img src="assets/images/loading-block.gif"  class="text-center mx-auto d-block"></td>
         </tr>
         </tbody>
       </table>

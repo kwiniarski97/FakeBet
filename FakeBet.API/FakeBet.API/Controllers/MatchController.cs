@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FakeBet.API.DTO;
 using FakeBet.API.Models;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace FakeBet.API.Controllers
 {
@@ -59,19 +61,33 @@ namespace FakeBet.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("[action]/{matchId}")]
-        public async Task<IActionResult> ChangeStatus(string matchId, [FromBody] MatchStatus status)
+        public async Task<IActionResult> End([FromBody] MatchDTO value, string matchId)
         {
-            await _matchService.ChangeMatchStatusAsync(matchId, status);
-            return Ok();
+            try{
+                await this._matchService.EndMatchAsync(matchId, value.Winner);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("[action]/{matchId}")]
-        public async Task<IActionResult> End(string matchId, [FromBody] Team winner)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAll()
+        {
+            var matches = await this._matchService.GetAllAsync();
+            return Ok(matches);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update([FromBody] MatchDTO matchDTO)
         {
             try
             {
-                await this._matchService.EndMatchAsync(matchId, winner);
+                await this._matchService.UpdateMatchAsync(matchDTO);
                 return Ok();
             }
             catch (Exception ex)

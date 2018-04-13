@@ -45,18 +45,26 @@ namespace FakeBet.API.Repository.Implementations
             return matches;
         }
 
-        public async Task ChangeMatchStatusAsync(string matchId, MatchStatus status)
-        {
-            context.Matches.Single(m => m.MatchId == matchId).Status = status;
-            await context.SaveChangesAsync();
-        }
-
         public async Task UpdateMatchAsync(Match match)
         {
             var original = await GetMatchAsync(match.MatchId);
-            AutoMapper.Mapper.Map(match, original);
+            original.MapValuesWhenNotNullOrAreDifferent(match);
             context.Matches.Update(original);
             await this.context.SaveChangesAsync();
+        }
+        
+        public async Task EndMatchAsync(Match match)
+        {
+            var original = await GetMatchAsync(match.MatchId);
+            original.Winner = match.Winner;
+            context.Matches.Update(original);
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Match>> GetAllAsync()
+        {
+            var matches = this.context.Matches.Select(x => x).Where(match => match.MatchTime.AddDays(7) > DateTime.Now);
+            return matches;
         }
     }
 }

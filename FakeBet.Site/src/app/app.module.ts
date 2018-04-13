@@ -30,6 +30,8 @@ import {LoggedDirective} from './directives/logged.directive';
 import {HighscoreesComponent} from './components/highscorees/highscorees.component';
 import {AdminMatchComponent} from './components/admin/admin-match/admin-match.component';
 import {AdminUserComponent} from './components/admin/admin-user/admin-user.component';
+import {CalendarModule} from 'primeng/primeng';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -49,12 +51,15 @@ import {AdminUserComponent} from './components/admin/admin-user/admin-user.compo
     HighscoreesComponent,
     AdminMatchComponent,
     AdminUserComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    CalendarModule,
+    BrowserAnimationsModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
       {path: '', redirectTo: 'home', pathMatch: 'full'},

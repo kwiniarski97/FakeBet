@@ -2,19 +2,18 @@ export class Match {
   matchId: string;
   category: string;
   matchTime: Date;
-  matchStatus: MatchStatus;
+  status: MatchStatus;
   teamAName: string;
   teamAPoints: number;
   teamANationalityCode: string;
   teamBName: string;
   teamBPoints: number;
   teamBNationalityCode: string;
-  pointsRatio: number;
   votes: any[]; // todo change to some vote interface or model
 }
 
-enum MatchStatus {
-  NonStarted,
-  OnGoing,
-  Ended
+export enum MatchStatus {
+  NonStarted = 0,
+  OnGoing = 1,
+  Ended = 2
 }

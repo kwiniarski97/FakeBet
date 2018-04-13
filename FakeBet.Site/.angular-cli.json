@@ -18,10 +18,17 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "dependencies": {
+        "primeng": "^5.2.0",
+        "font-awesome": "^4.7.0"
+      },
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css",
-        "../node_modules/flag-icon-css/css/flag-icon.min.css"
+        "../node_modules/flag-icon-css/css/flag-icon.min.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

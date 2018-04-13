@@ -23,18 +23,42 @@ export class MatchService extends Service {
     if (!jwt) {
       return;
     }
-    this.http.post(this.url + '/addBet', match, jwt);
+    return this.http.post(this.url + '/add', match, jwt);
   }
 
   getNotStarted() {
     return this.http.get(this.url + '/getnotstarted').map((response: Response) => response.json());
   }
 
-  changeStatus(match: Match, matchId: string) {
+  getAll() {
     const jwt = MatchService.getJwtHeaders();
     if (!jwt) {
       return;
     }
-    this.http.put(this.url + `/changestatus/${matchId}`, match, jwt);
+    return this.http.get(this.url + '/getall', jwt);
+  }
+
+  delete(matchId: string) {
+    const jwt = MatchService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.delete(this.url + `/delete/${matchId}`, jwt);
+  }
+
+  update(selectedMatch: Match) {
+    const jwt = MatchService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.put(this.url + '/update', selectedMatch, jwt);
+  }
+
+  end(matchId: string, winner: string) {
+    const jwt = MatchService.getJwtHeaders();
+    if (!jwt) {
+      return;
+    }
+    return this.http.put(this.url + `/end/${matchId}`, {'winner': winner}, jwt);
   }
 }

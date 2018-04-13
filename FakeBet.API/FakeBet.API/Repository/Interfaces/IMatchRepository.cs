@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using FakeBet.API.DTO;
 using FakeBet.API.Models;
 
 namespace FakeBet.API.Repository.Interfaces
@@ -13,9 +14,11 @@ namespace FakeBet.API.Repository.Interfaces
         Task RemoveMatchAsync(string matchId);
 
         Task<IEnumerable<Match>> GetNotStartedMatchesAsync();
-
-        Task ChangeMatchStatusAsync(string matchId, MatchStatus status);
         
         Task UpdateMatchAsync(Match match);
+
+        Task EndMatchAsync(Match match);
+        
+        Task<IEnumerable<Match>> GetAllAsync();
     }
 }

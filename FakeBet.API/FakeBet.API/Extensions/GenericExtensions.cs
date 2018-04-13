@@ -5,7 +5,7 @@ namespace FakeBet.API.Extensions
 {
     public static class GenericExtensions
     {
-        public static bool ArePropertiesSame<T>(this T self, T to, string[] ignoredProps)
+        public static bool ArePropertiesSame<T>(this T self, T to, string[] ignoredProps) where T : class 
         {
             ignoredProps = ignoredProps ?? new string[] { };
 

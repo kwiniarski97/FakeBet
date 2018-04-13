@@ -1,3 +1,191 @@
-<p>
-  admin-match works!
-</p>
+<div class="container h-100 vertical-center">
+  <div class="row h-100  box box-shadow">
+    <div class="row col-12" id="actions">
+      <button class="btn btn-primary m-3" (click)="getAllMatches()">Get all matches</button>
+      <button class="btn btn-primary m-3" (click)="openAddMatchModal(addMatchModal)">Add match</button>
+    </div>
+    <div class="row col-12">
+      <table class="table m-3 table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="row">Category</th>
+          <th scope="row">Time</th>
+          <th scope="row">Status</th>
+          <th scope="row">Team A Name</th>
+          <th scope="row">Team A Points</th>
+          <th scope="row">Team B Name</th>
+          <th scope="row">Team B Points</th>
+          <th scope="row" class="text-warning">End Match</th>
+          <th scope="row" class="text-danger">Update</th>
+          <th scope="row" class="text-danger">Delete</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="!this.loading">
+        <tr *ngFor="let match of matches">
+          <td>{{match.category}}</td>
+          <td>{{match.matchTime}}</td>
+          <td>{{getMatchStatus(match.status)}}</td>
+          <td>{{match.teamAName}}</td>
+          <td>{{match.teamAPoints}}</td>
+          <td>{{match.teamBName}}</td>
+          <td>{{match.teamBPoints}}</td>
+          <td>
+            <button class="btn btn-warning" (click)="openEndMatchModal(endMatchModal, match)">End</button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="openUpdateMatchModal(updateMatchModal, match)">Update</button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteMatch(match.matchId)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="loading">
+        <tr>
+          <td colspan="7"><img src="assets/images/loading-block.gif" class="text-center mx-auto d-block"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #addMatchModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add new match</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col m-2">
+        <form name="addMatch" (ngSubmit)="addMatchForm.form.valid && addMatch()" #addMatchForm="ngForm">
+          <div class="form-group">
+            <input type="text" id="category" name="category" #category="ngModel" class="form-control input-shadow"
+                   placeholder="Category" [(ngModel)]="selectedMatch.category" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamAName" name="teamAName" #teamAName="ngModel" class="form-control input-shadow"
+                   placeholder="Team A name" [(ngModel)]="selectedMatch.teamAName" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamANationalityCode" name="teamANationalityCode" #teamANationalityCode="ngModel"
+                   class="form-control input-shadow" placeholder="Team A nationality code"
+                   [(ngModel)]="selectedMatch.teamANationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
+                   required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamBName" name="teamBName" #teamBName="ngModel" class="form-control input-shadow"
+                   placeholder="Team B Name" [(ngModel)]="selectedMatch.teamBName" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamBNationalityCode" name="teamBNationalityCode" #teamBNationalityCode="ngModel"
+                   class="form-control input-shadow" placeholder="Team B nationality code"
+                   [(ngModel)]="selectedMatch.teamBNationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
+                   required>
+          </div>
+          <div class="form-group ">
+            <p-calendar placeholder="Match Time" inputStyleClass=" m-1 form-control input-shadow"
+                        [style]="{'width':'100%'}" [utc]="true" [inputStyle]="{'width':'100%'}" name="matchTime"
+                        [(ngModel)]="selectedMatch.matchTime" showTime="true" hourFormat="24"></p-calendar>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="addMatch()">Add</button>
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #endMatchModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">You are ending match with id:
+      <small>{{selectedMatch.matchId}}</small>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col m-2">
+        <form #endMatchForm="ngForm" (submit)="endMatch(endMatchSelect.value)">
+          <label>Who won?</label>
+          <select #endMatchSelect class="input-shadow form-control">
+            <option value="0">{{selectedMatch.teamAName}}</option>
+            <option value="1">{{selectedMatch.teamBName}}</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="endMatch(endMatchSelect.value)">End</button>
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #updateMatchModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{selectedMatch.matchId}} update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col m-2">
+        <form name="updateMatch" (ngSubmit)="updateMatchForm.form.valid && updateMatch()" #updateMatchForm="ngForm">
+          <div class="form-group">
+            <input type="text" id="categoryUpd" name="category" #categoryUpd="ngModel" class="form-control input-shadow"
+                   placeholder="Category" [(ngModel)]="selectedMatch.category" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamANameUpd" name="teamAName" #teamANameUpd="ngModel"
+                   class="form-control input-shadow"
+                   placeholder="Team A name" [(ngModel)]="selectedMatch.teamAName" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamANationalityCodeUpd" name="teamANationalityCode"
+                   #teamANationalityCodeUpd="ngModel"
+                   class="form-control input-shadow" placeholder="Team A nationality code"
+                   [(ngModel)]="selectedMatch.teamANationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
+                   required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamBNameUpd" name="teamBName" #teamBNameUpd="ngModel"
+                   class="form-control input-shadow"
+                   placeholder="Team B Name" [(ngModel)]="selectedMatch.teamBName" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teamBNationalityCodeUpd" name="teamBNationalityCode"
+                   #teamBNationalityCodeUpd="ngModel"
+                   class="form-control input-shadow" placeholder="Team B nationality code"
+                   [(ngModel)]="selectedMatch.teamBNationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
+                   required>
+          </div>
+          <div class="form-group ">
+            <p-calendar dateFormat="dd.mm.yy" placeholder="Match Time" inputStyleClass=" m-1 form-control input-shadow"
+                        [style]="{'width':'100%'}" [utc]="true" [inputStyle]="{'width':'100%'}" name="matchTimeUpd"
+                        [(ngModel)]="selectedMatch.matchTime" showTime="true" hourFormat="24"></p-calendar>
+          </div>
+          <div class="form-group">
+            <select class="form-control input-shadow" required name="statusUpd" #statusUpd
+                    [(ngModel)]="selectedMatch.status">
+              <option value="0">Non Started</option>
+              <option value="1">On Going</option>
+              <option value="2">Ended</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="updateMatch()">Update</button>
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using FakeBet.API.Extensions;
 
 namespace FakeBet.API.Models
@@ -50,9 +51,9 @@ namespace FakeBet.API.Models
 
         public void GenerateDefaultValues()
         {
-            MatchId = TeamAName.RemoveAllSpaces() + TeamBName.RemoveAllSpaces() +
+            MatchId = (TeamAName.RemoveAllSpaces() + TeamBName.RemoveAllSpaces() +
                       Category +
-                      MatchTime.Ticks;
+                      MatchTime.Ticks).ToLower();
             Status = DetermineMatchStatus(MatchTime);
             Bets = new List<Bet>();
         }
@@ -60,6 +61,21 @@ namespace FakeBet.API.Models
         private static MatchStatus DetermineMatchStatus(DateTime date)
         {
             return DateTime.Compare(date, DateTime.Now) > 0 ? MatchStatus.NonStarted : MatchStatus.Ended;
+        }
+
+        public void MapValuesWhenNotNullOrAreDifferent(Match source)
+        {
+            var type = source.GetType();
+            var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            foreach (var prop in props)
+            {
+                var sourceVal = prop.GetValue(source, null);
+                if (sourceVal!=null && !sourceVal.Equals(prop.GetValue(this, null)))
+                {
+                    prop.SetValue(this,sourceVal);
+                }
+            }
         }
     }
 }

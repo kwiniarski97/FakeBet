@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,17 +62,6 @@ namespace FakeBet.API.Services.Implementations
         }
 
 
-        public async Task ChangeMatchStatusAsync(string matchId, MatchStatus status)
-        {
-            if (await GetMatchAsync(matchId) == null)
-            {
-                throw new Exception("Match doesn't exist");
-            }
-
-            await repository.ChangeMatchStatusAsync(matchId, status);
-        }
-
-
         public async Task UpdateMatchWithNewBetAsync(BetDTO bet)
         {
             var match = await this.repository.GetMatchAsync(bet.MatchId);
@@ -107,6 +97,19 @@ namespace FakeBet.API.Services.Implementations
             match.Winner = winner;
             match.Status = MatchStatus.Ended;
 
+            await this.repository.EndMatchAsync(match);
+        }
+
+        public async Task<IEnumerable<MatchDTO>> GetAllAsync()
+        {
+            var matches = await this.repository.GetAllAsync();
+            var matchesDTO = this.mapper.Map<IEnumerable<MatchDTO>>(matches);
+            return matchesDTO;
+        }
+
+        public async Task UpdateMatchAsync(MatchDTO matchDTO)
+        {
+            var match = this.mapper.Map<Match>(matchDTO);
             await this.repository.UpdateMatchAsync(match);
         }
     }
