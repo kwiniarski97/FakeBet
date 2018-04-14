@@ -27,6 +27,9 @@ export class MatchesComponent implements OnInit {
   ngOnInit() {
     this.matchService.getNotStarted().subscribe(response => {
       this.matches = response;
+      for (let i = 0; i < this.matches.length; i++) {
+        this.matches[i].matchTime = new Date(this.matches[i].matchTime.toString() + '+0000');
+      }
       this.matches = this.matches.sort(function (a, b) {
         return ((new Date(b.matchTime).getTime()) - (new Date(a.matchTime)).getTime()) * -1;
       });

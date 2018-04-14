@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {AlertComponent} from './components/alert/alert.component';
 import {SignInComponent} from './components/signin/signin.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {MatchesComponent} from './components/matches/matches.component';
@@ -37,7 +36,6 @@ import {CountryCodesService} from './services/country-codes.service';
 @NgModule({
   declarations: [
     AppComponent,
-    AlertComponent,
     SignInComponent,
     LogoutComponent,
     MatchesComponent,

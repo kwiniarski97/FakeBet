@@ -45,7 +45,6 @@ export class AdminUserComponent implements OnInit {
       this.loading = false;
       const user = result;
       this.users = [user];
-      console.log(this.users);
     });
   }
 
