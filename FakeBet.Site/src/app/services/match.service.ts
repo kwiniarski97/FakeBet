@@ -51,7 +51,6 @@ export class MatchService extends Service {
     if (!jwt) {
       return;
     }
-    selectedMatch.matchTime = new Date(selectedMatch.matchTime.toDateString() + '0000');
     return this.http.put(this.url + '/update', selectedMatch, jwt);
   }
 

@@ -23,7 +23,7 @@
         <tbody *ngIf="!this.loading">
         <tr *ngFor="let match of matches">
           <td>{{match.category}}</td>
-          <td>{{match.matchTime}}</td>
+          <td>{{match.matchTime | date : "dd.MM.yyyy HH:mm ZZZZ"}}</td>
           <td>{{getMatchStatus(match.status)}}</td>
           <td>{{match.teamAName}}</td>
           <td>{{match.teamAPoints}}</td>
@@ -168,7 +168,7 @@
             </select>
           </div>
           <div class="form-group ">
-            <p-calendar dateFormat="dd.mm.yy" placeholder="Match Time" inputStyleClass=" m-1 form-control input-shadow"
+            <p-calendar dateFormat="dd.mm.yy" placeholder="Match Time (UTC)" inputStyleClass=" m-1 form-control input-shadow"
                         [style]="{'width':'100%'}" [utc]="true" [inputStyle]="{'width':'100%'}" name="matchTimeUpd"
                         [(ngModel)]="selectedMatch.matchTime" showTime="true" hourFormat="24"></p-calendar>
           </div>

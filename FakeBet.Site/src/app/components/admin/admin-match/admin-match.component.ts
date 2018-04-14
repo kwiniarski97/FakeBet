@@ -32,8 +32,7 @@ export class AdminMatchComponent implements OnInit {
 
   private openUpdateMatchModal(modal: any, match: Match) {
     Object.assign(this.selectedMatch, match);
-    const dupa = new Date(this.selectedMatch.matchTime);
-    this.selectedMatch.matchTime = dupa;
+    this.selectedMatch.matchTime = new Date(this.selectedMatch.matchTime);
     this.modalService.open(modal, {size: 'lg'});
   }
 
@@ -61,6 +60,9 @@ export class AdminMatchComponent implements OnInit {
     this.matchService.getAll().subscribe(response => {
       const matches = JSON.parse(response['_body']);
       this.matches = matches;
+      for (let i = 0; i < this.matches.length; i++) {
+        this.matches[i].matchTime = new Date(this.matches[i].matchTime.toString() + '+0000');
+      }
     }, error => {
       this.alertService.emitError(error['_body']);
     });
