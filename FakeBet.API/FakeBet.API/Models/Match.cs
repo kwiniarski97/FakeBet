@@ -60,7 +60,7 @@ namespace FakeBet.API.Models
 
         private static MatchStatus DetermineMatchStatus(DateTime date)
         {
-            return DateTime.Compare(date, DateTime.Now) > 0 ? MatchStatus.NonStarted : MatchStatus.Ended;
+            return DateTime.Compare(date, DateTime.UtcNow) > 0 ? MatchStatus.NonStarted : MatchStatus.Ended;
         }
 
         public void MapValuesWhenNotNullOrAreDifferent(Match source)

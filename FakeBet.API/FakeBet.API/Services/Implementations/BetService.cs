@@ -32,7 +32,7 @@ namespace FakeBet.API.Services.Implementations
         public async Task AddBetAsync(BetDTO betDTO)
         {
             var bet = mapper.Map<Bet>(betDTO);
-            bet.DateOfBetting = DateTime.Now;
+            bet.DateOfBetting = DateTime.UtcNow;
             await repository.AddBetAsync(bet);
         }
 

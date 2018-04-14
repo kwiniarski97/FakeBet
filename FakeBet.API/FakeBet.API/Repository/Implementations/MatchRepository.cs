@@ -63,7 +63,7 @@ namespace FakeBet.API.Repository.Implementations
 
         public async Task<IEnumerable<Match>> GetAllAsync()
         {
-            var matches = this.context.Matches.Select(x => x).Where(match => match.MatchTime.AddDays(7) > DateTime.Now);
+            var matches = this.context.Matches.Select(x => x).Where(match => match.MatchTime.AddDays(7) > DateTime.UtcNow);
             return matches;
         }
     }

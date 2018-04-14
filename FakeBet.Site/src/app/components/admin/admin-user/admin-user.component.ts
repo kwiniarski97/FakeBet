@@ -37,6 +37,9 @@ export class AdminUserComponent implements OnInit {
   }
 
   private getUserByNickname(nickname: string) {
+    if (nickname == null || nickname.length === 0) {
+      return;
+    }
     this.loading = true;
     this.userService.getByNickname(nickname).subscribe(result => {
       this.loading = false;

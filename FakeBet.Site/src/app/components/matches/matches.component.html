@@ -6,7 +6,7 @@
         <ng-template ngbPanelTitle>
           <div class="row">
             <div class="col text-right">
-              <span class="flag-icon " ngClass=flag-icon-{{match.teamANationalityCode}}></span>
+              <span class="flag-icon " ngClass=flag-icon-{{match.teamANationalityCode.toLowerCase()}}></span>
               <h2 class="d-inline-block">{{match.teamAName}}</h2>
             </div>
             <div class="col-1 text-center">
@@ -14,7 +14,7 @@
             </div>
             <div class="col text-left align-middle">
               <h2 class="d-inline-block">{{match.teamBName}}</h2>
-              <span class="flag-icon" ngClass=flag-icon-{{match.teamBNationalityCode}}></span>
+              <span class="flag-icon" ngClass=flag-icon-{{match.teamBNationalityCode.toLowerCase()}}></span>
             </div>
           </div>
         </ng-template>
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div>
-            <h4 class="text-center font-weight-light">{{this.getParsedDate(match.matchTime)}}</h4>
+            <h4 class="text-center font-weight-light">{{match.matchTime | date : "dd.MM.yyyy HH:mm"}}</h4>
           </div>
           <div class="row mt-3">
             <div class=" container-fluid text-center form-group">

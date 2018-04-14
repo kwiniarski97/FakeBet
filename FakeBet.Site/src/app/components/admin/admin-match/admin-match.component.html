@@ -70,20 +70,22 @@
                    placeholder="Team A name" [(ngModel)]="selectedMatch.teamAName" required>
           </div>
           <div class="form-group">
-            <input type="text" id="teamANationalityCode" name="teamANationalityCode" #teamANationalityCode="ngModel"
-                   class="form-control input-shadow" placeholder="Team A nationality code"
-                   [(ngModel)]="selectedMatch.teamANationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
-                   required>
+            <select class="form-control input-shadow" id="teamANationalityCode" name="teamANationalityCode"
+                    #teamANationalityCode="ngModel" [(ngModel)]="selectedMatch.teamANationalityCode" required>
+              <option selected disabled hidden [ngValue]="undefined">Team A country</option>
+              <option *ngFor="let country of countryCodesService.getCodes()" value="{{country.ccode}}">{{country.cname}}</option>
+            </select>
           </div>
           <div class="form-group">
             <input type="text" id="teamBName" name="teamBName" #teamBName="ngModel" class="form-control input-shadow"
                    placeholder="Team B Name" [(ngModel)]="selectedMatch.teamBName" required>
           </div>
           <div class="form-group">
-            <input type="text" id="teamBNationalityCode" name="teamBNationalityCode" #teamBNationalityCode="ngModel"
-                   class="form-control input-shadow" placeholder="Team B nationality code"
-                   [(ngModel)]="selectedMatch.teamBNationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
-                   required>
+            <select class="form-control input-shadow" id="teamBNationalityCode" name="teamBNationalityCode"
+                    #teamBNationalityCode="ngModel" [(ngModel)]="selectedMatch.teamBNationalityCode" required>
+              <option selected disabled hidden [ngValue]="undefined">Team B country</option>
+              <option *ngFor="let country of countryCodesService.getCodes()" value="{{country.ccode}}">{{country.cname}}</option>
+            </select>
           </div>
           <div class="form-group ">
             <p-calendar placeholder="Match Time" inputStyleClass=" m-1 form-control input-shadow"
@@ -149,11 +151,10 @@
                    placeholder="Team A name" [(ngModel)]="selectedMatch.teamAName" required>
           </div>
           <div class="form-group">
-            <input type="text" id="teamANationalityCodeUpd" name="teamANationalityCode"
-                   #teamANationalityCodeUpd="ngModel"
-                   class="form-control input-shadow" placeholder="Team A nationality code"
-                   [(ngModel)]="selectedMatch.teamANationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
-                   required>
+            <select class="form-control input-shadow" id="teamANationalityCodeUpd" name="teamANationalityCodeUpd"
+                    #teamANationalityCodeUpd="ngModel" [(ngModel)]="selectedMatch.teamANationalityCode" required>
+              <option *ngFor="let country of countryCodesService.getCodes()" [ngValue]="country.ccode">{{country.cname}}</option>
+            </select>
           </div>
           <div class="form-group">
             <input type="text" id="teamBNameUpd" name="teamBName" #teamBNameUpd="ngModel"
@@ -161,11 +162,10 @@
                    placeholder="Team B Name" [(ngModel)]="selectedMatch.teamBName" required>
           </div>
           <div class="form-group">
-            <input type="text" id="teamBNationalityCodeUpd" name="teamBNationalityCode"
-                   #teamBNationalityCodeUpd="ngModel"
-                   class="form-control input-shadow" placeholder="Team B nationality code"
-                   [(ngModel)]="selectedMatch.teamBNationalityCode" ngbTooltip="ISO 3166-1 2 letters" maxlength="2"
-                   required>
+            <select class="form-control input-shadow" id="teamBNationalityCodeUpd" name="teamBNationalityCodeUpd"
+                    #teamBNationalityCodeUpd="ngModel" [(ngModel)]="selectedMatch.teamBNationalityCode" required>
+              <option *ngFor="let country of countryCodesService.getCodes()" [ngValue]="country.ccode">{{country.cname}}</option>
+            </select>
           </div>
           <div class="form-group ">
             <p-calendar dateFormat="dd.mm.yy" placeholder="Match Time" inputStyleClass=" m-1 form-control input-shadow"

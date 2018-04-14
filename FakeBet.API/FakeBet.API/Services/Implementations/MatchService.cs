@@ -70,7 +70,7 @@ namespace FakeBet.API.Services.Implementations
                 throw new Exception($"Match with given id {bet.MatchId} not found");
             }
 
-            if (match.MatchTime.CompareTo(DateTime.Now) <= 0)
+            if (match.MatchTime.CompareTo(DateTime.UtcNow) <= 0)
             {
                 match.Status = MatchStatus.OnGoing;
                 await this.repository.UpdateMatchAsync(match);

@@ -3,6 +3,7 @@ import {Match, MatchStatus} from '../../../models/match';
 import {MatchService} from '../../../services/match.service';
 import {AlertService} from '../../../services/alert.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CountryCodesService} from '../../../services/country-codes.service';
 
 @Component({
   selector: 'app-admin-match',
@@ -17,7 +18,9 @@ export class AdminMatchComponent implements OnInit {
 
   selectedMatch: Match = new Match();
 
-  constructor(private matchService: MatchService, private alertService: AlertService, private modalService: NgbModal) {
+
+  constructor(private matchService: MatchService, private alertService: AlertService, private modalService: NgbModal,
+              public countryCodesService: CountryCodesService) {
   }
 
   ngOnInit() {
@@ -85,6 +88,7 @@ export class AdminMatchComponent implements OnInit {
   private endMatch(winner: string) {
     this.matchService.end(this.selectedMatch.matchId, winner).subscribe(response => {
       this.alertService.emitOk('Match has been ended');
+      this.getAllMatches();
     }, error => {
       this.alertService.emitError(error['_body']);
     });

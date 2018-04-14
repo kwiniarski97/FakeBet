@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatchService} from '../../services/match.service';
 import {Match} from '../../models/match';
-import {DateTimeHelper} from '../../helpers/datetimehelper';
 import {LocalStorageService} from '../../services/localstorage.service';
 import {BetService} from '../../services/bet.service';
 import {Bet} from '../../models/bet';
@@ -20,21 +19,21 @@ export class MatchesComponent implements OnInit {
 
   time: string;
 
-  constructor(private matchService: MatchService, private dateHelper: DateTimeHelper,
-              private localStorage: LocalStorageService, private betService: BetService, private alertService: AlertService) {
+  constructor(private matchService: MatchService, private localStorage: LocalStorageService, private betService: BetService,
+              private alertService: AlertService) {
 
   }
 
   ngOnInit() {
     this.matchService.getNotStarted().subscribe(response => {
       this.matches = response;
+      this.matches = this.matches.sort(function (a, b) {
+        return ((new Date(b.matchTime).getTime()) - (new Date(a.matchTime)).getTime()) * -1;
+      });
       this.loading = false;
     });
   }
 
-  private getParsedDate(date: Date): string {
-    return this.dateHelper.ParseDate(date);
-  }
 
   private placeBet(matchId: string, pointsOnA: any, pointsOnB: any): void {
     const user = JSON.parse(localStorage.getItem('currentUser'));

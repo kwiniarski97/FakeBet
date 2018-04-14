@@ -37,7 +37,7 @@ namespace FakeBet.API.Models
 
         [Required, MaxLength(128)] public byte[] Salt { get; set; }
 
-        [Required] public DateTime CreateTime { get; set; } = DateTime.Now;
+        [Required] public DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
         [Required] public int Points { get; set; } = 5000;
 

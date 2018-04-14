@@ -20,7 +20,6 @@ import {AuthGuard} from './guards/auth.guard';
 import {AppConfig} from './app-config';
 import {HttpModule} from '@angular/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {DateTimeHelper} from './helpers/datetimehelper';
 import {LocalStorageService} from './services/localstorage.service';
 import {ChangePasswordComponent} from './components/changepassword/changepassword.component';
 import {ChangeEmailComponent} from './components/changeemail/changeemail.component';
@@ -32,6 +31,7 @@ import {AdminMatchComponent} from './components/admin/admin-match/admin-match.co
 import {AdminUserComponent} from './components/admin/admin-user/admin-user.component';
 import {CalendarModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CountryCodesService} from './services/country-codes.service';
 
 
 @NgModule({
@@ -84,8 +84,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatchService,
     UserService,
     BetService,
-    DateTimeHelper,
-    LocalStorageService
+    LocalStorageService,
+    CountryCodesService
   ],
   bootstrap: [AppComponent]
 })
