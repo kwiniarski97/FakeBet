@@ -24,6 +24,9 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.logout();
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    if (this.returnUrl === '/logout') {
+      this.returnUrl = '/';
+    }
   }
 
   login() {

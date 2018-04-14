@@ -31,6 +31,7 @@ import {AdminUserComponent} from './components/admin/admin-user/admin-user.compo
 import {CalendarModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CountryCodesService} from './services/country-codes.service';
+import {AdminGuard} from './guards/admin.guard';
 
 
 @NgModule({
@@ -62,21 +63,23 @@ import {CountryCodesService} from './services/country-codes.service';
     RouterModule.forRoot([
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       {path: 'home', component: MatchesComponent},
-      {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
-      {path: 'user/change-email', component: ChangeEmailComponent},
-      {path: 'user/change-password', component: ChangePasswordComponent},
-      {path: 'user/delete', component: DeleteAccountComponent},
       {path: 'signin', component: SignInComponent},
-      {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'signup', component: SignupComponent},
       {path: 'highscores', component: HighscoreesComponent},
-      {path: 'admin/matches', component: AdminMatchComponent},
-      {path: 'admin/users', component: AdminUserComponent},
-      {path: '**', redirectTo: 'home'}])
+      {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
+      {path: 'user/change-email', component: ChangeEmailComponent, canActivate: [AuthGuard]},
+      {path: 'user/change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
+      {path: 'user/delete', component: DeleteAccountComponent, canActivate: [AuthGuard]},
+      {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
+      {path: 'admin/matches', component: AdminMatchComponent, canActivate: [AdminGuard]},
+      {path: 'admin/users', component: AdminUserComponent, canActivate: [AdminGuard]},
+      {path: '**', redirectTo: 'home'},
+    ])
   ],
   providers: [
     AppConfig,
     AuthGuard,
+    AdminGuard,
     AlertService,
     AuthenticationService,
     MatchService,
