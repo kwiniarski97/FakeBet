@@ -4,6 +4,7 @@ using FakeBet.API.DTO;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace FakeBet.API.Controllers
 {
@@ -15,6 +16,8 @@ namespace FakeBet.API.Controllers
         private IMatchService _matchService;
 
         private IUserService _userService;
+
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
 
         public BetController(IBetService betService, IMatchService matchService, IUserService userService)
@@ -41,10 +44,13 @@ namespace FakeBet.API.Controllers
                 await _matchService.UpdateMatchWithNewBetAsync(bet);
                 await _userService.UserPlacedBet(bet);
                 await _betService.AddBetAsync(bet);
+                Log.Info(
+                    $"Bet placed, user: {bet.UserId}, bet on team A:{bet.BetOnTeamA}, bet on team B:{bet.BetOnTeamB}");
                 return Ok();
             }
             catch (Exception ex)
             {
+                Log.Error($"{bet.UserId} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

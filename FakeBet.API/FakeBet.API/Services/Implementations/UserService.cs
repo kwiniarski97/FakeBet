@@ -1,4 +1,9 @@
-﻿namespace FakeBet.API.Services.Implementations
+﻿using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Fluent;
+using LogLevel = NLog.LogLevel;
+
+namespace FakeBet.API.Services.Implementations
 {
     using System;
     using System.Collections.Generic;
@@ -22,6 +27,7 @@
         private IMapper mapper;
 
         private readonly AppSettingsSecret _appSettings;
+        
 
         public UserService(IUserRepository repository, IMapper mapper, IOptions<AppSettingsSecret> appSettings)
         {
@@ -68,7 +74,7 @@
         {
             if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
             {
-                throw new Exception("Nickname or password cannot be empty");
+                throw new Exception("NickName or password cannot be empty");
             }
 
             var user = await repository.GetUserAsync(nickname);
@@ -145,6 +151,7 @@
         public async Task UpdateEmailAsync(UserAuthDTO userDto)
         {
             var user = await GetUserIfLogged(userDto.NickName, userDto.Password);
+            
 
             user.Email = userDto.Email;
 
@@ -162,7 +169,7 @@
 
         public async Task UpdatePasswordAsync(ChangePasswordDTO model)
         {
-            var user = await GetUserIfLogged(model.Nickname, model.CurrentPassword);
+            var user = await GetUserIfLogged(model.NickName, model.CurrentPassword);
 
             Authorization.CreatePasswordHash(model.NewPassword, out var passwordHash, out var passwordSalt);
 
@@ -229,7 +236,6 @@
 
         private string GenerateJwtToken(User user)
         {
-            // todo add identity 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor

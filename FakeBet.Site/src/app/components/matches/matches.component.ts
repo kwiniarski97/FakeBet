@@ -20,7 +20,7 @@ export class MatchesComponent implements OnInit {
 
   time: string;
 
-  constructor(private matchService: MatchService, private localStorage: LocalStorageService, private betService: BetService,
+  constructor(private matchService: MatchService, private localStorageService: LocalStorageService, private betService: BetService,
               private alertService: AlertService) {
 
   }
@@ -40,7 +40,7 @@ export class MatchesComponent implements OnInit {
 
 
   private placeBet(matchId: string, pointsOnA: any, pointsOnB: any): void {
-    const user = this.localStorage.retrieve('currentUser') as User;
+    const user = this.localStorageService.retrieve('currentUser') as User;
     if (!user) {
       this.alertService.emitError('You must be logged');
       return;
@@ -53,6 +53,9 @@ export class MatchesComponent implements OnInit {
 
     this.betService.addBet(bet).subscribe(data => {
       this.alertService.emitOk('Bet placed');
+      const storedUser = this.localStorageService.retrieve('currentUser') as User;
+      storedUser.points -= ((bet.betOnTeamA as number) + (bet.betOnTeamB as number));
+      this.localStorageService.save('currentUser', storedUser);
     }, error => {
       this.alertService.emitError(error._body);
     });

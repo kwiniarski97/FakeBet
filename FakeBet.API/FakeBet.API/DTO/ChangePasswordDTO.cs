@@ -2,7 +2,7 @@
 {
     public class ChangePasswordDTO
     {
-        public string Nickname { get; set; }
+        public string NickName { get; set; }
 
         public string NewPassword { get; set; }
 

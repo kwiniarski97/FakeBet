@@ -5,6 +5,7 @@ using FakeBet.API.Models;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace FakeBet.API.Controllers
 {
@@ -12,6 +13,8 @@ namespace FakeBet.API.Controllers
     public class UserController : Controller
     {
         private IUserService _userService;
+
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public UserController(IUserService userService)
         {
@@ -37,10 +40,12 @@ namespace FakeBet.API.Controllers
             try
             {
                 await _userService.RegisterUserAsync(user);
+                Log.Info($"New user: {user.NickName}");
                 return Ok();
             }
             catch (Exception ex)
             {
+                Log.Error($"{user.NickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -52,10 +57,12 @@ namespace FakeBet.API.Controllers
             try
             {
                 var user = await _userService.LoginUserAsync(userDto.NickName, userDto.Password);
+                Log.Info($"User {userDto.NickName} logged in.");
                 return Ok(user);
             }
             catch (Exception ex)
             {
+                Log.Error($"{userDto.NickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -70,6 +77,7 @@ namespace FakeBet.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error($"{nickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
 
@@ -85,10 +93,19 @@ namespace FakeBet.API.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateEmail([FromBody] UserAuthDTO model)
+        public async Task<IActionResult> UpdateEmail([FromBody] UserAuthDTO user)
         {
-            await this._userService.UpdateEmailAsync(model);
-            return Ok(); // todo dodaj exceptions itd.
+            try
+            {
+                await this._userService.UpdateEmailAsync(user);
+                Log.Info($"User {user.NickName} changed his email");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{user.NickName} - {ex.Message}");
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = "User")]
@@ -98,10 +115,12 @@ namespace FakeBet.API.Controllers
             try
             {
                 await this._userService.DeleteAccountAsync(user);
+                Log.Info($"User {user.NickName} deleted account");
                 return Ok();
             }
             catch (Exception ex)
             {
+                Log.Error($"{user.NickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -117,6 +136,7 @@ namespace FakeBet.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error($"{model.NickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
@@ -140,6 +160,7 @@ namespace FakeBet.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error($"{user.NickName} - {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }
