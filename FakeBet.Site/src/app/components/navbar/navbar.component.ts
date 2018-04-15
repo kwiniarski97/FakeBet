@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocalStorageService} from '../../services/localstorage.service';
 
 @Component({
@@ -8,13 +8,12 @@ import {LocalStorageService} from '../../services/localstorage.service';
 })
 export class NavbarComponent implements OnInit {
 
-  isLogged: boolean;
 
-  constructor(private localStorageService: LocalStorageService) {
+
+  constructor(public localStorageService: LocalStorageService) {
   }
 
   ngOnInit() {
-    this.isLogged = this.localStorageService.isUserLogged();
   }
 
 }

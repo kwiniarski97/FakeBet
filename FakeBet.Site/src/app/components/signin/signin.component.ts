@@ -13,7 +13,6 @@ export class SignInComponent implements OnInit {
 
   model: any = {};
   processing = false;
-  returnUrl: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -23,16 +22,12 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.logout();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    if (this.returnUrl === '/logout') {
-      this.returnUrl = '/';
-    }
   }
 
   login() {
     this.processing = true;
     this.authenticationService.login(this.model.nickname, this.model.password).subscribe(data => {
-        this.router.navigate([this.returnUrl]);
+        this.router.navigate(['/']);
       },
       error => {
         this.processing = false;

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {UserRoles, UserStatus} from '../models/userenums';
+import {User} from '../models/user';
 
 @Injectable()
 export class LocalStorageService {
@@ -25,6 +26,15 @@ export class LocalStorageService {
   isUserLogged(): boolean {
     this.CheckLocalStorage();
     return localStorage.getItem('currentUser') !== null;
+  }
+
+  getUserRole(): UserRoles {
+    this.CheckLocalStorage();
+    const user = this.retrieve('currentUser') as User;
+    if (!user) {
+      return null;
+    }
+    return user.role;
   }
 
   private CheckLocalStorage() {
