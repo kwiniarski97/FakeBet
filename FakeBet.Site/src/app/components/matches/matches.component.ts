@@ -5,6 +5,7 @@ import {LocalStorageService} from '../../services/localstorage.service';
 import {BetService} from '../../services/bet.service';
 import {Bet} from '../../models/bet';
 import {AlertService} from '../../services/alert.service';
+import {User} from '../../models/user';
 
 @Component({
   selector: 'app-matches',
@@ -39,9 +40,10 @@ export class MatchesComponent implements OnInit {
 
 
   private placeBet(matchId: string, pointsOnA: any, pointsOnB: any): void {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = this.localStorage.retrieve('currentUser') as User;
     if (!user) {
       this.alertService.emitError('You must be logged');
+      return;
     }
     if ((pointsOnA.value + pointsOnB.value) == 0) {
       return;
