@@ -20,12 +20,23 @@ namespace FakeBet.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+#if RELEASE
+                .AddJsonFile($"appsettings.production.json", optional: true)
+#endif
+#if DEBUG
+                .AddJsonFile($"appsettings.development.json", optional: true)
+#endif
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -51,6 +62,10 @@ namespace FakeBet.API
             //dbcontext ef
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
+
+            services.AddSingleton<IEmailClient>(service => new EmailClient(this.Configuration["Email:Host"],
+                int.Parse(this.Configuration["Email:Port"]), this.Configuration["Email:NickName"],
+                this.Configuration["Email:Password"]));
 
 
             services.AddAutoMapper();

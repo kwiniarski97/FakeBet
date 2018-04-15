@@ -27,6 +27,8 @@ namespace FakeBet.APi.Tests
 
         private IOptions<AppSettingsSecret> _options;
 
+        private Mock<IEmailClient> _emailMock;
+
         public UserServiceTest()
         {
             var autoMapperProfile = new AutoMapperConfig();
@@ -37,6 +39,8 @@ namespace FakeBet.APi.Tests
 
             var options = new AppSettingsSecret() {Secret = "secretmustbelongerthat128bits"};
             _options = Options.Create(options);
+
+            _emailMock = new Mock<IEmailClient>();
         }
 
         [Fact]
@@ -206,7 +210,7 @@ namespace FakeBet.APi.Tests
                 .ReturnsAsync(topList);
 
 
-            _userService = new UserService(_userRepoMock.Object, _mapper, _options);
+            _userService = new UserService(_userRepoMock.Object, _mapper, _options, _emailMock.Object);
         }
 
         private static IEnumerable<User> MultiplyObject(User user)

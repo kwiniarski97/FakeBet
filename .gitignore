@@ -291,3 +291,4 @@ __pycache__/
 appsettings.json
 appsettings.production.json
 appsettings.development.json
+FakeBet\.API/FakeBet\.API/fakebet\.db

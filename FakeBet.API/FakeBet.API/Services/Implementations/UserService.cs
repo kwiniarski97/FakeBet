@@ -26,14 +26,18 @@ namespace FakeBet.API.Services.Implementations
 
         private IMapper mapper;
 
-        private readonly AppSettingsSecret _appSettings;
-        
+        private readonly IEmailClient _emailClient;
 
-        public UserService(IUserRepository repository, IMapper mapper, IOptions<AppSettingsSecret> appSettings)
+        private readonly AppSettingsSecret _appSettings;
+
+
+        public UserService(IUserRepository repository, IMapper mapper, IOptions<AppSettingsSecret> appSettings,
+            IEmailClient emailClient)
         {
             this.repository = repository;
             this.mapper = mapper;
             this._appSettings = appSettings.Value;
+            this._emailClient = emailClient;
         }
 
         public async Task RegisterUserAsync(UserAuthDTO userAuthDto)
@@ -151,7 +155,7 @@ namespace FakeBet.API.Services.Implementations
         public async Task UpdateEmailAsync(UserAuthDTO userDto)
         {
             var user = await GetUserIfLogged(userDto.NickName, userDto.Password);
-            
+
 
             user.Email = userDto.Email;
 
