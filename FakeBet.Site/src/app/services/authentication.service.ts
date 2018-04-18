@@ -11,7 +11,7 @@ export class AuthenticationService {
 
   constructor(private http: Http, private config: AppConfig, private localStorageService: LocalStorageService) {
   }
-
+  
   login(nickname: string, password: string): Observable<boolean> {
     return this.http.post(this.config.apiUrl + '/user/login', {
       nickname: nickname,

@@ -29,6 +29,8 @@ namespace FakeBet.APi.Tests
 
         private Mock<IEmailClient> _emailMock;
 
+        private Mock<IMatchService> _matchMock;
+
         public UserServiceTest()
         {
             var autoMapperProfile = new AutoMapperConfig();
@@ -41,6 +43,8 @@ namespace FakeBet.APi.Tests
             _options = Options.Create(options);
 
             _emailMock = new Mock<IEmailClient>();
+
+            _matchMock = new Mock<IMatchService>();
         }
 
         [Fact]
@@ -210,7 +214,8 @@ namespace FakeBet.APi.Tests
                 .ReturnsAsync(topList);
 
 
-            _userService = new UserService(_userRepoMock.Object, _mapper, _options, _emailMock.Object);
+            _userService = new UserService(_userRepoMock.Object, _mapper, _options,
+                _emailMock.Object);
         }
 
         private static IEnumerable<User> MultiplyObject(User user)

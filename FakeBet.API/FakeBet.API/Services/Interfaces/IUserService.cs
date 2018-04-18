@@ -25,10 +25,8 @@ namespace FakeBet.API.Services.Interfaces
 
         Task AddUserPointsAsync(string betUserId, int wonPoints);
 
-        Task UserPlacedBet(BetDTO bet);
-        
         Task<IEnumerable<UserDTO>> GetAllUsersAsync();
-        
+
         Task UpdateUserAsync(UserDTO userDTO);
     }
 }

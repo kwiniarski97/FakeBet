@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.1" />
     <PackageReference Include="NLog" Version="4.5.2" />
     <PackageReference Include="NLog.Config" Version="4.5.2" />
+    <PackageReference Include="RestSharp" Version="106.3.0-alpha0018" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />

@@ -64,23 +64,7 @@ namespace FakeBet.API.Services.Implementations
 
         public async Task UpdateMatchWithNewBetAsync(BetDTO bet)
         {
-            var match = await this.repository.GetMatchAsync(bet.MatchId);
-            if (match == null)
-            {
-                throw new Exception($"Match with given id {bet.MatchId} not found");
-            }
-
-            if (match.MatchTime.CompareTo(DateTime.UtcNow) <= 0)
-            {
-                match.Status = MatchStatus.OnGoing;
-                await this.repository.UpdateMatchAsync(match);
-                throw new Exception("Match already started.");
-            }
-
-            match.TeamAPoints += bet.BetOnTeamA;
-            match.TeamBPoints += bet.BetOnTeamB;
-
-            await this.repository.UpdateMatchAsync(match);
+            
         }
 
         public async Task EndMatchAsync(string matchId, Team winner)

@@ -85,7 +85,7 @@ namespace FakeBet.API.Services.Implementations
 
             if (user == null)
             {
-                throw new Exception("We cannot find such userDTO.");
+                throw new Exception("We cannot find such user.");
             }
 
             if (!Authorization.VerifyPasswordHash(password, user.PasswordHash, user.Salt))
@@ -116,7 +116,7 @@ namespace FakeBet.API.Services.Implementations
                         "Your account is banned. If you think you've been banned by accident contact administrator.");
             }
 
-            if (user.FailedLoginsAttemps > 0)
+            if (user.FailedLoginsAttemps > 0) // user logged in so reset his failure login counter
             {
                 user.ResetFailedLoginCounterAsync();
                 await this.repository.UpdateUserAsync(user);
@@ -188,24 +188,6 @@ namespace FakeBet.API.Services.Implementations
             var user = await this.repository.GetUserAsync(userId);
 
             user.Points += wonPoints;
-
-            await this.repository.UpdateUserAsync(user);
-        }
-
-        public async Task UserPlacedBet(BetDTO bet)
-        {
-            var user = await this.repository.GetUserAsync(bet.UserId);
-
-            if (user == null)
-            {
-                throw new Exception("No userDTO with given Id");
-            }
-
-            user.Points -= (bet.BetOnTeamA + bet.BetOnTeamB);
-            if (user.Points < 0)
-            {
-                throw new Exception("You don't have enough points!");
-            }
 
             await this.repository.UpdateUserAsync(user);
         }
