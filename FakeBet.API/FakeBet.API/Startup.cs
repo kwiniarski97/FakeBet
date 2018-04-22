@@ -63,9 +63,8 @@ namespace FakeBet.API
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
 
-            services.AddSingleton<IEmailClient>(service => new EmailClient(this.Configuration["Email:Host"],
-                int.Parse(this.Configuration["Email:Port"]), this.Configuration["Email:NickName"],
-                this.Configuration["Email:Password"]));
+            services.AddSingleton<IEmailClient>(service =>
+                new EmailClientMailGun(this.Configuration["Email:Nickname"], this.Configuration["Email:Password"]));
 
 
             services.AddAutoMapper();

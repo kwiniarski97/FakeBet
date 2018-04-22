@@ -27,8 +27,8 @@ namespace FakeBet.API.Helpers
             foreach (var bet in bets)
             {
                 var betPoints = bet.BetOnTeamA > 0 ? bet.BetOnTeamA : bet.BetOnTeamB;
-                var dupa = betPoints / (double) winnersTeamPoints;
-                var wonPoints = dupa * totalPoints;
+                var ratio = betPoints / (double) winnersTeamPoints;
+                var wonPoints = ratio * totalPoints;
                 await this._userService.AddUserPointsAsync(bet.UserId, (int) wonPoints);
             }
         }

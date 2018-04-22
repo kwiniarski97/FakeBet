@@ -9,7 +9,7 @@ namespace FakeBet.API.Services.Interfaces
     {
         Task RegisterUserAsync(UserAuthDTO userAuthDto);
 
-        Task<UserDTO> LoginUserAsync(string login, string password);
+        Task<string> LoginUserAsync(string login, string password);
 
         Task<UserDTO> GetUserAsync(string nickName);
 
@@ -25,10 +25,8 @@ namespace FakeBet.API.Services.Interfaces
 
         Task AddUserPointsAsync(string betUserId, int wonPoints);
 
-        Task UserPlacedBet(BetDTO bet);
-        
         Task<IEnumerable<UserDTO>> GetAllUsersAsync();
-        
+
         Task UpdateUserAsync(UserDTO userDTO);
     }
 }

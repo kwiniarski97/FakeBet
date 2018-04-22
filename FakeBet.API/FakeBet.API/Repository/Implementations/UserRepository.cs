@@ -22,10 +22,9 @@ namespace FakeBet.API.Repository.Implementations
 
         private IQueryable<Bet> Bets => context.Bets;
 
-        public async Task<User> GetUserAsync(string nickName)
+        public async Task<User> GetUserWithoutBetsAsync(string nickName)
         {
-            // todo take(50) but use separate query to do it for you ;) 
-            return await Users.Include(r => r.Bets).SingleOrDefaultAsync(u => u.NickName == nickName);
+            return await Users.SingleOrDefaultAsync(u => u.NickName == nickName);
         }
 
         public async Task RegisterUserAsync(User user)
@@ -54,8 +53,6 @@ namespace FakeBet.API.Repository.Implementations
             this.context.Users.Update(original);
             await this.context.SaveChangesAsync();
         }
-
-       
 
         public async Task<User> GetUserByEmailAsync(string email)
         {

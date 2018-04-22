@@ -3,14 +3,12 @@ import {Headers, RequestOptions} from '@angular/http';
 export class Service {
 
   protected static getJwtHeaders() {
-    let storageItem = localStorage.getItem('currentUser');
-    if (!storageItem) {
+    const jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (!jwt) {
       return;
     }
-    let currentUser = JSON.parse(storageItem);
-    if (currentUser && currentUser.token) {
-      let headers = new Headers({'Authorization': 'Bearer ' + currentUser.token});
-      return new RequestOptions({headers: headers});
-    }
+    const headers = new Headers({'Authorization': 'Bearer ' + jwt});
+    return new RequestOptions({headers: headers});
   }
 }
+

@@ -6,7 +6,7 @@ namespace FakeBet.API.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User> GetUserAsync(string nickName);
+        Task<User> GetUserWithoutBetsAsync(string nickName);
 
         Task RegisterUserAsync(User user);
 

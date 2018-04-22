@@ -7,6 +7,7 @@ using FakeBet.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NLog;
 
 namespace FakeBet.API.Controllers
 {
@@ -14,8 +15,8 @@ namespace FakeBet.API.Controllers
     public class MatchController : Controller
     {
         private IMatchService _matchService;
-
-        private IBetService _betService;
+        
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public MatchController(IMatchService matchService)
         {
