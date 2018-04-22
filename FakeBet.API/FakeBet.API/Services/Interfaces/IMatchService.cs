@@ -13,8 +13,6 @@ namespace FakeBet.API.Services.Interfaces
 
         Task<IEnumerable<Match>> GetNotStartedMatchesAsync();
 
-        Task UpdateMatchWithNewBetAsync(BetDTO bet);
-
         Task EndMatchAsync(string matchId, Team winner);
 
         Task<IEnumerable<MatchDTO>> GetAllAsync();

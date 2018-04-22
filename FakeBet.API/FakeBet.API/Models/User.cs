@@ -39,7 +39,7 @@ namespace FakeBet.API.Models
 
         [Required] public DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
-        [Required] public int Points { get; set; } = 5000;
+        [Required] public int Points { get; set; } = 100;
 
         public int FailedLoginsAttemps { get; set; } = 0;
 

@@ -30,7 +30,6 @@ export class ChangePasswordComponent implements OnInit {
     }, error => {
       this.alertService.emitError(error._body);
     });
-    // todo
   }
 
 }

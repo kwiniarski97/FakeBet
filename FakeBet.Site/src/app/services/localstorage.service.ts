@@ -7,7 +7,7 @@ export class LocalStorageService {
   constructor() {
   }
 
-  save(key: string, data: object) {
+  save(key: string, data: any) {
     this.CheckLocalStorage();
     localStorage.setItem(key, JSON.stringify(data));
   }
@@ -25,7 +25,7 @@ export class LocalStorageService {
 
   isUserLogged(): boolean {
     this.CheckLocalStorage();
-    return localStorage.getItem('currentUser') !== null;
+    return localStorage.getItem('jwt') !== null;
   }
 
   getUserRole(): UserRoles {

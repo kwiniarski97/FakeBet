@@ -74,14 +74,14 @@ namespace FakeBet.API.Services.Implementations
             return user == null;
         }
 
-        public async Task<UserDTO> LoginUserAsync(string nickname, string password)
+        public async Task<string> LoginUserAsync(string nickname, string password)
         {
             if (string.IsNullOrEmpty(nickname) || string.IsNullOrEmpty(password))
             {
                 throw new Exception("NickName or password cannot be empty");
             }
 
-            var user = await repository.GetUserAsync(nickname);
+            var user = await repository.GetUserWithoutBetsAsync(nickname);
 
             if (user == null)
             {
@@ -122,16 +122,14 @@ namespace FakeBet.API.Services.Implementations
                 await this.repository.UpdateUserAsync(user);
             }
 
-            var userMapped = mapper.Map<UserDTO>(user);
+            var token = GenerateJwtToken(user);
 
-            userMapped.Token = GenerateJwtToken(user);
-
-            return userMapped;
+            return token;
         }
 
         public async Task<UserDTO> GetUserAsync(string nickName)
         {
-            var user = await repository.GetUserAsync(nickName);
+            var user = await repository.GetUserWithoutBetsAsync(nickName);
             return mapper.Map<User, UserDTO>(user);
         }
 
@@ -185,7 +183,7 @@ namespace FakeBet.API.Services.Implementations
 
         public async Task AddUserPointsAsync(string userId, int wonPoints)
         {
-            var user = await this.repository.GetUserAsync(userId);
+            var user = await this.repository.GetUserWithoutBetsAsync(userId);
 
             user.Points += wonPoints;
 
@@ -201,7 +199,7 @@ namespace FakeBet.API.Services.Implementations
 
         public async Task UpdateUserAsync(UserDTO userDTO)
         {
-            var user = await this.repository.GetUserAsync(userDTO.NickName);
+            var user = await this.repository.GetUserWithoutBetsAsync(userDTO.NickName);
             if (user == null)
             {
                 throw new Exception($"User with {userDTO.NickName} nickname not found");
@@ -250,7 +248,7 @@ namespace FakeBet.API.Services.Implementations
 
         private async Task<User> GetUserIfLogged(string nickName, string password)
         {
-            var user = await this.repository.GetUserAsync(nickName);
+            var user = await this.repository.GetUserWithoutBetsAsync(nickName);
             if (user == null)
             {
                 throw new Exception("You must be logged!");

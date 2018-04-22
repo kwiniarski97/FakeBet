@@ -64,7 +64,7 @@ namespace FakeBet.APi.Tests
 
             var user = await _userService.GetUserAsync("non existent user id");
 
-            _userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Once);
+            _userRepoMock.Verify(x => x.GetUserWithoutBetsAsync(It.IsAny<string>()), Times.Once);
             Assert.Null(user);
         }
 
@@ -84,8 +84,8 @@ namespace FakeBet.APi.Tests
                 }
             }
 
-            _userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Exactly(10));
-            var userDTO = await _userRepoMock.Object.GetUserAsync("nickname");
+            _userRepoMock.Verify(x => x.GetUserWithoutBetsAsync(It.IsAny<string>()), Times.Exactly(10));
+            var userDTO = await _userRepoMock.Object.GetUserWithoutBetsAsync("nickname");
             Assert.Equal(UserStatus.NonActivated, userDTO.Status);
         }
 
@@ -94,13 +94,10 @@ namespace FakeBet.APi.Tests
         {
             SetArrangments();
 
-            var user = await this._userService.LoginUserAsync("nickname", "password");
+            var token = await this._userService.LoginUserAsync("nickname", "password");
 
-            _userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Once);
-            Assert.True(user != null);
-            Assert.IsType<UserDTO>(user);
-            Assert.Equal("nickname", user.NickName);
-            Assert.True(user.Token != null);
+            _userRepoMock.Verify(x => x.GetUserWithoutBetsAsync(It.IsAny<string>()), Times.Once);
+            Assert.True(token != null);
         }
 
         [Fact]
@@ -110,7 +107,7 @@ namespace FakeBet.APi.Tests
 
             await Assert.ThrowsAsync<Exception>(() => this._userService.LoginUserAsync(string.Empty, "password"));
 
-            this._userRepoMock.Verify(x => x.GetUserAsync(It.IsAny<string>()), Times.Never);
+            this._userRepoMock.Verify(x => x.GetUserWithoutBetsAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -121,7 +118,7 @@ namespace FakeBet.APi.Tests
             await Assert.ThrowsAsync<Exception>(() =>
                 this._userService.LoginUserAsync("thisnicknamedoesntexist", "password"));
 
-            this._userRepoMock.Verify(x => x.GetUserAsync("thisnicknamedoesntexist"), Times.Once);
+            this._userRepoMock.Verify(x => x.GetUserWithoutBetsAsync("thisnicknamedoesntexist"), Times.Once);
         }
 
         [Fact]
@@ -208,7 +205,7 @@ namespace FakeBet.APi.Tests
 
             var topList = MultiplyObject(userToReturn).ToList();
 
-            _userRepoMock.Setup(x => x.GetUserAsync("nickname")).ReturnsAsync(userToReturn);
+            _userRepoMock.Setup(x => x.GetUserWithoutBetsAsync("nickname")).ReturnsAsync(userToReturn);
             _userRepoMock.Setup(x => x.GetUserByEmailAsync("email")).ReturnsAsync(userToReturn);
             _userRepoMock.Setup(x => x.Get20BestUsersAsync())
                 .ReturnsAsync(topList);

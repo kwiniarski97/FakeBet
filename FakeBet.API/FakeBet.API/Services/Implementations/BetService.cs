@@ -47,7 +47,7 @@ namespace FakeBet.API.Services.Implementations
             var bet = mapper.Map<Bet>(betDTO);
             bet.DateOfBetting = DateTime.UtcNow;
 
-            var user = await this._userRepository.GetUserAsync(bet.UserId);
+            var user = await this._userRepository.GetUserWithoutBetsAsync(bet.UserId);
 
             if (user == null)
             {

@@ -62,11 +62,6 @@ namespace FakeBet.API.Services.Implementations
         }
 
 
-        public async Task UpdateMatchWithNewBetAsync(BetDTO bet)
-        {
-            
-        }
-
         public async Task EndMatchAsync(string matchId, Team winner)
         {
             var match = await GetMatchAsync(matchId);

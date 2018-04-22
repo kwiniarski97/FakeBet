@@ -9,7 +9,7 @@ namespace FakeBet.API.Services.Interfaces
     {
         Task RegisterUserAsync(UserAuthDTO userAuthDto);
 
-        Task<UserDTO> LoginUserAsync(string login, string password);
+        Task<string> LoginUserAsync(string login, string password);
 
         Task<UserDTO> GetUserAsync(string nickName);
 
