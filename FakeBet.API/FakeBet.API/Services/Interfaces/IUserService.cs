@@ -28,5 +28,7 @@ namespace FakeBet.API.Services.Interfaces
         Task<IEnumerable<UserDTO>> GetAllUsersAsync();
 
         Task UpdateUserAsync(UserDTO userDTO);
+
+        Task ActivateUserAsync(string encodedValue);
     }
 }

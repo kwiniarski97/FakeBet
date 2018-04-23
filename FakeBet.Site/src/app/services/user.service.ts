@@ -107,5 +107,9 @@ export class UserService extends Service {
     return this.http.put(this.serviceurl + '/update', selectedUser, jwt);
 
   }
+
+  activate(encodedNickName: string) {
+    return this.http.put(this.serviceurl + '/activate/' + encodedNickName, '');
+  }
 }
 

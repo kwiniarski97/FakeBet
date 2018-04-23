@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AutoMapper;
+using FakeBet.API.Email;
 using FakeBet.API.Helpers;
 using FakeBet.API.Repository;
 using FakeBet.API.Repository.Implementations;
@@ -63,9 +64,8 @@ namespace FakeBet.API
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
 
-            services.AddSingleton<IEmailClient>(service =>
-                new EmailClientMailGun(this.Configuration["Email:Nickname"], this.Configuration["Email:Password"]));
-
+            services.AddSingleton<IEmailClient>(srv =>
+                new EmailClient(this.Configuration["Email:Password"]));
 
             services.AddAutoMapper();
 

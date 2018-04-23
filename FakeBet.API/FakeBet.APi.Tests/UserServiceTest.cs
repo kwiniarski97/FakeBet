@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FakeBet.API.DTO;
+using FakeBet.API.Email;
 using FakeBet.API.Helpers;
 using FakeBet.API.Models;
 using FakeBet.API.Repository.Interfaces;
 using FakeBet.API.Services.Implementations;
 using FakeBet.API.Services.Interfaces;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using Moq;
 using Xunit;
 
-namespace FakeBet.APi.Tests
+namespace FakeBet.API.Tests
 {
-    using FakeBet.API.DTO;
-
     public class UserServiceTest
     {
         private IMapper _mapper;

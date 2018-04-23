@@ -32,6 +32,7 @@ import {CalendarModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CountryCodesService} from './services/country-codes.service';
 import {AdminGuard} from './guards/admin.guard';
+import {ActivateComponent} from './components/activate/activate.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {AdminGuard} from './guards/admin.guard';
     HighscoreesComponent,
     AdminMatchComponent,
     AdminUserComponent,
+    ActivateComponent,
 
   ],
   imports: [
@@ -73,6 +75,7 @@ import {AdminGuard} from './guards/admin.guard';
       {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
       {path: 'admin/matches', component: AdminMatchComponent, canActivate: [AdminGuard]},
       {path: 'admin/users', component: AdminUserComponent, canActivate: [AdminGuard]},
+      {path: 'activate/:encodedNickName', component: ActivateComponent},
       {path: '**', redirectTo: 'home'},
     ])
   ],

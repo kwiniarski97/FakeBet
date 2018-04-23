@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FakeBet.API.Email;
+using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Fluent;
 using LogLevel = NLog.LogLevel;
@@ -66,6 +67,8 @@ namespace FakeBet.API.Services.Implementations
             user.Salt = passwordSalt;
 
             await repository.RegisterUserAsync(user);
+            
+            this._emailClient.SendActivationLink(user.Email, user.NickName);
         }
 
         private async Task<bool> IsEmailUnique(string email)
@@ -96,7 +99,7 @@ namespace FakeBet.API.Services.Implementations
                 {
                     user.Status = UserStatus.NonActivated;
 
-                    // todo send mail here someday
+//                    this._emailClient.NotifyAboutBlockade(user.Email);
                 }
 
                 await this.repository.UpdateUserAsync(user);
@@ -215,7 +218,24 @@ namespace FakeBet.API.Services.Implementations
 
             user.Role = userDTO.Role;
 
+            if (user.Status.Equals(UserStatus.Banned) && !user.Status.Equals(userDTO.Status))
+            {
+                this._emailClient.NotifyAboutBan(user.NickName);
+            }
+
             await this.repository.UpdateUserAsync(user);
+        }
+
+        public async Task ActivateUserAsync(string encodedValue)
+        {
+            var decodedNickName = Encryptor.FromBase64(encodedValue);
+            var user = await GetUserAsync(decodedNickName);
+            if (user == null)
+            {
+                throw new Exception("No such user");
+            }
+            user.Status = UserStatus.Active;
+            await this.UpdateUserAsync(user);
         }
 
         private string GenerateJwtToken(User user)

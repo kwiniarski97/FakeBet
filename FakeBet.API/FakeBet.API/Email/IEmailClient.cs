@@ -1,4 +1,4 @@
-﻿namespace FakeBet.API.Helpers
+﻿namespace FakeBet.API.Email
 {
     public interface IEmailClient
     {
@@ -7,5 +7,7 @@
         void NotifyAboutBan(string recipent);
 
         void NotifyAboutBlockade(string recipent);
+
+        void SendActivationLink(string recipent, string nickname);
     }
 }

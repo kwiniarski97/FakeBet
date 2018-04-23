@@ -164,5 +164,19 @@ namespace FakeBet.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("[action]/{encodedNickName}")]
+        public async Task<IActionResult> Activate(string encodedNickName)
+        {
+            try
+            {
+                await this._userService.ActivateUserAsync(encodedNickName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

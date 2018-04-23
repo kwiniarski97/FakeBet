@@ -1,10 +1,8 @@
 ﻿using System;
-
 using FakeBet.API.Extensions;
-
 using Xunit;
 
-namespace FakeBet.APi.Tests
+namespace FakeBet.API.Tests
 {
     public class GenericExtensionsTest
     {

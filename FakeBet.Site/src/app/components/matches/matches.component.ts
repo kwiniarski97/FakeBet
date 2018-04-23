@@ -93,7 +93,7 @@ export class MatchesComponent implements OnInit {
   private isCachedMatchesReliable() {
     const matchesCached = this.localStorageService.retrieve('matches') as TtlEntity;
     // if diff between now and time when timestamp is cached is lower than 5 minutes it will return true
-    return (matchesCached && Math.round(Date.now() - matchesCached.timeStamp) < (5 * 1000 * 60)); // 5 * 1000 * 60 5 minutes in millisec
+    return (matchesCached && Math.round(Date.now() - matchesCached.timeStamp) < (5 * 1000 * 60)) && matchesCached.content.length > 0; // 5 * 1000 * 60 5 minutes in millisec
 
   }
 
