@@ -99,7 +99,7 @@ namespace FakeBet.API.Services.Implementations
                 {
                     user.Status = UserStatus.NonActivated;
 
-//                    this._emailClient.NotifyAboutBlockade(user.Email);
+                    this._emailClient.NotifyAboutBlockade(user.Email);
                 }
 
                 await this.repository.UpdateUserAsync(user);

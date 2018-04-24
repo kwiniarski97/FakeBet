@@ -28,13 +28,9 @@ namespace FakeBet.API
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-#if RELEASE
-                .AddJsonFile($"appsettings.production.json", optional: true)
-#endif
-#if DEBUG
-                .AddJsonFile($"appsettings.development.json", optional: true)
-#endif
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
 
             Configuration = builder.Build();
         }
@@ -64,7 +60,7 @@ namespace FakeBet.API
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(this.Configuration["DataBase:ConnectionString"]));
 
-            services.AddSingleton<IEmailClient>(srv =>
+            services.AddTransient<IEmailClient>(srv =>
                 new EmailClient(this.Configuration["Email:Password"]));
 
             services.AddAutoMapper();

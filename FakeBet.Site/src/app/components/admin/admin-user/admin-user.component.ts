@@ -15,7 +15,7 @@ export class AdminUserComponent implements OnInit {
   users: User[];
 
   selectedUser: User = new User();
-  private loading = false;
+  public loading = false;
 
   constructor(private userService: UserService, private alertService: AlertService, private modalService: NgbModal) {
   }
@@ -23,7 +23,7 @@ export class AdminUserComponent implements OnInit {
   ngOnInit() {
   }
 
-  private getAllUsers() {
+  public getAllUsers() {
     this.loading = true;
     this.userService.getAllUsers().subscribe(response => {
       this.loading = false;
@@ -31,12 +31,12 @@ export class AdminUserComponent implements OnInit {
     });
   }
 
-  private openUpdateUserModal(content, user: User) {
+  public openUpdateUserModal(content, user: User) {
     Object.assign(this.selectedUser, user);
     this.modalService.open(content, {size: 'lg'});
   }
 
-  private getUserByNickname(nickname: string) {
+  public getUserByNickname(nickname: string) {
     if (nickname == null || nickname.length === 0) {
       return;
     }
@@ -48,7 +48,7 @@ export class AdminUserComponent implements OnInit {
     });
   }
 
-  private updateUser() {
+  public updateUser() {
     this.userService.updateUser(this.selectedUser).subscribe(result => {
       this.alertService.emitOk('Updated');
       this.getAllUsers();
@@ -57,11 +57,11 @@ export class AdminUserComponent implements OnInit {
     });
   }
 
-  private getUserStatus(status: UserStatus) {
+  public getUserStatus(status: UserStatus) {
     return UserStatus[status];
   }
 
-  private getUserRole(role: UserRoles) {
+  public getUserRole(role: UserRoles) {
     return UserRoles[role];
   }
 }

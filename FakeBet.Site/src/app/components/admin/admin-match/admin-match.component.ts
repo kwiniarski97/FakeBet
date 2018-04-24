@@ -26,27 +26,27 @@ export class AdminMatchComponent implements OnInit {
   ngOnInit() {
   }
 
-  private getMatchStatus(matchStatus: MatchStatus) {
+  public getMatchStatus(matchStatus: MatchStatus) {
     return MatchStatus[matchStatus];
   }
 
-  private openUpdateMatchModal(modal: any, match: Match) {
+  public openUpdateMatchModal(modal: any, match: Match) {
     Object.assign(this.selectedMatch, match);
     this.selectedMatch.matchTime = new Date(this.selectedMatch.matchTime);
     this.modalService.open(modal, {size: 'lg'});
   }
 
-  private openEndMatchModal(endMatchModal: any, match: Match) {
+  public openEndMatchModal(endMatchModal: any, match: Match) {
     Object.assign(this.selectedMatch, match);
     this.modalService.open(endMatchModal);
   }
 
-  private openAddMatchModal(modal: any) {
+  public openAddMatchModal(modal: any) {
     this.selectedMatch = new Match();
     this.modalService.open(modal, {size: 'lg'});
   }
 
-  private deleteMatch(matchId: string) {
+  public deleteMatch(matchId: string) {
     if (this.alertService.emitConfirm(`Are you sure you want to delete match with id: ${matchId}?`)) {
       this.matchService.delete(matchId).subscribe(response => {
         this.alertService.emitOk('Match deleted');
@@ -56,7 +56,7 @@ export class AdminMatchComponent implements OnInit {
     }
   }
 
-  private getAllMatches() {
+  public getAllMatches() {
     this.matchService.getAll().subscribe(response => {
       const matches = JSON.parse(response['_body']);
       this.matches = matches;
@@ -69,7 +69,7 @@ export class AdminMatchComponent implements OnInit {
   }
 
 
-  private addMatch() {
+  public addMatch() {
     this.matchService.add(this.selectedMatch).subscribe(response => {
       this.alertService.emitOk('Match has been created');
       this.getAllMatches();
@@ -78,7 +78,7 @@ export class AdminMatchComponent implements OnInit {
     });
   }
 
-  private updateMatch() {
+  public updateMatch() {
     this.matchService.update(this.selectedMatch).subscribe(response => {
       this.alertService.emitOk('Match has been updated');
       this.getAllMatches();
@@ -87,7 +87,7 @@ export class AdminMatchComponent implements OnInit {
     });
   }
 
-  private endMatch(winner: string) {
+  public endMatch(winner: string) {
     this.matchService.end(this.selectedMatch.matchId, winner).subscribe(response => {
       this.alertService.emitOk('Match has been ended');
       this.getAllMatches();
